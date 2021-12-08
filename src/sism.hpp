@@ -45,6 +45,7 @@ namespace calcgl {
 		bool first;
 	} mouse_data;
 
+	void writeBlock(TextRenderer tr, float x, float y, float scale, vector<string> block);
 	void writeInstructions(TextRenderer, float x, float y, float);
 	void writeAuthors(TextRenderer, float x, float y, float);
 	void writeText(TextRenderer, string, float x, float y, float);

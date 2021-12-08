@@ -57,20 +57,26 @@ namespace callback {
     }
 }
 
+void calcgl::writeBlock(TextRenderer tr, float x, float y, float scale, vector<string> block) {
+    for (size_t i = 0; i < block.size(); i++)
+        tr.RenderText(block[i], x, y + ((float)i) * scale * (tr.getFontSize() + 5.f), scale);
+}
+
 void calcgl::writeInstructions(TextRenderer tr, float x, float y, float scale) {
-    debug("%u\n", tr.getFontSize());
-    tr.RenderText("               [O] Open File", x, y, scale);
-    tr.RenderText("[WASD,Arrows,2468] Move camera", x, y + 1.f * scale * (tr.getFontSize() + 5.f), scale);
-    tr.RenderText("               [C] Change surface color", x, y + 2.f * scale * (tr.getFontSize() + 5.f), scale);
-    tr.RenderText("               [X] Reset surface color", x, y + 3.f * scale * (tr.getFontSize() + 5.f), scale);
-    tr.RenderText("           [Mouse] Rotate camera", x, y + 4.f * scale * (tr.getFontSize() + 5.f), scale);
-    tr.RenderText("     [Mouse wheel] Zoom", x, y + 5.f * scale * (tr.getFontSize() + 5.f), scale);
-    tr.RenderText("          [ESC, Q] Exit", x, y + 6.f * scale * (tr.getFontSize() + 5.f), scale);
+    writeBlock(tr, x, y, scale, vector<string>({
+        "               [O] Open File           ",
+        "[WASD,Arrows,2468] Move camera         ",
+        "               [C] Change surface color",
+        "               [X] Reset surface color ",
+        "           [Mouse] Rotate camera       ",
+        "     [Mouse wheel] Zoom                ",
+        "          [ESC, Q] Exit                "
+        })
+    );
 }
 
 void calcgl::writeAuthors(TextRenderer tr, float x, float y, float scale) {
-    tr.RenderText("  Diogo Simoes", x, y, scale);
-    tr.RenderText("Diogo Simoes", x, y + 1.f * scale * (tr.getFontSize() + 5.f), scale);
+    writeText(tr, "  Diogo Simoes", x, y + scale * (tr.getFontSize() + 5.f), scale);
 }
 
 void calcgl::writeText(TextRenderer tr, string text, float x, float y, float scale) {

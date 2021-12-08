@@ -53,8 +53,7 @@ void TextRenderer::Load(string font, unsigned int size) {
 	// then for the first 128 ASCII characters, pre-load/compile their characters and store them
 	for (GLubyte c = 0; c < 128; c++) { // lol see what I did there 	
 		// load character glyph 
-		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
-		{
+		if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
 			cout << "ERROR::FREETYTPE: Failed to load Glyph" << endl;
 			continue;
 		}
@@ -109,8 +108,7 @@ void TextRenderer::RenderText(string text, float x, float y, float scale, vec3 c
 
 	// iterate through all characters
 	string::const_iterator c;
-	for (c = text.begin(); c != text.end(); c++)
-	{
+	for (c = text.begin(); c != text.end(); c++) {
 		Character ch = Characters[*c];
 
 		float xpos = x + ch.Bearing.x * scale;
