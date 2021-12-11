@@ -3,6 +3,8 @@
 #include "builtin-features.inc"
 #include "functionReader.hpp"
 
+#include <thread>
+
 // Surface Implementation
 Surface::Surface() { }
 
@@ -22,7 +24,7 @@ vector<string> Surface::getExpressions() {
 }
 
 bool Surface::isIntercepted(vec3 camera, vec3 point) {
-	cparse_startup();
+	// cparse_startup();
 	TokenMap vars;
 	bool res = false;
 	bool cameraSign, pointSign;
@@ -75,9 +77,61 @@ void Surface::renderSurfaceCPU(Shader s, Camera c, const int SCR_WIDTH, const in
 		c.Right,
 		camDist
 	);
+
+	auto f = [this](Camera &c, Plain plain, vector<float> &vertices, int jmin, int jmax, int imin, int imax, int myself) {
+		for (int j = jmin; j > -jmax; j--) {
+			for (int i = imin; i < imax; i++) {
+				printf("(%i, %i) @ %d\n", j, i, myself);
+
+				// Vetor Diretor do raio para o RayMarching.
+				vec3 rayMarchDir = plain.findPoint(i, j) - c.Position;
+
+				Ray ray = Ray(c.Position, rayMarchDir);
+				vec3 result = ray.rayMarch(*this, 10.f, .01f, .1f);
+
+				if (result[0] != NULL) {
+					vertices.push_back(result.x);
+					vertices.push_back(result.y);
+					vertices.push_back(result.z);
+					printf(" -> (%f, %f, %f)", result[0], result[1], result[2]);
+				}
+			}
+			printf("\n");
+		}
+	};
 	
 
 	vector<float> vertices;
+	cparse_startup();
+
+	// Multi thread code
+	unsigned concurrency = thread::hardware_concurrency() / 2;
+	printf("Using %d threads\n", concurrency);
+
+	vector<thread> th;
+	vector<float> *vert = new vector<float>[concurrency];
+
+	int step = SCR_WIDTH / concurrency;
+	for (int i = 0; i < concurrency; i++) {
+		th.push_back(thread(f, std::ref(c), plain, std::ref(vert[i]), SCR_HEIGHT / 2, SCR_HEIGHT / 2, -(SCR_WIDTH / 2) + (i * step), -(SCR_WIDTH / 2) + ((i+1) * step), i));
+		printf("Thread %d started, from %4d to %4d...\n", i, -(SCR_WIDTH / 2) + (i * step), -(SCR_WIDTH / 2) + ((i + 1) * step));
+	}
+
+	for (int i = 0; i < concurrency; i++) {
+		th[i].join();
+		//delete th[i];
+		printf("Thread %d ended.\n", i);
+	}
+
+	for (int i = 0; i < concurrency; i++) {
+		vertices.insert(vertices.end(), vert[i].begin(), vert[i].end());
+	}
+
+	delete [] vert;
+
+
+
+	/* // Single thread code
 	for (int j = (SCR_HEIGHT / 2); j > -(SCR_HEIGHT / 2); j--) {
 		for (int i = -(SCR_WIDTH / 2); i < (SCR_WIDTH / 2); i++) {
 			printf("(%i, %i)\n", j, i);
@@ -93,9 +147,10 @@ void Surface::renderSurfaceCPU(Shader s, Camera c, const int SCR_WIDTH, const in
 				vertices.push_back(result.y);
 				vertices.push_back(result.z);
 				printf("(%f, %f, %f)", result[0], result[1], result[2]);
-			}	
+			}
 		}
 	}
+	*/
 
 	unsigned int VBO, VAO;
 	glGenBuffers(1, &VBO);
