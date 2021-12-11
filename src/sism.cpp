@@ -165,7 +165,7 @@ action CalcGL::processInput(void) {
                 surfColor = SURF_DEFAULT_COLOR;
                 return action::OPEN_FILE;
             } else {
-                cout << "This is not a valid PDB file." << endl;
+                cout << "This is not a valid '.fun' or a '.function' file." << endl;
                 osdialog_message(OSDIALOG_ERROR, OSDIALOG_OK, "This is not a valid PDB file.");
                 switchModeView(true);
                 free(newfile);

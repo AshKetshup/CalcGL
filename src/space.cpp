@@ -22,7 +22,6 @@ vector<string> Surface::getExpressions() {
 }
 
 bool Surface::isIntercepted(vec3 camera, vec3 point) {
-	cparse_startup();
 	TokenMap vars;
 	bool res = false;
 	bool cameraSign, pointSign;
@@ -66,6 +65,8 @@ void Surface::renderSurfaceCPU(Shader s, Camera c, const int SCR_WIDTH, const in
 	vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
 	vec3 lightPos = c.Position;
 	vec3 viewPos = c.Position;
+	cparse_startup();
+
 
 	s.use();
 
