@@ -316,6 +316,8 @@ void CalcGL::refresh(void) {
     case action::OPEN_FILE:
         surface = Surface(fname.data());
         debugs("%s\n", surface.toString().c_str());
+        surface.renderSurfaceCPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
+
         break;
 
     case action::CAMERA_RESET:
@@ -331,9 +333,6 @@ void CalcGL::refresh(void) {
     default:
         break;
     }
-
-    surface.renderSurfaceCPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
-
     // Switch between viewing modes
     /*
     switch (rmode) {

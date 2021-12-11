@@ -1,6 +1,6 @@
 #include "space.hpp"
-#include "..\cparse\shunting-yard.h"
-#include "..\cparse\builtin-features.inc"
+#include "shunting-yard.h"
+#include "builtin-features.inc"
 #include "functionReader.hpp"
 
 // Surface Implementation
@@ -22,20 +22,37 @@ vector<string> Surface::getExpressions() {
 }
 
 bool Surface::isIntercepted(vec3 camera, vec3 point) {
+	cparse_startup();
 	TokenMap vars;
 	bool res = false;
-	for (string fun : functions) {
-		vars["x"] = camera.x;
-		vars["y"] = camera.y;
-		vars["z"] = camera.z;
-		bool cameraSign = calculator::calculate(fun.c_str(), vars).asInt() > 0;
+	bool cameraSign, pointSign;
+	int i = 0;
 
+	for (string fun : functions) {
+		if (i == 0) {
+			vars["x"] = camera.x;
+			vars["y"] = camera.y;
+			vars["z"] = camera.z;
+			try {
+				packToken cam = calculator::calculate(fun.c_str(), vars);
+				cameraSign = cam.asInt() > 0;
+			} catch (const std::exception& ex) {
+				cerr << ex.what() << "\n";
+			}
+			i++;
+		}
+		
 		vars["x"] = point.x;
 		vars["y"] = point.y;
 		vars["z"] = point.z;
-		bool pointSign = calculator::calculate(fun.c_str(), vars).asInt() > 0;
-		
-		res += !(cameraSign && pointSign);
+		try {
+			packToken p = calculator::calculate(fun.c_str(), vars);
+			pointSign = p.asInt() > 0;
+		} catch (const std::exception& ex) {
+			cerr << ex.what() << "\n";
+		}
+
+		res += !((cameraSign && pointSign) || (!cameraSign && !pointSign));
 	}
 
 	return res;
@@ -61,17 +78,22 @@ void Surface::renderSurfaceCPU(Shader s, Camera c, const int SCR_WIDTH, const in
 	
 
 	vector<float> vertices;
-	for (size_t i = -(SCR_WIDTH / 2); i < (SCR_WIDTH / 2); i++) {
-		for (size_t j = -(SCR_HEIGHT / 2); j < (SCR_HEIGHT / 2); j++) {
+	for (int j = (SCR_HEIGHT / 2); j > -(SCR_HEIGHT / 2); j--) {
+		for (int i = -(SCR_WIDTH / 2); i < (SCR_WIDTH / 2); i++) {
+			printf("(%i, %i)\n", j, i);
+
 			// Vetor Diretor do raio para o RayMarching.
 			vec3 rayMarchDir = plain.findPoint(i, j) - c.Position;
 			
 			Ray ray = Ray(c.Position, rayMarchDir);
-			vec3 result = ray.rayMarch(*this, 1000, .001f, .1f);
+			vec3 result = ray.rayMarch(*this, 10.f, .01f, .1f);
 			
-			vertices.push_back(result.x);
-			vertices.push_back(result.y);
-			vertices.push_back(result.z);
+			if (result[0] != NULL) {
+				vertices.push_back(result.x);
+				vertices.push_back(result.y);
+				vertices.push_back(result.z);
+				printf("(%f, %f, %f)", result[0], result[1], result[2]);
+			}	
 		}
 	}
 
@@ -116,9 +138,16 @@ void Surface::renderSurfaceCPU(Shader s, Camera c, const int SCR_WIDTH, const in
 
 string Surface::toString() {
 	string out;
-	for (string exp : functions)
-		out.append(" ^ " + exp);
-	
+	size_t x = 0;
+	for (string exp : functions) {
+		if (x == 0) {
+			out.append(exp);
+			x++;
+		} else {
+			out.append(" ^ " + exp);
+		}
+	}
+
 	return out;
 }
 // End Implementation

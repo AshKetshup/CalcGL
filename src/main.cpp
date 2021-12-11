@@ -18,8 +18,8 @@
 #include <iostream>
 #include "sism.hpp"
 
-const unsigned int SCR_WIDTH  = 1600;
-const unsigned int SCR_HEIGHT = 900;
+const unsigned int SCR_WIDTH  = 600;
+const unsigned int SCR_HEIGHT = 600;
 
 using namespace calcgl;
 

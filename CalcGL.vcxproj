@@ -81,9 +81,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)cparse;$(SolutionDir)include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
-    <SourcePath>$(SolutionDir)src;$(SourcePath)</SourcePath>
+    <SourcePath>$(SolutionDir)cparse;$(SolutionDir)src;$(SourcePath)</SourcePath>
     <OutDir>$(SolutionDir)bin\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -188,6 +188,7 @@
     <ClInclude Include="src\sism.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\funcs\1.function" />
     <None Include="bin\shaders\font_fs.glsl" />
     <None Include="bin\shaders\font_vs.glsl" />
     <None Include="bin\shaders\lighting_fs.glsl" />

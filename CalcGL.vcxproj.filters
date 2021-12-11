@@ -16,6 +16,9 @@
     <Filter Include="Shader Files">
       <UniqueIdentifier>{d8f8926d-8bec-44b4-951a-1b70dd510a0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Function Files">
+      <UniqueIdentifier>{8657bd9b-d2e7-497c-a5f2-a528080f35b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -147,6 +150,9 @@
     </None>
     <None Include="bin\shaders\surf_vs.glsl">
       <Filter>Shader Files</Filter>
+    </None>
+    <None Include="bin\funcs\1.function">
+      <Filter>Function Files</Filter>
     </None>
   </ItemGroup>
 </Project>

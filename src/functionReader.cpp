@@ -14,8 +14,9 @@ vector<string> reader::readFunctionFile(const string fn) {
 		return strList;
 	}
 
-	ifstream file("input.txt");
-	
+	ifstream file(fn);
+	cout << fn;
+
 	string s;
 	while (getline(file, s))
 		strList.push_back(s);

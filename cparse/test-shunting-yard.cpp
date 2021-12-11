@@ -18,7 +18,7 @@ using cparse::TUPLE;
 using cparse::STUPLE;
 using cparse::MAP;
 using cparse::LIST;
-using cparse::BOOL;
+using cparse::BOOLEANO;
 using cparse::NONE;
 using cparse::FUNC;
 using cparse::ANY_TYPE;
@@ -123,10 +123,10 @@ TEST_CASE("Boolean expressions") {
   REQUIRE_FALSE(calculator::calculate("10 == 'str'").asBool());
   REQUIRE(calculator::calculate("10 != 'str'").asBool());
 
-  REQUIRE(calculator::calculate("True")->type == BOOL);
-  REQUIRE(calculator::calculate("False")->type == BOOL);
-  REQUIRE(calculator::calculate("10 == 'str'")->type == BOOL);
-  REQUIRE(calculator::calculate("10 == 10")->type == BOOL);
+  REQUIRE(calculator::calculate("True")->type == BOOLEANO);
+  REQUIRE(calculator::calculate("False")->type == BOOLEANO);
+  REQUIRE(calculator::calculate("10 == 'str'")->type == BOOLEANO);
+  REQUIRE(calculator::calculate("10 == 10")->type == BOOLEANO);
 
   REQUIRE(calculator::calculate("!False").asBool() == true);
   REQUIRE(calculator::calculate("!True").asBool() == false);
