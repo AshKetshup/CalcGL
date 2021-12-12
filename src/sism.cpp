@@ -311,6 +311,7 @@ void CalcGL::refresh(void) {
     if (logo.isAvailable() && fname.empty())
         logo.render(scr_width, scr_height);
 
+
     // Process Input Handler
     switch (processInput()) {
     case action::OPEN_FILE:

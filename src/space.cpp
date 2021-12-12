@@ -4,6 +4,7 @@
 #include "functionReader.hpp"
 
 #include <thread>
+#include <chrono>
 
 // Surface Implementation
 Surface::Surface() { }
@@ -69,7 +70,6 @@ void Surface::renderSurfaceCPU(Shader s, Camera c, const int SCR_WIDTH, const in
 	vec3 viewPos = c.Position;
 	cparse_startup();
 
-
 	s.use();
 
 	Plain plain = Plain(
@@ -80,9 +80,9 @@ void Surface::renderSurfaceCPU(Shader s, Camera c, const int SCR_WIDTH, const in
 	);
 
 	auto f = [this](Camera &c, Plain plain, vector<float> &vertices, int jmin, int jmax, int imin, int imax, int myself) {
-		for (int j = jmin; j > -jmax; j--) {
-			for (int i = imin; i < imax; i++) {
-				printf("(%i, %i) @ %d\n", j, i, myself);
+		for (int j = jmin; j >= -jmax; j--) {
+			for (int i = imin; i <= imax; i++) {
+				// printf("(%i, %i) @ %d\n", j, i, myself);
 
 				// Vetor Diretor do raio para o RayMarching.
 				vec3 rayMarchDir = plain.findPoint(i, j) - c.Position;
@@ -94,10 +94,10 @@ void Surface::renderSurfaceCPU(Shader s, Camera c, const int SCR_WIDTH, const in
 					vertices.push_back(result.x);
 					vertices.push_back(result.y);
 					vertices.push_back(result.z);
-					printf(" -> (%f, %f, %f)", result[0], result[1], result[2]);
+					// printf(" -> (%f, %f, %f)", result[0], result[1], result[2]);
 				}
 			}
-			printf("\n");
+			printf("Line %d @ %d\n",j ,myself);
 		}
 	};
 	
@@ -106,15 +106,17 @@ void Surface::renderSurfaceCPU(Shader s, Camera c, const int SCR_WIDTH, const in
 	cparse_startup();
 
 	// Multi thread code
-	unsigned concurrency = thread::hardware_concurrency() / 2;
+	unsigned concurrency = thread::hardware_concurrency() - 2;
 	printf("Using %d threads\n", concurrency);
 
 	vector<thread> th;
-	vector<float> *vert = new vector<float>[concurrency];
+	vector<vector<float>> vert = vector<vector<float>>(concurrency);
+
+	auto start = chrono::system_clock::now();
 
 	int step = SCR_WIDTH / concurrency;
 	for (int i = 0; i < concurrency; i++) {
-		th.push_back(thread(f, std::ref(c), plain, std::ref(vert[i]), SCR_HEIGHT / 2, SCR_HEIGHT / 2, -(SCR_WIDTH / 2) + (i * step), -(SCR_WIDTH / 2) + ((i+1) * step), i));
+		th.push_back(thread(f, ref(c), plain, ref(vert[i]), SCR_HEIGHT / 2, SCR_HEIGHT / 2, -(SCR_WIDTH / 2) + (i * step), -(SCR_WIDTH / 2) + ((i+1) * step), i));
 		printf("Thread %d started, from %4d to %4d...\n", i, -(SCR_WIDTH / 2) + (i * step), -(SCR_WIDTH / 2) + ((i + 1) * step));
 	}
 
@@ -128,8 +130,12 @@ void Surface::renderSurfaceCPU(Shader s, Camera c, const int SCR_WIDTH, const in
 		vertices.insert(vertices.end(), vert[i].begin(), vert[i].end());
 	}
 
-	delete [] vert;
+	// delete [] vert;
+	auto end = chrono::system_clock::now();
 
+	chrono::duration<double> elapsed = end - start;
+
+	cout << "1 Frame calculated in: " << elapsed.count() << " seconds\n";
 
 
 	/* // Single thread code
@@ -173,7 +179,7 @@ void Surface::renderSurfaceCPU(Shader s, Camera c, const int SCR_WIDTH, const in
 	s.setVec3("lamp.lightPos", lightPos);
 	s.setVec3("lamp.viewPos", viewPos);
 
-	mat4 projection = perspective(radians(c.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	mat4 projection = perspective(radians(c.Zoom), (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f);
 	mat4 view = c.GetViewMatrix();
 
 	s.setMat4("projection", projection);
@@ -187,13 +193,13 @@ void Surface::renderSurfaceCPU(Shader s, Camera c, const int SCR_WIDTH, const in
 	s.setMat4("model", model);
 
 	// glEnable(GL_DEPTH_TEST);
-	glDrawArrays(GL_LINES, 0, vertices.size());
+	glDrawArrays(GL_POINTS, 0, vertices.size());
 
 	glBindVertexArray(0);
 }
 
 string Surface::toString() {
-	string out;
+	string out = "\n";
 	size_t x = 0;
 	for (string exp : functions) {
 		if (x == 0) {
@@ -270,7 +276,7 @@ Plain::Plain(vec3 point, vec3 vecV, vec3 vecH) {
 }
 
 Plain::Plain(Ray line, vec3 cameraUUp, vec3 cameraURight, float dist) {
-	pointPos = line.getPosition() + dist * line.getDirection();
+	pointPos = line.findPoint(dist);
 	uVecDirV = cameraUUp;
 	uVecDirH = cameraURight;
 }
