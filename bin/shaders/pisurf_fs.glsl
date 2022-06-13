@@ -10,6 +10,16 @@ struct Lamp {
     vec3 viewPos;
 };
 
+/*<start>
+float iFunction(vec3 p) {
+    float x = p.x;
+    float y = p.y;
+    float z = p.z;
+
+    return <iFunction>;
+}
+<end>*/
+
 uniform vec3 objectColor;
 uniform Lamp lamp;
 

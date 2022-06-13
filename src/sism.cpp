@@ -140,16 +140,16 @@ action CalcGL::processInput(void) {
         molroty += 1.f; // TODO: Change for camera rotation
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS)
         molroty -= 1.f; // TODO: Change for camera rotation
+    */
 
     // Might need
     if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
         if (!w_was_pressed)
-            rmode = (rmode == VANDERWALLS) ? PISURFACE : VANDERWALLS;
+            rmode = (rmode == GPU) ? CPU : GPU;
         w_was_pressed = true;
     } else {
         w_was_pressed = false;
     }
-    */
 
     if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
         return action::CAMERA_RESET;
@@ -165,7 +165,7 @@ action CalcGL::processInput(void) {
                 surfColor = SURF_DEFAULT_COLOR;
                 return action::OPEN_FILE;
             } else {
-                cout << "This is not a valid PDB file." << endl;
+                cout << "This is not a valid '.fun' or a '.function' file." << endl;
                 osdialog_message(OSDIALOG_ERROR, OSDIALOG_OK, "This is not a valid PDB file.");
                 switchModeView(true);
                 free(newfile);
@@ -311,39 +311,42 @@ void CalcGL::refresh(void) {
     if (logo.isAvailable() && fname.empty())
         logo.render(scr_width, scr_height);
 
+
     // Process Input Handler
     switch (processInput()) {
-    case action::OPEN_FILE:
-        surface = Surface(fname.data());
-        debugs("%s\n", surface.toString().c_str());
-        surface.renderSurfaceCPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
+        case action::OPEN_FILE:
+            surface = Surface(fname.data());
+            debugs("\n%s\n", surface.toString().c_str());
+            getSurfaceShader().recompileWithFunctions(surface.toString());
+        
+            surface.renderSurfaceGPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
+            // surface.renderSurfaceCPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
 
-        break;
+            break;
 
-    case action::CAMERA_RESET:
-        camera.Position = vec3(0.f);
-        // molrotx = 0.f; // TODO: change for camera rotation
-        // molroty = 0.f; // TODO: change for camera rotation
-        debugs("Camera position reseted.\n");
-        break;
+        case action::CAMERA_RESET:
+            camera.Position = vec3(0.f);
+            // molrotx = 0.f; // TODO: change for camera rotation
+            // molroty = 0.f; // TODO: change for camera rotation
+            debugs("Camera position reseted.\n");
+            break;
 
-    case action::CHANGE_COLOR:
-        break;
+        case action::CHANGE_COLOR:
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
+ 
     // Switch between viewing modes
-    /*
     switch (rmode) {
-    case PISURFACE:
-        molecule.render_piSurface(shaderPiSurf, camera, scr_width, scr_height, pisurfColor, molrotx, molroty);
-        break;
-    case VANDERWALLS:
-    default:
-        molecule.render_vanderWalls(shaderSurf, camera, scr_width, scr_height, molrotx, molroty);
+        case CPU:
+            surface.renderSurfaceCPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
+            break;
+        case GPU:
+        default:
+            surface.renderSurfaceGPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
     }
-    */
 
     glfwSwapBuffers(window);
     glfwPollEvents();

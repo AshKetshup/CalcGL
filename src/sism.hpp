@@ -33,6 +33,11 @@ namespace calcgl {
 	// using namespace qgl;
 
 	typedef enum {
+		CPU,
+		GPU
+	} render_mode;
+
+	typedef enum {
 		NO_ACTION,
 		CAMERA_RESET,
 		OPEN_FILE,
@@ -81,8 +86,7 @@ namespace calcgl {
 			string logoName;
 			Logo logo;
 
-			// render_mode rmode = VANDERWALLS;
-			// bool w_was_pressed = false;
+			render_mode rmode = GPU;
 
 			GLFWwindow* window;
 			unsigned int scr_width;

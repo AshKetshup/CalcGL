@@ -154,5 +154,8 @@
     <None Include="bin\funcs\1.function">
       <Filter>Function Files</Filter>
     </None>
+    <None Include="bin\shaders\raymarch_fs.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
