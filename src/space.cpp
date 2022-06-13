@@ -5,6 +5,7 @@
 
 #include <thread>
 #include <chrono>
+#include <format>
 
 // Surface Implementation
 Surface::Surface() { }
@@ -35,18 +36,21 @@ bool Surface::isIntercepted(vec3 camera, vec3 point) {
 			vars["x"] = camera.x;
 			vars["y"] = camera.y;
 			vars["z"] = camera.z;
+			
 			try {
 				packToken cam = calculator::calculate(fun.c_str(), vars);
 				cameraSign = cam.asInt() > 0;
 			} catch (const std::exception& ex) {
 				cerr << ex.what() << "\n";
 			}
+
 			i++;
 		}
 		
 		vars["x"] = point.x;
 		vars["y"] = point.y;
 		vars["z"] = point.z;
+
 		try {
 			packToken p = calculator::calculate(fun.c_str(), vars);
 			pointSign = p.asInt() > 0;
@@ -60,15 +64,37 @@ bool Surface::isIntercepted(vec3 camera, vec3 point) {
 	return res;
 }
 
-void Surface::renderSurfaceGPU(Shader s, Camera c, const int SCR_WIDTH, const int SCR_HEIGHT, vec3 object_color, float rotx, float roty, const float camDist) const {
+void Surface::renderSurfaceGPU(
+	Shader s, 
+	Camera c, 
+	const int SCR_WIDTH, 
+	const int SCR_HEIGHT, 
+	vec3 object_color, 
+	const float rMDist
+) const {
+	vec3 lightColor = vec3(1.0f);
+	vec3 lightPos = c.Position;
+	vec3 viewPos = c.Position;
+
+	s.recompileWithFunctions(iFunction);
+
 	return;
 }
 
-void Surface::renderSurfaceCPU(Shader s, Camera c, const int SCR_WIDTH, const int SCR_HEIGHT, vec3 objectColor, float rotx, float roty, const int threads, const float camDist) const {
+void Surface::renderSurfaceCPU(
+	Shader s, 
+	Camera c, 
+	const int SCR_WIDTH, 
+	const int SCR_HEIGHT, 
+	vec3 objectColor, 
+	float rotx, 
+	float roty, 
+	const int threads, 
+	const float camDist
+) const {
 	vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
 	vec3 lightPos = c.Position;
 	vec3 viewPos = c.Position;
-	cparse_startup();
 
 	s.use();
 
@@ -199,18 +225,15 @@ void Surface::renderSurfaceCPU(Shader s, Camera c, const int SCR_WIDTH, const in
 }
 
 string Surface::toString() {
-	string out = "\n";
-	size_t x = 0;
-	for (string exp : functions) {
-		if (x == 0) {
-			out.append(exp);
-			x++;
-		} else {
-			out.append(" ^ " + exp);
-		}
+	string iFunction = "";
+	for (size_t i = 0; i < this->functions.size(); i++) {
+		iFunction.append("(" + this->functions[i] + ")");
+
+		if (i != (functions.size() - 1))
+			iFunction.append(" * ");
 	}
 
-	return out;
+	return iFunction;
 }
 // End Implementation
 
