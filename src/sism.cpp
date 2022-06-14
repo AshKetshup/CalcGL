@@ -156,6 +156,7 @@ action CalcGL::processInput(void) {
 
     if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
         switchModeView(false);
+        
         char* newfile = openFunctionFileDialog();
         if (newfile != NULL) {
             if (isFunction(newfile)) {
@@ -164,14 +165,15 @@ action CalcGL::processInput(void) {
                 switchModeView(true);
                 surfColor = SURF_DEFAULT_COLOR;
                 return action::OPEN_FILE;
-            } else {
-                cout << "This is not a valid '.fun' or a '.function' file." << endl;
-                osdialog_message(OSDIALOG_ERROR, OSDIALOG_OK, "This is not a valid PDB file.");
-                switchModeView(true);
-                free(newfile);
-                return action::NO_ACTION;
-            }
+            } 
+        
+            cout << "This is not a valid '.fun' or a '.function' file." << endl;
+            osdialog_message(OSDIALOG_ERROR, OSDIALOG_OK, "This is not a valid PDB file.");
+            switchModeView(true);
+            free(newfile);
+            return action::NO_ACTION;
         }
+
         switchModeView(true);
         return action::NO_ACTION;
     }
@@ -280,6 +282,10 @@ GLFWwindow* CalcGL::getWindow(void) {
 
 Shader CalcGL::getSurfaceShader(void) {
     return shaderSurf;
+}
+
+Shader CalcGL::getRayMarchShader(void) {
+    return shaderRayMarch;
 }
 
 Shader CalcGL::getFontShader(void) {
@@ -393,11 +399,15 @@ CalcGL::CalcGL(const unsigned int width, const unsigned int height) {
         debugs("[OK]\n\tLoading shaders... ");
         shaderSurf = Shader((shaderDir + slash + SURF_VS).c_str(), (shaderDir + slash + SURF_FS).c_str());
         if (!shaderSurf.wasSuccessful())
-            throw CalcGLException("Surface: " + shaderSurf.getReport() + "\n" + shaderSurf.getVertexShaderPath() + "\n" + shaderSurf.getGeometryShaderPath());
+            throw CalcGLException(
+                "Surface: " + shaderSurf.getReport() + "\n" + shaderSurf.getVertexShaderPath() + "\n" + shaderSurf.getGeometryShaderPath()
+            );
 
-        // shaderPiSurf = Shader((shaderDir + slash + PISURF_VS).c_str(), (shaderDir + slash + PISURF_FS).c_str());
-        // if (!shaderPiSurf.wasSuccessful())
-        //     throw CalcGLException("Pi Surface: " + shaderPiSurf.getReport());
+        shaderRayMarch = Shader((shaderDir + slash + RAYMARCH_VS).c_str(), (shaderDir + slash + RAYMARCH_FS).c_str());
+        if (!shaderRayMarch.wasSuccessful())
+            throw CalcGLException(
+                "RayMarch: " + shaderRayMarch.getReport() + "\n" + shaderRayMarch.getVertexShaderPath() + "\n" + shaderRayMarch.getGeometryShaderPath()
+            );
 
         shaderFont = Shader((shaderDir + slash + FONT_VS).c_str(), (shaderDir + slash + FONT_FS).c_str());
         if (!shaderFont.wasSuccessful())

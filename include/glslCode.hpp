@@ -144,12 +144,14 @@ const char logo_fragment_shader[] =
 #define FONT        0b01000000              // Font shaders
 #define LOGO        0b10000000              // Logo shaders
 
-#define SURF_FS     "pisurf_fs.glsl"          // Surface fragment shader file name
-#define SURF_VS     "pisurf_vs.glsl"          // Surface vertex shader file name
-#define FONT_FS     "font_fs.glsl"            // Font fragment shader file name
-#define FONT_VS     "font_vs.glsl"            // Font vertex shader file name
-#define LOGO_FS     "logo_fs.glsl"            // Logo fragment shader file name
-#define LOGO_VS     "logo_vs.glsl"            // Logo vertex shader file name
+#define RAYMARCH_VS "raymarch_vs.glsl"      // Surface vertex shader file name
+#define RAYMARCH_FS "raymarch_fs.glsl"      // Surface fragment shader file name
+#define SURF_VS     "pisurf_vs.glsl"        // Surface vertex shader file name
+#define SURF_FS     "pisurf_fs.glsl"        // Surface fragment shader file name
+#define FONT_FS     "font_fs.glsl"          // Font fragment shader file name
+#define FONT_VS     "font_vs.glsl"          // Font vertex shader file name
+#define LOGO_FS     "logo_fs.glsl"          // Logo fragment shader file name
+#define LOGO_VS     "logo_vs.glsl"          // Logo vertex shader file name
 
 #include <string>
 

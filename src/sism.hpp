@@ -74,6 +74,7 @@ namespace calcgl {
 			string shaderDir;
 			Shader shaderFont;
 			Shader shaderSurf;
+			Shader shaderRayMarch;
 			Shader shaderLogo;
 
 			vec3 surfColor = SURF_DEFAULT_COLOR;
@@ -139,6 +140,7 @@ namespace calcgl {
 			string getFont(void);
 			Shader getFontShader(void);
 			Shader getSurfaceShader(void);
+			Shader getRayMarchShader(void);
 			TextRenderer getTextRenderer(void);
 
 			void refresh(void);

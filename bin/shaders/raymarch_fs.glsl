@@ -35,17 +35,17 @@ bool isIFunctionIntercepted(in vec3 pA, in vec3 pB) {
 }
 
 // Find a point in a Ray
-vec3 findPRay(vec3 rPos, vec3 rDir, float dist) {
+vec3 findPRay(in vec3 rPos, in vec3 rDir, in float dist) {
     return (rPos + dist * rDir);
 }
 
 // Find a point in the plain.
-vec3 findPPlain(vec3 pPos, vec3 pH, vec3 pV, vec2 coords) {
+vec3 findPPlain(in vec3 pPos, in vec3 pH, in vec3 pV, in vec2 coords) {
     return (pPos + coords.x * pH + coords.y * pV);
 }
 
 // Ray march from a point into a direction.
-vec3 rayMarch(vec3 rPos, vec3 rDir, float maxDist, float p, float stepSize) {
+vec3 rayMarch(in vec3 rPos, in vec3 rDir, in float maxDist, in float p, in float stepSize) {
     float stepAux = stepSize;
     float aux = 0.f;
     vec3 point = rPos;
