@@ -156,6 +156,7 @@ action CalcGL::processInput(void) {
 
     if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
         switchModeView(false);
+        
         char* newfile = openFunctionFileDialog();
         if (newfile != NULL) {
             if (isFunction(newfile)) {
@@ -164,14 +165,15 @@ action CalcGL::processInput(void) {
                 switchModeView(true);
                 surfColor = SURF_DEFAULT_COLOR;
                 return action::OPEN_FILE;
-            } else {
-                cout << "This is not a valid '.fun' or a '.function' file." << endl;
-                osdialog_message(OSDIALOG_ERROR, OSDIALOG_OK, "This is not a valid PDB file.");
-                switchModeView(true);
-                free(newfile);
-                return action::NO_ACTION;
-            }
+            } 
+        
+            cout << "This is not a valid '.fun' or a '.function' file." << endl;
+            osdialog_message(OSDIALOG_ERROR, OSDIALOG_OK, "This is not a valid PDB file.");
+            switchModeView(true);
+            free(newfile);
+            return action::NO_ACTION;
         }
+
         switchModeView(true);
         return action::NO_ACTION;
     }
@@ -282,12 +284,24 @@ Shader CalcGL::getSurfaceShader(void) {
     return shaderSurf;
 }
 
+Shader CalcGL::getRayMarchShader(void) {
+    return shaderRayMarch;
+}
+
 Shader CalcGL::getFontShader(void) {
     return textRender.getShader();
 }
 
 TextRenderer CalcGL::getTextRenderer(void) {
     return textRender;
+}
+
+string CalcGL::getFPS(void) {
+    return appFPS;
+}
+
+void CalcGL::setFPS(unsigned int fps) {
+    appFPS = to_string(fps) + " FPS";
 }
 
 void CalcGL::refresh(void) {
@@ -306,7 +320,8 @@ void CalcGL::refresh(void) {
     // TODO: FIND BUG HERE
     writeInstructions(getTextRenderer(), 10.f, 10.f, 0.6f);
     writeAuthors(getTextRenderer(), 1470.f, scr_height - 2.f * getTextRenderer().getFontSize(), 0.75f);
-    writeText(getTextRenderer(), !fname.empty() ? filesystem::path(fname).filename().string() : "No file opened", 10.f, scr_height - getTextRenderer().getFontSize(), 0.8f);
+    writeText(getTextRenderer(), getFPS(), 10.f, scr_height - (2 * getTextRenderer().getFontSize()), 0.8f);
+    writeText(getTextRenderer(), (!fname.empty() ? filesystem::path(fname).filename().string() : "No file opened"), 10.f, scr_height - getTextRenderer().getFontSize(), 0.8f);
 
     if (logo.isAvailable() && fname.empty())
         logo.render(scr_width, scr_height);
@@ -317,10 +332,8 @@ void CalcGL::refresh(void) {
         case action::OPEN_FILE:
             surface = Surface(fname.data());
             debugs("\n%s\n", surface.toString().c_str());
-            getSurfaceShader().recompileWithFunctions(surface.toString());
-        
-            surface.renderSurfaceGPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
-            // surface.renderSurfaceCPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
+            getRayMarchShader().recompileWithFunctions(surface.getExpressions());
+            getRayMarchShader().use();
 
             break;
 
@@ -345,7 +358,7 @@ void CalcGL::refresh(void) {
             break;
         case GPU:
         default:
-            surface.renderSurfaceGPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
+            surface.renderSurfaceGPU(getRayMarchShader(), getCamera(), scr_width, scr_height, surfColor);
     }
 
     glfwSwapBuffers(window);
@@ -353,8 +366,27 @@ void CalcGL::refresh(void) {
 }
 
 void CalcGL::main(void) {
-    while (!glfwWindowShouldClose(getWindow()))
+
+    double prevTime = 0.0;
+    double crntTime = 0.0;
+    double timeDiff;
+
+    unsigned int counter = 0;
+
+    while (!glfwWindowShouldClose(getWindow())) {
+        crntTime = glfwGetTime();
+        timeDiff = crntTime - prevTime;
+        counter++;
+
+        if (timeDiff >= 1.0 / 30.0) { 
+            setFPS((1.0/timeDiff) * counter);
+
+            prevTime = crntTime;
+            counter = 0;
+        }
+
         refresh();
+    }
 }
 
 void CalcGL::terminate(void) {
@@ -393,11 +425,15 @@ CalcGL::CalcGL(const unsigned int width, const unsigned int height) {
         debugs("[OK]\n\tLoading shaders... ");
         shaderSurf = Shader((shaderDir + slash + SURF_VS).c_str(), (shaderDir + slash + SURF_FS).c_str());
         if (!shaderSurf.wasSuccessful())
-            throw CalcGLException("Surface: " + shaderSurf.getReport() + "\n" + shaderSurf.getVertexShaderPath() + "\n" + shaderSurf.getGeometryShaderPath());
+            throw CalcGLException(
+                "Surface: " + shaderSurf.getReport() + "\n" + shaderSurf.getVertexShaderPath() + "\n" + shaderSurf.getGeometryShaderPath()
+            );
 
-        // shaderPiSurf = Shader((shaderDir + slash + PISURF_VS).c_str(), (shaderDir + slash + PISURF_FS).c_str());
-        // if (!shaderPiSurf.wasSuccessful())
-        //     throw CalcGLException("Pi Surface: " + shaderPiSurf.getReport());
+        shaderRayMarch = Shader((shaderDir + slash + RAYMARCH_VS).c_str(), (shaderDir + slash + RAYMARCH_FS).c_str());
+        if (!shaderRayMarch.wasSuccessful())
+            throw CalcGLException(
+                "RayMarch: " + shaderRayMarch.getReport() + "\n" + shaderRayMarch.getVertexShaderPath() + "\n" + shaderRayMarch.getGeometryShaderPath()
+            );
 
         shaderFont = Shader((shaderDir + slash + FONT_VS).c_str(), (shaderDir + slash + FONT_FS).c_str());
         if (!shaderFont.wasSuccessful())

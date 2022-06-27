@@ -11,6 +11,7 @@
 #include <sstream>
 #include <iostream>
 #include <regex>
+#include <debug.hpp>
 
 #define SHADER_VERTEX       0b00000001
 #define SHADER_FRAGMENT     0b00000010
@@ -159,20 +160,23 @@ class Shader {
                 glDeleteShader(geometry);
         }
 
-        string formatGLSL(string GLSLCode, string iFunction) {
-            regex regexIFunction = regex("<iFunction>");
-            regex regexStart = regex("/*<start>");
-            regex regexEnd = regex("<end>*/");
+        string formatGLSL(string GLSLCode, vector<string> iFunction) {
+            regex regexIFunction = regex("// <gamma conditions>");
 
-            // Replace the GLSLCode <iFunction> tag with the iFunction and uncomment the function
-            string GLSLFormatted = regex_replace(GLSLCode, regexIFunction, iFunction);
-            GLSLFormatted = regex_replace(GLSLFormatted, regexStart, "");
-            GLSLFormatted = regex_replace(GLSLFormatted, regexEnd, "");
+            string GLSLFormatted;
+            for (string function : iFunction)
+                GLSLFormatted
+                    .append("image = " + function + ";\n")
+                    .append("prod *= image;\n")
+                    .append("if (image < 0.f) count++;\n\n");
 
-            return GLSLFormatted;
+            debug("%s\n", GLSLFormatted.c_str());
+            string GLSLFCode = regex_replace(GLSLCode, regexIFunction, GLSLFormatted);
+            
+            return GLSLFCode;
         }
 
-        void recompileWithFunctions(string iFunction) {
+        void recompileWithFunctions(vector<string> iFunction) {
             // 1. retrieve the vertex/fragment source code from filePath
             string vertexCode;
             string fragmentCode;
@@ -222,8 +226,13 @@ class Shader {
             }
 
             // Adds implicit function to glsl code if possible.
-            const char* vShaderCode = formatGLSL(vertexCode  , iFunction).c_str();
-            const char* fShaderCode = formatGLSL(fragmentCode, iFunction).c_str();
+            string fGLSL = formatGLSL(fragmentCode, iFunction);
+
+            const char* vShaderCode = vertexCode.c_str();
+            const char* fShaderCode = fGLSL.c_str();
+
+            cout << "__VERTEX__\n" << vShaderCode << "\n";
+            cout << "__FRAGMENT__\n" << fShaderCode << "\n";
 
             // 2. recompile shaders
             unsigned int vertex, fragment;

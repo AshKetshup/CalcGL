@@ -68,12 +68,15 @@ namespace calcgl {
 			static constexpr vec3 SURF_DEFAULT_COLOR = vec3(50.f/255.f, 140.f/255.f, 235.f/ 255.f);
 			bool success = false;
 
+			string appFPS;
+
 			string appDir;
 			string appName;
 
 			string shaderDir;
 			Shader shaderFont;
 			Shader shaderSurf;
+			Shader shaderRayMarch;
 			Shader shaderLogo;
 
 			vec3 surfColor = SURF_DEFAULT_COLOR;
@@ -124,6 +127,7 @@ namespace calcgl {
 			void setMouseButtonCallback(GLFWmousebuttonfun);
 			void setCursorPositionCallback(GLFWcursorposfun);
 			void setScrollCallback(GLFWscrollfun);
+			void setFPS(unsigned int);
 
 			bool launchSuccessful(void);
 			
@@ -139,7 +143,9 @@ namespace calcgl {
 			string getFont(void);
 			Shader getFontShader(void);
 			Shader getSurfaceShader(void);
+			Shader getRayMarchShader(void);
 			TextRenderer getTextRenderer(void);
+			string getFPS(void);
 
 			void refresh(void);
 			void terminate(void);
