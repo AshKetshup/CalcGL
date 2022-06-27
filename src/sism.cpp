@@ -296,6 +296,14 @@ TextRenderer CalcGL::getTextRenderer(void) {
     return textRender;
 }
 
+string CalcGL::getFPS(void) {
+    return appFPS;
+}
+
+void CalcGL::setFPS(unsigned int fps) {
+    appFPS = to_string(fps) + " FPS";
+}
+
 void CalcGL::refresh(void) {
     callback::bindInstance(this);
 
@@ -312,7 +320,8 @@ void CalcGL::refresh(void) {
     // TODO: FIND BUG HERE
     writeInstructions(getTextRenderer(), 10.f, 10.f, 0.6f);
     writeAuthors(getTextRenderer(), 1470.f, scr_height - 2.f * getTextRenderer().getFontSize(), 0.75f);
-    writeText(getTextRenderer(), !fname.empty() ? filesystem::path(fname).filename().string() : "No file opened", 10.f, scr_height - getTextRenderer().getFontSize(), 0.8f);
+    writeText(getTextRenderer(), getFPS(), 10.f, scr_height - (2 * getTextRenderer().getFontSize()), 0.8f);
+    writeText(getTextRenderer(), (!fname.empty() ? filesystem::path(fname).filename().string() : "No file opened"), 10.f, scr_height - getTextRenderer().getFontSize(), 0.8f);
 
     if (logo.isAvailable() && fname.empty())
         logo.render(scr_width, scr_height);
@@ -323,10 +332,8 @@ void CalcGL::refresh(void) {
         case action::OPEN_FILE:
             surface = Surface(fname.data());
             debugs("\n%s\n", surface.toString().c_str());
-            getSurfaceShader().recompileWithFunctions(surface.toString());
-        
-            surface.renderSurfaceGPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
-            // surface.renderSurfaceCPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
+            getRayMarchShader().recompileWithFunctions(surface.getExpressions());
+            getRayMarchShader().use();
 
             break;
 
@@ -351,7 +358,7 @@ void CalcGL::refresh(void) {
             break;
         case GPU:
         default:
-            surface.renderSurfaceGPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
+            surface.renderSurfaceGPU(getRayMarchShader(), getCamera(), scr_width, scr_height, surfColor);
     }
 
     glfwSwapBuffers(window);
@@ -359,8 +366,27 @@ void CalcGL::refresh(void) {
 }
 
 void CalcGL::main(void) {
-    while (!glfwWindowShouldClose(getWindow()))
+
+    double prevTime = 0.0;
+    double crntTime = 0.0;
+    double timeDiff;
+
+    unsigned int counter = 0;
+
+    while (!glfwWindowShouldClose(getWindow())) {
+        crntTime = glfwGetTime();
+        timeDiff = crntTime - prevTime;
+        counter++;
+
+        if (timeDiff >= 1.0 / 30.0) { 
+            setFPS((1.0/timeDiff) * counter);
+
+            prevTime = crntTime;
+            counter = 0;
+        }
+
         refresh();
+    }
 }
 
 void CalcGL::terminate(void) {

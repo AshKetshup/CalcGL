@@ -160,5 +160,8 @@
     <None Include="bin\shaders\raymarch_vs.glsl">
       <Filter>Shader Files</Filter>
     </None>
+    <None Include="bin\funcs\2.function">
+      <Filter>Function Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

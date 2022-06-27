@@ -1,2 +1,2 @@
 pow(x, 2.f) + pow(y, 2.f) + pow(z, 2.f) - 3.f
-x + pow(y^2) * 2 - z
+x + pow(y, 2.f) * 2.f - z

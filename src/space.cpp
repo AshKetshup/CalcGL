@@ -64,19 +64,42 @@ bool Surface::isIntercepted(vec3 camera, vec3 point) {
 	return res;
 }
 
+/*
+in vec3  lightPos;
+in vec3  lightColor;
+in vec3  camPos;
+in vec3  camDirFront;
+in vec3  camDirUp;
+in vec3  camDirRight;
+in float camFOV;
+*/
 void Surface::renderSurfaceGPU(
 	Shader s, 
-	Camera c, 
-	const int SCR_WIDTH, 
-	const int SCR_HEIGHT, 
-	vec3 object_color, 
-	const float rMDist
+	Camera c,
+	const float width,
+	const float height,
+	vec3 objectColor,
+	const float renderDistance
 ) const {
-	vec3 lightColor = vec3(1.0f);
+	vec4 lightColor = vec4(1.0f);
 	vec3 lightPos = c.Position;
-	vec3 viewPos = c.Position;
 
-	s.recompileWithFunctions(iFunction);
+	float camFOV  = .5f;
+	// float camFOV  = c.Zoom;
+
+	// TODO: PASS VARIABLES TO THE GPU AS UNIFORMS
+	s.setVec3("lightPos", lightPos);
+	s.setVec3("lightColor", lightColor);
+
+	s.setVec3("camPos", c.Position);
+	s.setVec3("camDirF", c.Front);
+	s.setVec3("camDirU", c.Up);
+	s.setVec3("camDirR", c.Right);
+
+	s.setFloat("camFOV", camFOV);
+	s.setFloat("renderDistance", renderDistance);
+
+	//s.setVec4("colorAttempt", 0.f, 0.f, 0.f, 1.f);
 
 	return;
 }
@@ -236,7 +259,6 @@ string Surface::toString() {
 	return iFunction;
 }
 // End Implementation
-
 
 // Ray Implementation
 Ray::Ray(vec3 point, vec3 dir) {
