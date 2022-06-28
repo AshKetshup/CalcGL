@@ -141,7 +141,7 @@ void Surface::renderSurfaceCPU(
 				// Vetor Diretor do raio para o RayMarching.
 				vec3 rayMarchDir = plain.findPoint(i, j) - c.Position;
 
-				Ray ray = Ray(c.Position, rayMarchDir);
+				Ray ray     = Ray(c.Position, rayMarchDir);
 				vec3 result = ray.rayMarch(*this, 10.f, .01f, .1f);
 
 				if (result[0] != NULL) {
@@ -194,62 +194,8 @@ void Surface::renderSurfaceCPU(
 	cout << "1 Frame calculated in: " << elapsed.count() << " seconds\n";
 
 
-	/* // Single thread code
-	for (int j = (SCR_HEIGHT / 2); j > -(SCR_HEIGHT / 2); j--) {
-		for (int i = -(SCR_WIDTH / 2); i < (SCR_WIDTH / 2); i++) {
-			printf("(%i, %i)\n", j, i);
-
-			// Vetor Diretor do raio para o RayMarching.
-			vec3 rayMarchDir = plain.findPoint(i, j) - c.Position;
-			
-			Ray ray = Ray(c.Position, rayMarchDir);
-			vec3 result = ray.rayMarch(*this, 10.f, .01f, .1f);
-			
-			if (result[0] != NULL) {
-				vertices.push_back(result.x);
-				vertices.push_back(result.y);
-				vertices.push_back(result.z);
-				printf("(%f, %f, %f)", result[0], result[1], result[2]);
-			}
-		}
-	}
-	*/
-
-	unsigned int VBO, VAO;
-	glGenBuffers(1, &VBO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
-
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	glEnableVertexAttribArray(0);  // Vertex position
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glVertexAttribPointer((GLuint) 0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
-
-	// glBindVertexArray(0);
-
-	s.setVec3("objectColor", objectColor);
-	s.setVec3("lamp.lightColor", lightColor);
-	s.setVec3("lamp.lightPos", lightPos);
-	s.setVec3("lamp.viewPos", viewPos);
-
-	mat4 projection = perspective(radians(c.Zoom), (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f);
-	mat4 view = c.GetViewMatrix();
-
-	s.setMat4("projection", projection);
-	s.setMat4("view", view);
-
-	mat4 model = mat4(1.0f);
-	
-	model = rotate(model, radians(0.f + rotx), vec3(1.f, 0.f, 0.f));
-	model = rotate(model, radians(0.f + roty), vec3(0.f, 1.f, 0.f));
-	model = scale(model, vec3(1.0f));
-	s.setMat4("model", model);
-
 	// glEnable(GL_DEPTH_TEST);
-	glDrawArrays(GL_POINTS, 0, vertices.size());
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glBindVertexArray(0);
 }
