@@ -280,12 +280,12 @@ GLFWwindow* CalcGL::getWindow(void) {
     return window;
 }
 
-Shader CalcGL::getSurfaceShader(void) {
-    return shaderSurf;
+Shader CalcGL::getRayMarchCPUShader(void) {
+    return shaderRayMarchCPU;
 }
 
-Shader CalcGL::getRayMarchShader(void) {
-    return shaderRayMarch;
+Shader CalcGL::getRayMarchGPUShader(void) {
+    return shaderRayMarchGPU;
 }
 
 Shader CalcGL::getFontShader(void) {
@@ -333,7 +333,8 @@ void CalcGL::refresh(void) {
             surface = Surface(fname.data());
             debugs("\n%s\n", surface.toString().c_str());
 
-            getRayMarchShader().recompileWithFunctions(surface.getExpressions());
+            getRayMarchGPUShader().recompileWithFunctions(surface.getExpressions());
+            getRayMarchCPUShader().recompileWithFunctions(surface.getExpressions());
             renderIF = true;
 
             break;
@@ -356,11 +357,11 @@ void CalcGL::refresh(void) {
     if (renderIF) 
         switch (rmode) {
             case CPU:
-                surface.renderSurfaceCPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
+                surface.renderSurfaceCPU(getRayMarchCPUShader(), getCamera(), scr_width, scr_height, surfColor);
                 break;
             case GPU:
             default:
-                surface.renderSurfaceGPU(getRayMarchShader(), getCamera(), scr_width, scr_height, surfColor);
+                surface.renderSurfaceGPU(getRayMarchGPUShader(), getCamera(), scr_width, scr_height, surfColor);
         }
 
     glfwSwapBuffers(window);
@@ -425,16 +426,16 @@ CalcGL::CalcGL(const unsigned int width, const unsigned int height) {
         debugs("(corrected %d shaders) ", autoCorrectShaders(shaderDir));
 
         debugs("[OK]\n\tLoading shaders... ");
-        shaderSurf = Shader((shaderDir + slash + SURF_VS).c_str(), (shaderDir + slash + SURF_FS).c_str());
-        if (!shaderSurf.wasSuccessful())
+        shaderRayMarchCPU = Shader((shaderDir + slash + SURF_VS).c_str(), (shaderDir + slash + SURF_FS).c_str());
+        if (!shaderRayMarchCPU.wasSuccessful())
             throw CalcGLException(
-                "Surface: " + shaderSurf.getReport() + "\n" + shaderSurf.getVertexShaderPath() + "\n" + shaderSurf.getGeometryShaderPath()
+                "Surface: " + shaderRayMarchCPU.getReport() + "\n" + shaderRayMarchCPU.getVertexShaderPath() + "\n" + shaderRayMarchCPU.getGeometryShaderPath()
             );
 
-        shaderRayMarch = Shader((shaderDir + slash + RAYMARCH_VS).c_str(), (shaderDir + slash + RAYMARCH_FS).c_str());
-        if (!shaderRayMarch.wasSuccessful())
+        shaderRayMarchGPU = Shader((shaderDir + slash + RAYMARCH_VS).c_str(), (shaderDir + slash + RAYMARCH_FS).c_str());
+        if (!shaderRayMarchGPU.wasSuccessful())
             throw CalcGLException(
-                "RayMarch: " + shaderRayMarch.getReport() + "\n" + shaderRayMarch.getVertexShaderPath() + "\n" + shaderRayMarch.getGeometryShaderPath()
+                "RayMarch: " + shaderRayMarchGPU.getReport() + "\n" + shaderRayMarchGPU.getVertexShaderPath() + "\n" + shaderRayMarchGPU.getGeometryShaderPath()
             );
 
         shaderFont = Shader((shaderDir + slash + FONT_VS).c_str(), (shaderDir + slash + FONT_FS).c_str());

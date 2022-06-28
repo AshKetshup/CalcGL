@@ -72,7 +72,7 @@ bool rayMarch(vec3 posStart, vec3 dir, vec3 dirR, vec3 dirU, float FOV, float aS
     bool  intercept   = false;
     bool  currentSign = (evalImplicitFunc(leftPoint) < 0.f);
 
-    while (t < mDist || !intercept) {
+    while (t < mDist && !intercept) {
         leftPoint = findPRay(pointToDir, marchingDir, t);
         t += aStep;
         rightPoint = findPRay(pointToDir, marchingDir, t);
@@ -121,9 +121,9 @@ void main() {
     vec3 mRDir  = normalize(start - camPos);
     
     // Declaration algoStep, maxDist
-    float algoStep      = 0.1f;
-    float algoThreshold = 0.0001f;
-    float maxDist       = renderDistance;
+    float algoStep      = 1.f;
+    float algoThreshold = 0.01f;
+    float maxDist       = renderDistance; // default 10.f
 
     // Initiate RayMarch
     bool isHit = rayMarch(camPos, cFront, cRight, cUp, camFOV, algoStep, maxDist, algoThreshold, coords);

@@ -109,19 +109,18 @@ void Surface::renderSurfaceGPU(
 }
 
 void Surface::renderSurfaceCPU(
-	Shader s, 
-	Camera c, 
-	const int SCR_WIDTH, 
-	const int SCR_HEIGHT, 
-	vec3 objectColor, 
-	float rotx, 
-	float roty, 
-	const int threads, 
-	const float camDist
+	Shader s,
+	Camera c,
+	const float width,
+	const float height,
+	vec3 objectColor,
+	const float renderDistance,
+	const int threadAmmount
 ) const {
 	vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
 	vec3 lightPos = c.Position;
 	vec3 viewPos = c.Position;
+	float camFOV = .5f;
 
 	s.use();
 
@@ -129,8 +128,10 @@ void Surface::renderSurfaceCPU(
 		Ray(c.Position, c.Front),
 		c.Up,
 		c.Right,
-		camDist
+		camFOV
 	);
+
+	//glm::mat
 
 	auto f = [this](Camera &c, Plain plain, vector<float> &vertices, int jmin, int jmax, int imin, int imax, int myself) {
 		for (int j = jmin; j >= -jmax; j--) {
@@ -167,10 +168,12 @@ void Surface::renderSurfaceCPU(
 
 	auto start = chrono::system_clock::now();
 
-	int step = SCR_WIDTH / concurrency;
+	int step = width / concurrency;
 	for (int i = 0; i < concurrency; i++) {
-		th.push_back(thread(f, ref(c), plain, ref(vert[i]), SCR_HEIGHT / 2, SCR_HEIGHT / 2, -(SCR_WIDTH / 2) + (i * step), -(SCR_WIDTH / 2) + ((i+1) * step), i));
-		printf("Thread %d started, from %4d to %4d...\n", i, -(SCR_WIDTH / 2) + (i * step), -(SCR_WIDTH / 2) + ((i + 1) * step));
+		th.push_back(
+			thread(f, ref(c), plain, ref(vert[i]), height / 2, height / 2, -(width / 2) + (i * step), -(width / 2) + ((i+1) * step), i)
+		);
+		printf("Thread %d started, from %4d to %4d...\n", i, -(width / 2) + (i * step), -(width / 2) + ((i + 1) * step));
 	}
 
 	for (int i = 0; i < concurrency; i++) {
