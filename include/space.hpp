@@ -23,7 +23,7 @@ class Surface {
 		bool isIntercepted(vec3 camera, vec3 point);
 		// void generate();
 		void renderSurfaceGPU(Shader, Camera, const float, const float, vec3, const float = 10.f) const;
-		void renderSurfaceCPU(Shader, Camera, const int, const int, vec3, float = 0.f, float = 0.f, const int threads = 1, const float camDist = 50.f) const;
+		void renderSurfaceCPU(Shader, Camera, const float, const float, vec3, const float = 10.f, const int threads = 1) const;
 		string toString();
 };
 
