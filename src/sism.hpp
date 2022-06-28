@@ -23,7 +23,6 @@
 #include FT_FREETYPE_H
 
 #include "osdialog.h"
-
 // #include "quickgl.hpp"
 // #define QGL_GLAD
 
@@ -90,7 +89,7 @@ namespace calcgl {
 			string logoName;
 			Logo logo;
 
-			render_mode rmode = GPU;
+			render_mode rmode = CPU;
 
 			GLFWwindow* window;
 			unsigned int scr_width;
