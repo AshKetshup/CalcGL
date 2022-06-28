@@ -2,7 +2,7 @@
 
 uniform vec3  lightPos;
 uniform vec4  lightColor;
-// uniform vec4  colorAttempt;
+//uniform vec4  colorAttempt;
 uniform vec3  camPos;
 uniform vec3  camDirFront;
 uniform vec3  camDirUp;
@@ -130,5 +130,5 @@ void main() {
 
     // Output to screen
     color = isHit ? vec4(1.f,1.f,1.f,1.0) : vec4(0.f,0.f,0.f,1.0);
-//    color = colorAttempt;
+    //color = colorAttempt;
 }

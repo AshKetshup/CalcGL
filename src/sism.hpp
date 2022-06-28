@@ -67,6 +67,7 @@ namespace calcgl {
 		private:
 			static constexpr vec3 SURF_DEFAULT_COLOR = vec3(50.f/255.f, 140.f/255.f, 235.f/ 255.f);
 			bool success = false;
+			bool renderIF = false;
 
 			string appFPS;
 
