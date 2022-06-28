@@ -88,6 +88,8 @@ void Surface::renderSurfaceGPU(
 	// float camFOV  = c.Zoom;
 
 	// TODO: PASS VARIABLES TO THE GPU AS UNIFORMS
+	s.use();
+	
 	s.setVec3("lightPos", lightPos);
 	s.setVec3("lightColor", lightColor);
 
@@ -100,8 +102,10 @@ void Surface::renderSurfaceGPU(
 	s.setFloat("renderDistance", renderDistance);
 
 	//s.setVec4("colorAttempt", 0.f, 0.f, 0.f, 1.f);
+	
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-	return;
+	glUseProgram(0);
 }
 
 void Surface::renderSurfaceCPU(

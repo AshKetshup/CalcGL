@@ -332,8 +332,9 @@ void CalcGL::refresh(void) {
         case action::OPEN_FILE:
             surface = Surface(fname.data());
             debugs("\n%s\n", surface.toString().c_str());
+
             getRayMarchShader().recompileWithFunctions(surface.getExpressions());
-            getRayMarchShader().use();
+            renderIF = true;
 
             break;
 
@@ -352,14 +353,15 @@ void CalcGL::refresh(void) {
     }
  
     // Switch between viewing modes
-    switch (rmode) {
-        case CPU:
-            surface.renderSurfaceCPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
-            break;
-        case GPU:
-        default:
-            surface.renderSurfaceGPU(getRayMarchShader(), getCamera(), scr_width, scr_height, surfColor);
-    }
+    if (renderIF) 
+        switch (rmode) {
+            case CPU:
+                surface.renderSurfaceCPU(getSurfaceShader(), getCamera(), scr_width, scr_height, surfColor);
+                break;
+            case GPU:
+            default:
+                surface.renderSurfaceGPU(getRayMarchShader(), getCamera(), scr_width, scr_height, surfColor);
+        }
 
     glfwSwapBuffers(window);
     glfwPollEvents();
