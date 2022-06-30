@@ -56,15 +56,10 @@ float Surface::eval(vec3 point) {
 	return prod * (even(count) ? -1.f : 1.f);
 }
 
-/*
-in vec3  lightPos;
-in vec3  lightColor;
-in vec3  camPos;
-in vec3  camDirFront;
-in vec3  camDirUp;
-in vec3  camDirRight;
-in float camFOV;
-*/
+bool Surface::isIntercepted(vec3 point, bool currentSign) {
+	return (eval(point) < 0.f) != currentSign;
+}
+
 void Surface::renderSurfaceGPU(
 	Shader s, 
 	Camera c,
@@ -119,7 +114,7 @@ void Surface::renderSurfaceCPU(
 	s.use();
 	cparse_startup();
 
-	Plain plain = Plain(
+	Plain plain(
 		Ray(c.Position, c.Front),
 		c.Up,
 		c.Right,
@@ -165,61 +160,79 @@ void Surface::renderSurfaceCPU(
 
 	// Multi thread code
 	unsigned concurrency = thread::hardware_concurrency() - 2;
-	printf("Using 1 threads\n", concurrency);
+	printf("Using %ui threads\n" + concurrency);
 
-	/* SINGLE THREAD */
+	/* 
+    -- SINGLE THREAD --
 	for (size_t x = 0; x < width; x++) {
 		cout << "on Column " << x+1 << "/" << width << "\n";
 		for (size_t y = 0; y < height; y++) {
-			vec2 uv = (vec2(x, y) / vec2(width, height)) - 0.5f;
+			vec2 uv = (((vec2(x, y) * 2.f) - vec2(width, height)) / vec2(width, height));
 
 			vec3 rayMarchDir = plain.findPoint(uv.x, uv.y) - c.Position;
 
 			Ray   ray     = Ray(c.Position, rayMarchDir);
-			vec3  result  = ray.rayMarch(*this, 10.f, .01f, .1f);
-			float distRes = glm::distance(result, c.Position);
-
+			vec3  result  = ray.rayMarch(*this, 5.f, .01f, .1f);
+			float distRes = distance(result, c.Position);
 
 			if (distRes < 10.f) {
 				tex[x * width + y] = vec4(1.f);
 				cout << "Hit\n";
-			}
-			else {
+			} else {
 				tex[x * width + y] = vec4(0.f);
 				//cout << "Void\n";
 			}
 		}
 	}
+	*/
 
-	//vector<thread> th;
+	auto f = [this](Camera& c, Plain& plain, vector<vec4>& tex, vec2 dim, size_t yMin, size_t yMax, int myself) {
+		for (size_t y = yMin; y < yMax; y++) {
+			cout << "on Row " << y + 1 << "/" << dim.y << " by Thread " << myself << "\n";
+			for (size_t x = 0; x < dim.x; x++) {
+				vec2 uv = (vec2(x, y) * 2.f - dim) / dim;
 
-	//int step = width / concurrency;
-	//for (int i = 0; i < concurrency; i++) {
-	//	th.push_back(
-	//		thread(f, ref(c), plain, ref(tex[i*width]), height / 2, height / 2, -(width / 2) + (i * step), -(width / 2) + ((i+1) * step), i)
-	//	);
-	//	printf("Thread %d started, from %4d to %4d...\n", i, -(width / 2) + (i * step), -(width / 2) + ((i + 1) * step));
-	//}
+				vec3 sPoint      = plain.findPoint(uv.x, uv.y);
+				vec3 rayMarchDir = sPoint - c.Position;
+				Ray  ray(c.Position, rayMarchDir);
+				vec3 result   = ray.rayMarch(*this, 5.f, .01f, .1f);
+				float distRes = distance(result, c.Position);
 
-	//for (int i = 0; i < concurrency; i++) {
-	//	th[i].join();
-	//	//delete th[i];
-	//	printf("Thread %d ended.\n", i);
-	//}
+				if (distRes < 10.f) {
+					tex[x * dim.x + y] = vec4(1.f);
+					//cout << "Hit\n";
+				} else {
+					tex[x * dim.x + y] = vec4(0.f);
+				}
+			}
+		}
+	};
 
+	vector<thread> th;
 
-	//for (int i = 0; i < concurrency; i++) {
-	//	vertices.insert(vertices.end(), vert[i].begin(), vert[i].end());
-	//}
+	int step = ceil(height / concurrency);
+	for (int i = 0; i < concurrency; i++) {
+		th.push_back(
+			i != (concurrency - 1)
+			? thread(f, ref(c), ref(plain), ref(tex), vec2(width, height), i * step, i * step + step, i)
+			: thread(f, ref(c), ref(plain), ref(tex), vec2(width, height), i * step, height, i)
+		);
+		printf("Thread %d started, from %4d to %4d...\n", i, i * step, i * step + step);
+	}
 
-	// delete [] vert;
+	for (int i = 0; i < concurrency; i++) {
+		th[i].join();
+		//delete th[i];
+		printf("Thread %d ended.\n", i);
+	}
 
 	
 	vector<float> data;
-	for (vec3 el : tex) {
+	for (vec4 el : tex) {
 		data.push_back(el.x);
 		data.push_back(el.y);
 		data.push_back(el.z);
+		data.push_back(el.w);
 	}
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_FLOAT, data.data());
@@ -262,7 +275,7 @@ Ray::Ray(vec3 point, vec3 dir) {
 }
 
 vec3 Ray::findPoint(float dist) {
-	// Equa��o vetorial reta:
+	// Equação vetorial reta:
 	//	(x,y,z) = (x0,y0,z0) + dist(vx,vy,vz)
 	//	(Ponto) = (Pos. Ini) + dist(vetor dir. norm.)
 
@@ -292,16 +305,14 @@ vec3 Ray::rayMarch(Surface s, const float maxDistance, const float precision, co
 	bool intercept   = false;
 	bool currentSign = (s.eval(leftPoint) < 0.f);
 
-	while (t < maxDistance && !intercept) {
+	while (t < maxDistance && !s.isIntercepted(rightPoint, currentSign)) {
 		leftPoint = findPoint(t);
 		t += stepSize;
 		rightPoint = findPoint(t);
-
-		intercept = (s.eval(rightPoint) < 0.f) != currentSign;
 	}
 
-	if (t >= maxDistance)
-		return findPoint(13.f);
+	if (t > maxDistance)
+		return findPoint(t + 1.f);
 
 	vec3 pInteresected = bisection(s, leftPoint, rightPoint, precision);
 	return pInteresected;
@@ -331,7 +342,7 @@ Plain::Plain(Ray line, vec3 cameraUUp, vec3 cameraURight, float dist) {
 }
 
 vec3 Plain::findPoint(float h, float v) {
-	// Equa��o vetorial plano:
+	// Equação vetorial plano:
 	// 	(x,y,z) = (x0,y0,z0) + h(vx,vy,vz) + v(ux,uy,uz)
 	// 	(Ponto) = (Pos. Ini) + (vetor dir) + (vetor dir
 

@@ -1,0 +1,15 @@
+{
+  "legacyEditor": false,
+  "livePreview": true,
+  "promptDelete": false,
+  "lineWrap": true,
+  "spellcheckLanguages": [
+    "pt-PT",
+    "en-US"
+  ],
+  "spellcheck": true,
+  "showLineNumber": false,
+  "showFrontmatter": false,
+  "foldIndent": true,
+  "strictLineBreaks": false
+}

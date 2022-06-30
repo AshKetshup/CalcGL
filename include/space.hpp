@@ -22,7 +22,7 @@ class Surface {
 		vector<string> getExpressions();
 		bool even(int);
 		float eval(vec3);
-		bool isIntercepted(vec3 camera, vec3 point);
+		bool isIntercepted(vec3 point, bool currentSign);
 		void renderSurfaceGPU(Shader, Camera, const float, const float, vec3, const float = 10.f) const;
 		void renderSurfaceCPU(Shader, Camera, const float, const float, vec3, const float = 10.f, const int threads = 1) const;
 		string toString();
