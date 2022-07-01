@@ -23,12 +23,15 @@ glLinkProgram(computeProgram);
 ```
 
 Running the Compute Shader
+
 ```cpp
 glUseProgram(computeProgram);
 glDispatchCompute(SCREEN_WIDTH, SCREEN_HEIGHT, 1);
 glMemoryBarrier(GL_ALL_BARRIERS_BITS); // This might not be the best option
 ```
+	
 	Outras opções:
+	
 ```Cpp
 GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT
 GL_ELEMENT_ARRAY_BARRIER_BIT

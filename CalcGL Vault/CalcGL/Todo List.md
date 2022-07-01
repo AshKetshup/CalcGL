@@ -5,8 +5,11 @@
 	1. Caso em que falha em que o resultado deveria de ser "Void"
 	2. Caso em que acerta e o resultado deveria ser "Hit"
 
-- [ ] Transformar o Algoritmo CPU de Single Thread para Multi Thread
+- [x] Transformar o Algoritmo CPU de Single Thread para Multi Thread
 - [ ] Definir o scroll como a distancia do FOV (distancia entre a camara e o plano em uso)
+- [ ] Implementar na GPU a versão Sphere Tracing para objectos predefinidos
+- [ ] Implementar na versão GPU Accelerated usando Compute Shaders
+	- [ ] Estudar Compute Shaders e aprender a usa-los
 
 ### Bonus extravagantes
 - [ ] Encontrar forma de computar diferenciação:

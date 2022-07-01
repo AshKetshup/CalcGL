@@ -23,9 +23,17 @@ class Surface {
 		bool even(int);
 		float eval(vec3);
 		bool isIntercepted(vec3 point, bool currentSign);
-		void renderSurfaceGPU(Shader, Camera, const float, const float, vec3, const float = 10.f) const;
-		void renderSurfaceCPU(Shader, Camera, const float, const float, vec3, const float = 10.f, const int threads = 1) const;
+		void renderGPU(Shader, Camera, const float, const float, vec3, const float = 10.f) const;
+		void renderCPU(Shader, Camera, const float, const float, vec3, const float = 10.f, const int threads = 1) const;
 		string toString();
+};
+
+class SphereTracing {
+	private:
+	public:
+		SphereTracing();
+		void renderGPU(Shader, Camera, const float, const float, vec3, const float = 10.f) const;
+		void renderCPU() const;
 };
 
 class Ray {

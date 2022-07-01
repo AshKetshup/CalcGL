@@ -143,14 +143,14 @@ action CalcGL::processInput(void) {
         molroty -= 1.f; // TODO: Change for camera rotation
     */
 
-    // Might need
-    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
-        if (!w_was_pressed)
-            rmode = (rmode == GPU) ? CPU : GPU;
-        w_was_pressed = true;
-    } else {
-        w_was_pressed = false;
-    }
+    // TODO Might need
+    //if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
+    //    if (!w_was_pressed)
+    //        rmode = (rmode == SurfaceGPU) ? SurfaceCPU : SurfaceGPU;
+    //    w_was_pressed = true;
+    //} else {
+    //    w_was_pressed = false;
+    //}
 
     if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
         return action::CAMERA_RESET;
@@ -289,6 +289,10 @@ Shader CalcGL::getRayMarchGPUShader(void) {
     return shaderRayMarchGPU;
 }
 
+Shader CalcGL::getSphereTracingGPUShader(void) {
+    return shaderSphereTracingGPU;
+}
+
 Shader CalcGL::getFontShader(void) {
     return textRender.getShader();
 }
@@ -308,6 +312,7 @@ void CalcGL::setFPS(unsigned int fps) {
 void CalcGL::refresh(void) {
     callback::bindInstance(this);
 
+    //glDisable(GL_DEPTH_TEST);
     glEnable(GL_DEPTH_TEST);
 
     glDepthMask(GL_TRUE);
@@ -332,10 +337,11 @@ void CalcGL::refresh(void) {
     switch (processInput()) {
         case action::OPEN_FILE:
             surface = Surface(fname.data());
+            sTracing = SphereTracing();
             debugs("\n%s\n", surface.toString().c_str());
 
-            getRayMarchGPUShader().recompileWithFunctions(surface.getExpressions());
-            getRayMarchCPUShader().recompileWithFunctions(surface.getExpressions());
+            /*getRayMarchGPUShader().recompileWithFunctions(surface.getExpressions());
+            getRayMarchCPUShader().recompileWithFunctions(surface.getExpressions());*/
             renderIF = true;
 
             break;
@@ -357,12 +363,15 @@ void CalcGL::refresh(void) {
     // Switch between viewing modes
     if (renderIF) 
         switch (rmode) {
-            case CPU:
-                surface.renderSurfaceCPU(getRayMarchCPUShader(), getCamera(), scr_width, scr_height, surfColor);
+            case STraceGPU:
+                sTracing.renderGPU(getSphereTracingGPUShader(), getCamera(), scr_width, scr_height, surfColor);
                 break;
-            case GPU:
+            case SurfaceCPU:
+                surface.renderCPU(getRayMarchCPUShader(), getCamera(), scr_width, scr_height, surfColor);
+                break;
+            case SurfaceGPU:
             default:
-                surface.renderSurfaceGPU(getRayMarchGPUShader(), getCamera(), scr_width, scr_height, surfColor);
+                surface.renderGPU(getRayMarchGPUShader(), getCamera(), scr_width, scr_height, surfColor);
         }
 
     glfwSwapBuffers(window);
@@ -430,13 +439,19 @@ CalcGL::CalcGL(const unsigned int width, const unsigned int height) {
         shaderRayMarchCPU = Shader((shaderDir + slash + SURF_VS).c_str(), (shaderDir + slash + SURF_FS).c_str());
         if (!shaderRayMarchCPU.wasSuccessful())
             throw CalcGLException(
-                "Surface: " + shaderRayMarchCPU.getReport() + "\n" + shaderRayMarchCPU.getVertexShaderPath() + "\n" + shaderRayMarchCPU.getGeometryShaderPath()
+                "RayMarch CPU: " + shaderRayMarchCPU.getReport() + "\n" + shaderRayMarchCPU.getVertexShaderPath() + "\n" + shaderRayMarchCPU.getGeometryShaderPath()
             );
 
         shaderRayMarchGPU = Shader((shaderDir + slash + RAYMARCH_VS).c_str(), (shaderDir + slash + RAYMARCH_FS).c_str());
         if (!shaderRayMarchGPU.wasSuccessful())
             throw CalcGLException(
-                "RayMarch: " + shaderRayMarchGPU.getReport() + "\n" + shaderRayMarchGPU.getVertexShaderPath() + "\n" + shaderRayMarchGPU.getGeometryShaderPath()
+                "RayMarch GPU: " + shaderRayMarchGPU.getReport() + "\n" + shaderRayMarchGPU.getVertexShaderPath() + "\n" + shaderRayMarchGPU.getGeometryShaderPath()
+            );
+
+        shaderSphereTracingGPU = Shader((shaderDir + slash + SPHERETRACING_VS).c_str(), (shaderDir + slash + SPHERETRACING_FS).c_str());
+        if (!shaderSphereTracingGPU.wasSuccessful())
+            throw CalcGLException(
+                "SphereTrace GPU: " + shaderSphereTracingGPU.getReport() + "\n" + shaderSphereTracingGPU.getVertexShaderPath() + "\n" + shaderSphereTracingGPU.getGeometryShaderPath()
             );
 
         shaderFont = Shader((shaderDir + slash + FONT_VS).c_str(), (shaderDir + slash + FONT_FS).c_str());

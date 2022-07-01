@@ -6,7 +6,7 @@ uniform sampler2D u_texture;
 uniform vec2	  iResolution;
 
 void main() {
-	vec2 uv = gl_PointCoord / iResolution - vec2(.5);
+	vec2 uv = gl_PointCoord - iResolution * 0.5 / iResolution;
 
 	color = texture(u_texture, uv);
 }

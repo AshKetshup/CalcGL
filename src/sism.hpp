@@ -32,8 +32,10 @@ namespace calcgl {
 	// using namespace qgl;
 
 	typedef enum {
-		CPU,
-		GPU
+		SurfaceCPU,
+		SurfaceGPU,
+		STraceGPU,
+		STraceCPU
 	} render_mode;
 
 	typedef enum {
@@ -77,6 +79,7 @@ namespace calcgl {
 			Shader shaderFont;
 			Shader shaderRayMarchCPU;
 			Shader shaderRayMarchGPU;
+			Shader shaderSphereTracingGPU;
 			Shader shaderLogo;
 
 			vec3 surfColor = SURF_DEFAULT_COLOR;
@@ -89,7 +92,7 @@ namespace calcgl {
 			string logoName;
 			Logo logo;
 
-			render_mode rmode = CPU;
+			render_mode rmode = STraceGPU;
 
 			GLFWwindow* window;
 			unsigned int scr_width;
@@ -110,6 +113,7 @@ namespace calcgl {
 
 			string fname;
 			Surface surface;
+			SphereTracing sTracing;
 
 			bool initialize_glfw(int, int, const char*);
 			int initialize_glad(void);
@@ -144,6 +148,7 @@ namespace calcgl {
 			Shader getFontShader(void);
 			Shader getRayMarchCPUShader(void);
 			Shader getRayMarchGPUShader(void);
+			Shader getSphereTracingGPUShader(void);
 			TextRenderer getTextRenderer(void);
 			string getFPS(void);
 
