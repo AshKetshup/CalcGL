@@ -8,7 +8,7 @@
 #include <format>
 
 // Surface Implementation
-Surface::Surface() {	}
+Surface::Surface() { }
 
 Surface::Surface(const string fileName) {
 	source = fileName;
@@ -220,7 +220,14 @@ string Surface::toString() {
 }
 // End Implementation
 
-SphereTracing::SphereTracing() {	}
+SphereTracing::SphereTracing() { }
+
+void SphereTracing::generate() {
+	glGenVertexArrays(1, &vaoHandle);
+	glBindVertexArray(vaoHandle);
+	glVertexAttrib1f(0, 0);
+	glBindVertexArray(0);
+}
 
 void SphereTracing::renderGPU(
 	Shader s,
@@ -228,6 +235,7 @@ void SphereTracing::renderGPU(
 	const float width,
 	const float height,
 	vec3 objectColor,
+	float deltaTime,
 	const float renderDistance
 ) const {
 	vec4 lightColor = vec4(1.0f);
@@ -239,21 +247,25 @@ void SphereTracing::renderGPU(
 
 	s.use();
 
-	s.setVec3("lightPos"  , lightPos);
+	/*
+	s.setVec3("lightPos", lightPos);
 	s.setVec4("lightColor", lightColor);
-
-	s.setVec3("camPos" , c.Position);
+	
+	s.setVec3("camPos", c.Position);
 	s.setVec3("camDirFront", c.Front);
 	s.setVec3("camDirUp", c.Up);
 	s.setVec3("camDirRight", c.Right);
-
+	
 	s.setFloat("camFOV", camFOV);
 	s.setFloat("renderDistance", renderDistance);
+	*/
 
 	s.setVec2("iResolution", vec2(width, height));
+	s.setFloat("iTime", deltaTime);
 
+	glBindVertexArray(vaoHandle);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glBindVertexArray(0);
+	// glBindVertexArray(0);
 
 	glUseProgram(0);
 }

@@ -336,9 +336,10 @@ void CalcGL::refresh(void) {
     // Process Input Handler
     switch (processInput()) {
         case action::OPEN_FILE:
-            surface = Surface(fname.data());
+            // surface = Surface(fname.data());
             sTracing = SphereTracing();
-            debugs("\n%s\n", surface.toString().c_str());
+            sTracing.generate();
+            // debugs("\n%s\n", surface.toString().c_str());
 
             /*getRayMarchGPUShader().recompileWithFunctions(surface.getExpressions());
             getRayMarchCPUShader().recompileWithFunctions(surface.getExpressions());*/
@@ -364,7 +365,7 @@ void CalcGL::refresh(void) {
     if (renderIF) 
         switch (rmode) {
             case STraceGPU:
-                sTracing.renderGPU(getSphereTracingGPUShader(), getCamera(), scr_width, scr_height, surfColor);
+                sTracing.renderGPU(getSphereTracingGPUShader(), getCamera(), scr_width, scr_height, surfColor, glfwGetTime());
                 break;
             case SurfaceCPU:
                 surface.renderCPU(getRayMarchCPUShader(), getCamera(), scr_width, scr_height, surfColor);

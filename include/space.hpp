@@ -30,10 +30,12 @@ class Surface {
 
 class SphereTracing {
 	private:
+		unsigned int vaoHandle;
 	public:
 		SphereTracing();
-		void renderGPU(Shader, Camera, const float, const float, vec3, const float = 10.f) const;
-		void renderCPU() const;
+		void generate();
+		void renderGPU(Shader, Camera, const float, const float, vec3, float, const float = 10.f) const;
+		// void renderCPU() const;
 };
 
 class Ray {
