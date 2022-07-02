@@ -220,12 +220,23 @@ string Surface::toString() {
 }
 // End Implementation
 
-SphereTracing::SphereTracing() { }
+SphereTracing::SphereTracing() {
+	spheres.push_back( { vec4(0., 1., 6., 1.), vec4(0., 1., 0., 1.) } );
+}
 
 void SphereTracing::generate() {
+	// glGenBuffers(1, &uboHandle);
+	// glBindBuffer(GL_UNIFORM_BUFFER, uboHandle);
+	// glBufferData(GL_UNIFORM_BUFFER, sizeof(SPHERE), spheres.data(), GL_STATIC_DRAW);
+
 	glGenVertexArrays(1, &vaoHandle);
 	glBindVertexArray(vaoHandle);
 	glVertexAttrib1f(0, 0);
+
+	// glEnableVertexAttribArray(0);  // Uniform Buffer Object
+	// glBindBuffer(GL_UNIFORM_BUFFER, uboHandle);
+	// glVertexAttribPointer((GLuint)0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
 	glBindVertexArray(0);
 }
 
@@ -238,28 +249,39 @@ void SphereTracing::renderGPU(
 	float deltaTime,
 	const float renderDistance
 ) const {
-	vec4 lightColor = vec4(1.0f);
-	vec3 lightPos = c.Position;
+	vec3 lightColor = vec3(1.f, 1.f, 1.f);
+	vec3 lightPos = vec3(0.f, 5.f, -6.f) + vec3(2 * sinf(deltaTime), 0, 2 * cosf(deltaTime));
 
-	float camFOV = .5f;
+	float camFOV = c.Zoom;
+	{
+		// Cálculo do FOV
+		float MIN = 1.f, MAX = ZOOM;
+		float fov_min = 0.5f, fov_max = 2.0f;
+		camFOV = (fov_min - fov_max) / (MAX - MIN) * (c.Zoom - MIN) + fov_max;
+	}
 
 	glDisable(GL_DEPTH_TEST);
-
+	
 	s.use();
 
-	// s.setVec3("lightPos", lightPos);
-	// s.setVec4("lightColor", lightColor);
+	s.setVec3("lightPos", lightPos);
+	s.setVec3("lightColor", lightColor);
 	
 	s.setVec3("camPos", c.Position);
 	s.setVec3("camDirFront", c.Front);
-	// s.setVec3("camDirUp", c.Up);
-	// s.setVec3("camDirRight", c.Right);
+	s.setVec3("camDirUp", c.Up);
+	s.setVec3("camDirRight", c.Right);
 	
-	// s.setFloat("camFOV", camFOV);
-	// s.setFloat("renderDistance", renderDistance);
+	s.setFloat("camFOV", camFOV);
+	s.setFloat("renderDistance", renderDistance);
 	
 	s.setVec2("iResolution", vec2(width, height));
 	s.setFloat("iTime", deltaTime);
+	s.setVec4("objectColor", vec4(objectColor, 1.f));
+
+	// s.setInt("nspheres", spheres.size());
+	// unsigned int block_index = glGetUniformBlockIndex(s.getID(), "ubospheres");
+	// glUniformBlockBinding(s.getID(), block_index, 0);
 
 	glBindVertexArray(vaoHandle);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

@@ -110,6 +110,6 @@ void main() {
 	
 	float dif   = getLight(p);
 	vec3 fcolor = vec3(dif);
+	fcolor      = pow(fcolor, vec3(.4545));
 	color       = vec4(fcolor, 1.f);
-	//color = lightColor;
 }

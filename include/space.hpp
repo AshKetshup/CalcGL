@@ -28,9 +28,16 @@ class Surface {
 		string toString();
 };
 
+typedef struct Sphere {
+	vec4 center;
+	vec4 color;
+} SPHERE;
+
 class SphereTracing {
 	private:
 		unsigned int vaoHandle;
+		unsigned int uboHandle;
+		vector<SPHERE> spheres;
 	public:
 		SphereTracing();
 		void generate();

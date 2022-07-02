@@ -350,6 +350,10 @@ class Shader {
         ShaderReport getReportHandler(void) {
             return report;
         }
+
+        unsigned int getID() {
+            return ID;
+        }
     
     private:
         string vertexShader;
