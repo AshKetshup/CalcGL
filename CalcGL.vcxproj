@@ -200,6 +200,8 @@
     <None Include="bin\shaders\pisurf_vs.glsl" />
     <None Include="bin\shaders\raymarch_fs.glsl" />
     <None Include="bin\shaders\raymarch_vs.glsl" />
+    <None Include="bin\shaders\spheretracing_fs.glsl" />
+    <None Include="bin\shaders\spheretracing_vs.glsl" />
     <None Include="bin\shaders\surf_fs.glsl" />
     <None Include="bin\shaders\surf_vs.glsl" />
   </ItemGroup>

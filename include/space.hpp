@@ -20,11 +20,20 @@ class Surface {
 		Surface(const string fileName);
 		Surface(const vector<string> expressions);
 		vector<string> getExpressions();
-		bool isIntercepted(vec3 camera, vec3 point);
-		// void generate();
-		void renderSurfaceGPU(Shader, Camera, const float, const float, vec3, const float = 10.f) const;
-		void renderSurfaceCPU(Shader, Camera, const float, const float, vec3, const float = 10.f, const int threads = 1) const;
+		bool even(int);
+		float eval(vec3);
+		bool isIntercepted(vec3 point, bool currentSign);
+		void renderGPU(Shader, Camera, const float, const float, vec3, const float = 10.f) const;
+		void renderCPU(Shader, Camera, const float, const float, vec3, const float = 10.f, const int threads = 1) const;
 		string toString();
+};
+
+class SphereTracing {
+	private:
+	public:
+		SphereTracing();
+		void renderGPU(Shader, Camera, const float, const float, vec3, const float = 10.f) const;
+		void renderCPU() const;
 };
 
 class Ray {
@@ -34,6 +43,7 @@ class Ray {
 	public:
 		Ray(vec3 point, vec3 dir);
 		vec3 findPoint(float dist);
+		vec3 bisection(Surface, vec3, vec3, const float precision);
 		vec3 rayMarch(Surface s, const float maxDistance, const float precision, const float stepSize);
 		vec3 getPosition();
 		vec3 getDirection();

@@ -151,68 +151,27 @@ const char rayMarch_fragment_shader[] =
 
 const char surface_fragment_shader[] =
 "#version 330 core\n"
-"out vec4 FragColor;\n"
 "\n"
-"in vec3 Normal;\n"
-"in vec3 FragPos;\n"
+"out vec4 color;\n"
 "\n"
-"struct Lamp {\n"
-"    vec3 lightPos;\n"
-"    vec3 lightColor;\n"
-"    vec3 viewPos;\n"
-"};\n"
-"\n"
-"uniform vec3 objectColor;\n"
-"uniform Lamp lamp;\n"
+"uniform sampler2D u_texture;\n"
+"uniform vec2	  iResolution;\n"
 "\n"
 "void main() {\n"
-"    // ambient\n"
-"    float ambientStrength = 0.5;\n"
-"    vec3 ambient;\n"
-"    ambient = ambientStrength * lamp.lightColor;\n"
+"	vec2 uv = gl_PointCoord / iResolution - vec2(.5);\n"
 "\n"
-"    // diffuse\n"
-"    vec3 norm = normalize(Normal);\n"
-"    vec3 lightDir;\n"
-"    float diff;\n"
-"    vec3 diffuse;\n"
-"    lightDir = normalize(lamp.lightPos - FragPos);\n"
-"    diff = max(dot(norm, lightDir), 0.0);\n"
-"    diffuse = diff * lamp.lightColor;\n"
-"\n"
-"    // specular\n"
-"    float specularStrength = 0.5; // this is set higher to better show the effect of Gouraud shading \n"
-"    vec3 viewDir = normalize(lamp.viewPos - FragPos);\n"
-"    vec3 reflectDir = reflect(-lightDir, norm);  \n"
-"    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);\n"
-"    vec3 specular = specularStrength * spec * lamp.lightColor;\n"
-"\n"
-"    vec3 result = vec3(0.0);\n"
-"    result += (ambient + diffuse + specular);\n"
-"    result *= objectColor;\n"
-"\n"
-"    FragColor = vec4(result, 1.0);\n"
-"}";
+"	color = texture(u_texture, uv);\n"
+"}\n";
 
 const char surface_vertex_shader[] =
 "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"layout (location = 1) in vec3 aNormal;\n"
 "\n"
-"out vec3 FragPos;\n"
-"out vec3 Normal;\n"
+"const vec2 quad_vertices[4] = vec2[4](vec2(-1.0, -1.0), vec2(1.0, -1.0), vec2(-1.0, 1.0), vec2(1.0, 1.0));\n"
 "\n"
-"uniform mat4 model;\n"
-"uniform mat4 view;\n"
-"uniform mat4 projection;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    FragPos = vec3(model * vec4(aPos, 1.0));\n"
-"    Normal = mat3(transpose(inverse(model))) * aNormal;  \n"
-"    \n"
-"    gl_Position = projection * view * vec4(FragPos, 1.0);\n"
-"}";
+"void main() {\n"
+"    gl_Position = vec4(quad_vertices[gl_VertexID], 0.0, 1.0);\n"
+"}\n";
+
 
 const char font_fragment_shader[] =
 "#version 330 core\n"
@@ -278,14 +237,16 @@ const char logo_fragment_shader[] =
 #define FONT        0b01000000              // Font shaders
 #define LOGO        0b10000000              // Logo shaders
 
-#define RAYMARCH_VS "raymarch_vs.glsl"      // Surface vertex shader file name
-#define RAYMARCH_FS "raymarch_fs.glsl"      // Surface fragment shader file name
-#define SURF_VS     "pisurf_vs.glsl"        // Surface vertex shader file name
-#define SURF_FS     "pisurf_fs.glsl"        // Surface fragment shader file name
-#define FONT_FS     "font_fs.glsl"          // Font fragment shader file name
-#define FONT_VS     "font_vs.glsl"          // Font vertex shader file name
-#define LOGO_FS     "logo_fs.glsl"          // Logo fragment shader file name
-#define LOGO_VS     "logo_vs.glsl"          // Logo vertex shader file name
+#define SPHERETRACING_VS "spheretracing_vs.glsl"    // SphereTracingGPU vertex shader file name
+#define SPHERETRACING_FS "spheretracing_fs.glsl"    // SphereTracingGPU fragment shader file name
+#define RAYMARCH_VS      "raymarch_vs.glsl"         // RayMarchingGPU vertex shader file name
+#define RAYMARCH_FS      "raymarch_fs.glsl"         // RayMarchingGPU fragment shader file name
+#define SURF_VS          "pisurf_vs.glsl"           // Surface vertex shader file name
+#define SURF_FS          "pisurf_fs.glsl"           // Surface fragment shader file name
+#define FONT_FS          "font_fs.glsl"             // Font fragment shader file name
+#define FONT_VS          "font_vs.glsl"             // Font vertex shader file name
+#define LOGO_FS          "logo_fs.glsl"             // Logo fragment shader file name
+#define LOGO_VS          "logo_vs.glsl"             // Logo vertex shader file name
 
 #include <string>
 

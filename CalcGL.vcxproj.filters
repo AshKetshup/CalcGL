@@ -163,5 +163,11 @@
     <None Include="bin\funcs\2.function">
       <Filter>Function Files</Filter>
     </None>
+    <None Include="bin\shaders\spheretracing_fs.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="bin\shaders\spheretracing_vs.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

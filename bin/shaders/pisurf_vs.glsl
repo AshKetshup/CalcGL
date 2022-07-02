@@ -1,21 +1,7 @@
 #version 330 core
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aNormal;
 
-out vec3 FragPos;
-out vec3 Normal;
+const vec2 quad_vertices[4] = vec2[4](vec2(-1.0, -1.0), vec2(1.0, -1.0), vec2(-1.0, 1.0), vec2(1.0, 1.0));
 
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
-
-void main()
-{
-    FragPos = vec3(model * vec4(aPos, 1.0));
-    // FragPos.z = -FragPos.z;
-    Normal = mat3(transpose(inverse(model))) * aNormal;
-    // Normal.z = -Normal.z;
-    
-    gl_Position = projection * view * vec4(FragPos, 1.0);
-    // gl_Position.z = -gl_Position.z;
+void main() {
+    gl_Position = vec4(quad_vertices[gl_VertexID], 0.0, 1.0);
 }

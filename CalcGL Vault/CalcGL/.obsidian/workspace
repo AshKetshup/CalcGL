@@ -1,0 +1,96 @@
+{
+  "main": {
+    "id": "99742ee0a8bf169b",
+    "type": "split",
+    "children": [
+      {
+        "id": "509d60c23b7bfb8d",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "Todo List.md",
+            "mode": "source",
+            "source": false
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "8a06d0219a8ec0e5",
+    "type": "split",
+    "children": [
+      {
+        "id": "1ba67cf44fd003d7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "791805940711090d",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "ce341ee76a1dbfd8",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "400d0c6386f1fbcb",
+    "type": "split",
+    "children": [
+      {
+        "id": "7fb24d51dd9aba76",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e6b7b5214fad343e",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Todo List.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "509d60c23b7bfb8d",
+  "lastOpenFiles": [
+    "Todo List.md",
+    "Thoughts.md",
+    "How does it work/Compute Shaders.md"
+  ]
+}
