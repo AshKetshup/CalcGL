@@ -238,7 +238,7 @@ const char logo_fragment_shader[] =
 #define LOGO        0b10000000              // Logo shaders
 
 #define SPHERETRACING_VS "spheretracing_vs.glsl"    // SphereTracingGPU vertex shader file name
-#define SPHERETRACING_FS "spheretracing_fs.glsl"    // SphereTracingGPU fragment shader file name
+#define SPHERETRACING_FS "spheretracing_fs2.glsl"    // SphereTracingGPU fragment shader file name
 #define RAYMARCH_VS      "raymarch_vs.glsl"         // RayMarchingGPU vertex shader file name
 #define RAYMARCH_FS      "raymarch_fs.glsl"         // RayMarchingGPU fragment shader file name
 #define SURF_VS          "pisurf_vs.glsl"           // Surface vertex shader file name

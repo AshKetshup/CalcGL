@@ -169,5 +169,11 @@
     <None Include="bin\shaders\spheretracing_vs.glsl">
       <Filter>Shader Files</Filter>
     </None>
+    <None Include="bin\shaders\spheretracing_fs2.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="bin\shaders\spheretracing_fs_ash_bk.glsl">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

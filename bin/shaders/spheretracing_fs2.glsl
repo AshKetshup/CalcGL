@@ -1,13 +1,26 @@
 #version 330 core
 
 #define MAX_STEPS 100
+#define SURF_DIST .01f
+#define INFINITY  100000.f
 #define MAX_DIST 100.
-#define SURF_DIST .01
+
+//#define SPHERE_AMNT 1;
 
 uniform vec2 iResolution;
 uniform float iTime;
 
 out vec4 fragColor;
+
+// uniform vec3  lightPos;
+// uniform vec4  lightColor;
+uniform vec3  camPos;
+uniform vec3  camDirFront;
+// uniform vec3  camDirUp;
+// uniform vec3  camDirRight;
+// uniform float camFOV;
+// uniform float renderDistance;
+
 
 float GetDist(vec3 p) {
     vec4 s = vec4(0, 1, 6, 1);
@@ -63,8 +76,8 @@ void main()
 
     vec3 col = vec3(0);
     
-    vec3 ro = vec3(0, 1, 0);
-    vec3 rd = normalize(vec3(uv.x, uv.y, 1));
+    vec3 ro = camPos;       //vec3(0, 1, 0);
+    vec3 rd = normalize(vec3(camDirFront.xy, 1) + vec3(uv.x, uv.y, 1));  // normalize(vec3(uv.x, uv.y, 1));
 
     float d = RayMarch(ro, rd);
     

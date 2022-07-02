@@ -201,6 +201,8 @@
     <None Include="bin\shaders\raymarch_fs.glsl" />
     <None Include="bin\shaders\raymarch_vs.glsl" />
     <None Include="bin\shaders\spheretracing_fs.glsl" />
+    <None Include="bin\shaders\spheretracing_fs2.glsl" />
+    <None Include="bin\shaders\spheretracing_fs_ash_bk.glsl" />
     <None Include="bin\shaders\spheretracing_vs.glsl" />
     <None Include="bin\shaders\surf_fs.glsl" />
     <None Include="bin\shaders\surf_vs.glsl" />

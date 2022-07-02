@@ -348,7 +348,7 @@ void CalcGL::refresh(void) {
             break;
 
         case action::CAMERA_RESET:
-            camera.Position = vec3(0.f);
+            camera.Position = vec3(0.f, 1.f, 0.f);
             // molrotx = 0.f; // TODO: change for camera rotation
             // molroty = 0.f; // TODO: change for camera rotation
             debugs("Camera position reseted.\n");
@@ -463,7 +463,7 @@ CalcGL::CalcGL(const unsigned int width, const unsigned int height) {
         if (!shaderLogo.wasSuccessful())
             throw CalcGLException("Logo: " + shaderLogo.getReport());
 
-        camera = Camera(vec3(0.0f, 0.0f, 0.0f));
+        camera = Camera(vec3(0.0f, 1.0f, 0.0f));
 
         debugs("[OK]\n\tLoading text renderer... ");
         textRender = TextRenderer(scr_width, scr_height, shaderFont);

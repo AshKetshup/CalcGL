@@ -77,16 +77,16 @@ void Surface::renderGPU(
 	// TODO: PASS VARIABLES TO THE GPU AS UNIFORMS
 	s.use();
 	
-	s.setVec3("lightPos", lightPos);
-	s.setVec3("lightColor", lightColor);
+	// s.setVec3("lightPos", lightPos);
+	// s.setVec3("lightColor", lightColor);
 
 	s.setVec3("camPos", c.Position);
-	s.setVec3("camDirF", c.Front);
-	s.setVec3("camDirU", c.Up);
-	s.setVec3("camDirR", c.Right);
-
-	s.setFloat("camFOV", camFOV);
-	s.setFloat("renderDistance", renderDistance);
+	// s.setVec3("camDirF", c.Front);
+	// s.setVec3("camDirU", c.Up);
+	// s.setVec3("camDirR", c.Right);
+	
+	// s.setFloat("camFOV", camFOV);
+	// s.setFloat("renderDistance", renderDistance);
 
 	//s.setVec4("colorAttempt", 0.f, 0.f, 0.f, 1.f);
 	
@@ -247,19 +247,17 @@ void SphereTracing::renderGPU(
 
 	s.use();
 
-	/*
-	s.setVec3("lightPos", lightPos);
-	s.setVec4("lightColor", lightColor);
+	// s.setVec3("lightPos", lightPos);
+	// s.setVec4("lightColor", lightColor);
 	
 	s.setVec3("camPos", c.Position);
 	s.setVec3("camDirFront", c.Front);
-	s.setVec3("camDirUp", c.Up);
-	s.setVec3("camDirRight", c.Right);
+	// s.setVec3("camDirUp", c.Up);
+	// s.setVec3("camDirRight", c.Right);
 	
-	s.setFloat("camFOV", camFOV);
-	s.setFloat("renderDistance", renderDistance);
-	*/
-
+	// s.setFloat("camFOV", camFOV);
+	// s.setFloat("renderDistance", renderDistance);
+	
 	s.setVec2("iResolution", vec2(width, height));
 	s.setFloat("iTime", deltaTime);
 
