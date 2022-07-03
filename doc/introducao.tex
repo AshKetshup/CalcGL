@@ -4,13 +4,31 @@
 \section{Enquadramento}
 \label{sec::intro:enquadramento}
 
+O estudo matemático de funções levou à descoberta de diferentes métodos para a sua representação e análise, nomeadamente os modelos explícitos, paramétricos e implícitos. Contudo, apenas as funções explícitas são trivialmente renderizadas por computadores; estas representam grandes desafios uma vez que nem sempre é possível obter expressões explícitas.
+
+Neste sentido, o estudo de funções implícitas torna-se vital para inúmeros fins, pelo que a sua renderização computacional tem sido alvo de estudo por décadas. Os resultados dos enormes avanços feitos na área são atualmente desfrutados por milhões de pessoas, tanto a título pessoal como no mundo empresarial e de investigação.
+
 
 \section{Motivação}
 \label{sec::intro:motivacao}
 
+As versões modernas do \opengl~(i.e. a partir da versão 3.3) permitem que o programador escreva os seus próprios \textit{shaders} a serem utilizados na \textit{pipeline} de renderização. Uma consequência imediata é a possibilidade de paralelizar inúmeros cálculos que normalmente seriam realizados pela \ac{CPU}.
+
+Ainda assim, uma miríade de \textit{software} de renderização não tira proveito de tais capacidades. Desta forma, é de interesse estudar um algoritmo de renderização por volume e analisar a sua potencial paralelização.
+
 
 \section{Objetivos}
 \label{sec::intro:objetivos}
+
+O presente projeto tem por \textbf{objetivo principal} implementar um sistema de visualização de funções implícitas.
+
+Este tem ainda os seguintes \textbf{objetivos secundários}:
+\begin{itemize}
+	\item Estudar funções implícitas e o cálculo das respetivas iso-superfícies;
+	\item Analisar o modelo de renderização por volume;
+	\item Implementar o algoritmo de \textit{ray marching} em particular;
+	\item Implementar aceleração por \textit{hardware} através da programação de \emph{shaders} em \opengl.
+\end{itemize}
 
 
 \section{Organização do Documento}
