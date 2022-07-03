@@ -2,7 +2,7 @@
 
 #define SURF_DIST .01
 
-uniform vec2 iResolution;
+uniform vec2  iResolution;
 uniform float iTime;
 
 uniform vec3  lightPos;
@@ -22,12 +22,12 @@ out vec4 color;
 
 vec3 normal = vec3(0.);
 
-bool even(in int n) {
+bool even(int n) {
     return n % 2 == 0;
 }
 
 // Defines a implicit function
-float evalImplicitFunc(in vec3 point) {
+float evalImplicitFunc(vec3 point) {
     float x = point.x;
     float y = point.y;
     float z = point.z;
@@ -38,7 +38,7 @@ float evalImplicitFunc(in vec3 point) {
     
     // <gamma conditions>
 
-    return prod * (even(count) ? -1.f : 1.f);
+    return pow(x-0., 2.) + pow(y-1., 2.) + pow(z-6., 2.) - pow(1., 2.); //prod; // * (even(count) ? -1.f : 1.f);
 }
 
 bool collatz(float x, float y) {
@@ -60,9 +60,10 @@ vec3 findPPlain(vec3 pPos, vec3 pH, vec3 pV, vec2 coords) {
 float ro_sign;
 
 float rayMarch(vec3 ro, vec3 rd) {
-    float curr = evalImplicitFunc(ro);
+    // float curr = evalImplicitFunc(ro);
     vec2 e = vec2(.01, 0);
     vec3 p;
+    float curr;
     
     float dO = 0.f;
     while (dO < renderDistance) {
@@ -88,6 +89,9 @@ float rayMarch(vec3 ro, vec3 rd) {
 }
 
 float getLight(vec3 p) {
+    vec3 lightPos = vec3(0, 5, 6);
+    lightPos.xz += vec2(sin(iTime), cos(iTime))*2.;
+    
     vec3  l = normalize(lightPos - p);
     float d = rayMarch(findPRay(p, normal, SURF_DIST * 2.f), l);
 
@@ -122,8 +126,9 @@ void main() {
 
         vec3 lColor = lightColor.xyz * pow(dif, vec3(.4545));
 
-        color = vec4(objectColor + lColor, 1.f);
+        color = vec4(/*objectColor * */lColor, 1.f);
     } else {
-        color = vec4(vec3(0.f), 1.f);
+        //color = vec4(0.5f);
+        color = vec4(0.5);
     }
 }

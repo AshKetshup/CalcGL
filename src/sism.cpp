@@ -333,12 +333,6 @@ void CalcGL::refresh(void) {
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    // TODO: FIND BUG HERE
-    writeInstructions(getTextRenderer(), 10.f, 10.f, 0.6f);
-    writeAuthors(getTextRenderer(), 1470.f, scr_height - 2.f * getTextRenderer().getFontSize(), 0.75f);
-    writeText(getTextRenderer(), getFPS(), 10.f, scr_height - (2 * getTextRenderer().getFontSize()), 0.8f);
-    writeText(getTextRenderer(), (!fname.empty() ? filesystem::path(fname).filename().string() : "No file opened"), 10.f, scr_height - getTextRenderer().getFontSize(), 0.8f);
-
     if (logo.isAvailable() && fname.empty())
         logo.render(scr_width, scr_height);
 
@@ -349,6 +343,7 @@ void CalcGL::refresh(void) {
             if (rmode == SurfaceGPU) {
                 surface = Surface(fname.data());
                 // debugs("\n%s\n", surface.toString().c_str());
+                surface.generate();
 
                 getRayMarchGPUShader().recompileWithFunctions(surface.getExpressions());
             }
@@ -406,8 +401,16 @@ void CalcGL::refresh(void) {
                 break;
             case SurfaceGPU:
             default:
-                surface.renderGPU(getRayMarchGPUShader(), getCamera(), scr_width, scr_height, surfColor, deltaTime);
+                surface.renderGPU(getRayMarchGPUShader(), getCamera(), scr_width, scr_height, surfColor, deltaTime, 100.);
         }
+
+
+    // TODO: FIND BUG HERE
+    writeInstructions(getTextRenderer(), 10.f, 10.f, 0.6f);
+    writeAuthors(getTextRenderer(), 1470.f, scr_height - 2.f * getTextRenderer().getFontSize(), 0.75f);
+    writeText(getTextRenderer(), getFPS(), 10.f, scr_height - (2 * getTextRenderer().getFontSize()), 0.8f);
+    writeText(getTextRenderer(), (!fname.empty() ? filesystem::path(fname).filename().string() : "No file opened"), 10.f, scr_height - getTextRenderer().getFontSize(), 0.8f);
+
 
     glfwSwapBuffers(window);
     glfwPollEvents();

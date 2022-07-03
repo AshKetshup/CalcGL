@@ -105,7 +105,7 @@ void Surface::renderGPU(
 
 	s.setFloat("iTime", deltaTime);
 	s.setVec2("iResolution", vec2(width, height));
-	s.setVec3("objectColor", objectColor);
+	s.setVec3("objectColor", vec3(0., 1., 0.));
 	
 	glBindVertexArray(vaoHandle);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
