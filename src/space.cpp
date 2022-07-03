@@ -297,7 +297,7 @@ Ray::Ray(vec3 point, vec3 dir) {
 }
 
 vec3 Ray::findPoint(float dist) {
-	// Equação vetorial reta:
+	//  Equação vetorial reta:
 	//	(x,y,z) = (x0,y0,z0) + dist(vx,vy,vz)
 	//	(Ponto) = (Pos. Ini) + dist(vetor dir. norm.)
 

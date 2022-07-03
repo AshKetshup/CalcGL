@@ -37,7 +37,6 @@ layout (std140, binding = 0) uniform uboSpheres {
 };
 
 
-
 // Find a point in a Ray
 vec3 findPRay(vec3 rPos, vec3 rDir, float dist) {
 	return (rPos + dist * rDir);
@@ -49,38 +48,51 @@ vec3 findPPlain(vec3 pPos, vec3 pH, vec3 pV, vec2 coords) {
 }
 
 
+/* Signed Distance Functions */
+float sdCapsule(vec3 p, vec3 a, vec3 b, float r) {
+    vec3 ab = b - a;
+    vec3 ap = p - a;
 
+    float t = dot(ab, ap) / dot(ab, ab);
+    t = clamp(t, 0., 1.);
+
+    vec3 c = findPRay(a, ab, t);
+    
+    return distance(p, c) - r;
+}
+
+float sdTorus(vec3 p, vec3 center, vec2 r) {
+    p -= center;
+    float x = length(p.xz) - r.x;
+
+    return length(vec2(x, p.y)) - r.y;
+}
+
+float sdBox(vec3 p, vec3 center, vec3 dim) {
+    p -= center;
+
+    return length(max(abs(p)-dim, 0.));
+}
 
 float GetDist(vec3 p) {
     Sphere s1 = Sphere(
         vec4(0, 1, -6, 1),
         vec4(0, 1, 0, 1)
     );
-    
-    // float minSphereDist = length(p-spheres[nspheres].center.xyz)-spheres[nspheres].center.w;
-    // float sphereDist;
-    // objectColor = spheres[nspheres].color;
-    // 
-    // for (int i = 0; i < nspheres - 1; i++) {
-    //     sphereDist = length(p-spheres[i].center.xyz)-spheres[i].center.w;
-    //     if (sphereDist < minSphereDist) {
-    //         minSphereDist = sphereDist;
-    //         objectColor = spheres[i].color;
-    //     }
-    // }
-    // float d = min(minSphereDist, planeDist);
-    // if (planeDist < minSphereDist) {
-    //     objectColor = vec4(1, 1, 1, 0);
-    //     return planeDist;
-    // }
-    // return minSphereDist;
+
+    float dist = INFINITY;
 
     float planeDist = p.y;
+    dist = min(dist, planeDist);
 
     float sphereDist = length(p-s1.center.xyz)-s1.center.w;
-    float d = min(sphereDist, planeDist);
-    return d;
+    dist = min(dist, sphereDist);
+    
+    dist = min(dist, sdTorus(p, s1.center.xyz, vec2(s1.center.w*2. , s1.center.w/5.)));
 
+    dist = min(dist, sdBox(p, vec3(0., 1., 0.), vec3(s1.center.w)));
+    
+    return dist;
 }
 
 float RayMarch(vec3 ro, vec3 rd) {
@@ -113,8 +125,9 @@ float GetLight(vec3 p) {
     vec3 n = GetNormal(p);
     
     float dif = clamp(dot(n, l), 0., 1.);
-    float d = RayMarch(p+n*SURF_DIST*2., l);
-    if(d<length(lightPos-p)) dif *= .1;
+    float d = RayMarch(p + n * SURF_DIST * 2., l);
+    if(d < length(lightPos-p)) 
+        dif *= .1;
     
     return dif;
 }
