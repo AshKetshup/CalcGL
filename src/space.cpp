@@ -78,7 +78,9 @@ void Surface::renderGPU(
 	const float renderDistance
 ) const {
 	vec4 lightColor = vec4(1.0f);
-	vec3 lightPos = c.Position;
+	vec3 lightPos = vec3(0, 5, 6);
+
+	lightPos += vec3(sin(deltaTime) * 2., 0., cos(deltaTime) * 2.);
 
 	float camFOV;
 	{
@@ -91,7 +93,7 @@ void Surface::renderGPU(
 	glDisable(GL_DEPTH_TEST);
 
 	s.use();
-	
+
 	s.setVec3("lightPos",     lightPos);
 	s.setVec3("lightColor", lightColor);
 

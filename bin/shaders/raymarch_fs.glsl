@@ -88,10 +88,7 @@ float rayMarch(vec3 ro, vec3 rd) {
     return dO;
 }
 
-float getLight(vec3 p) {
-    vec3 lightPos = vec3(0, 5, 6);
-    lightPos.xz += vec2(sin(iTime), cos(iTime))*2.;
-    
+float getLight(vec3 p) {    
     vec3  l = normalize(lightPos - p);
     float d = rayMarch(findPRay(p, normal, SURF_DIST * 2.f), l);
 
