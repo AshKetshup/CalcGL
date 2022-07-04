@@ -54,9 +54,9 @@ Esta transformação só é possível até polinómios de grau 4, tornando-se im
 	\item \textbf{Funções implícitas}: a equação não é definida a ordem a uma variável em particular (equação (\ref{eq::circ_implicita})).
 \end{enumerate}
 
-Uma função implícita é então definida por $f~:~\mathbb{R}^n \longrightarrow \mathbb{R}$, ou seja, para qualquer ponto em $\mathbb{R}^n$ é determinado um resultado em $\mathbb{R}$. Dependendo da função, o valor obtido pode ter significado, tal como uma grandeza física (\textit{e.g.} densidade de um líquido ou sua temperatura a cada ponto do espaço). Esta função diz-se \textbf{algébrica} caso seja polinomial em cada variável.
+Uma \textbf{função implícita} é então definida por $f~:~\mathbb{R}^n \longrightarrow \mathbb{R}$, ou seja, para qualquer ponto em $\mathbb{R}^n$ é determinado um resultado em $\mathbb{R}$. Dependendo da função, o valor obtido pode ter significado, tal como uma grandeza física (\textit{e.g.} densidade de um líquido ou sua temperatura a cada ponto do espaço). Esta função diz-se \textbf{algébrica} caso seja polinomial em cada variável.
 
-Por seu turno, em $\mathbb{R}^3$, a \textbf{iso-superfície} de uma função implícita é a superfície que satisfaz a condição $f(\mathbf{x}) = 0$ (onde, doravante, $\mathbf{x} \equiv (x,y,z)$). Esta pode ser suavizada através de um parâmetro $s \in \mathbb{R}$ tal que $f(\mathbf{x}) - s = 0$.
+Por seu turno, em $\mathbb{R}^3$, a \textbf{iso-superfície} de uma função implícita é a superfície que satisfaz a condição $f(\mathbf{x}) = 0$ (onde, doravante, $\mathbf{x} \equiv (x,y,z)$). Esta pode ser suavizada através de um parâmetro $s \in \mathbb{R}$ tal que $f(\mathbf{x}) - s = 0$. Este efeito é utilizado diretamente e com sucesso nas Superfícies $\Pi$ \cite{Raposo2019}.
 
 
 \todo{Mais aplicações.}
@@ -67,21 +67,45 @@ Por seu turno, em $\mathbb{R}^3$, a \textbf{iso-superfície} de uma função imp
 
 \hint{Renderização em computação gráfica. Que métodos existem? Que alternativas estão em aberto?}
 
+As funções implícitas representam simultaneamente uma grande oportunidade na área da computação gráfica e um enorme desafio. Se por um lado é possível obter a visualização de formas geométricas complexas com recurso a funções implícitas, por outro não há um método direto de determinar quais os pontos da iso-superfície.
+
+Vários algoritmos têm sido propostos ao longo das últimas décadas, tais como \textit{marching cubes}\cite{Lorensen1987}, \textit{ray marching}, \textit{sphere tracing}\cite{Hart1996} e \textit{ray tracing}.
+
+
 
 \section{Técnicas de Renderização}
 \label{sec::arte:render}
 
 \hint{Breve introdução às categorias de técnicas/algoritmos de renderização.}
+\revision{Categorização das técnicas.}
 
-\subsection{Renderização por Volume}
-\label{ssec::arte:render:volume}
+\begin{itemize}
+	\item \textbf{Rasterização}:\\
+	\hint{Técnica ainda utilizada na pipeline do OpenGL na fase final.}
+	
+	\item \textbf{Triangulação}:\\
+	A iso-superfície é dividida em triângulos, os quais formam a \textit{mesh} a ser renderizada pela \ac{GPU}. Um exemplo é o algoritmo de \textit{Marching Cubes}\cite{Lorensen1987} no qual o espaço é dividido em cubos onde o valor da função implícita é calculado para cada vértice. A análise dos sinais permite determinar quais arestas do cubo a superfície interseta, num total de 256 possíveis combinações de triângulos.
+	
+	\item \textbf{\textit{Ray Tracing} e algoritmos volumétricos}:\\
+	
+	\item \textbf{}
+\end{itemize}
 
-\hint{O que é ``volume rendering''? Que exemplos de algoritmos existem?}
 
-\subsection{\emph{Ray Marching}}
+\subsection{Renderização por Volume: \emph{Ray Marching}}
 \label{ssec::arte:render:raymarch}
 
 \hint{Como funciona o algoritmo? É paralelizável? Se sim, como e porquê?}
+
+\begin{enumerate}
+	\item \textbf{\textit{Ray casting}}:
+	
+	\item \textbf{\textit{Sampling}}:
+	
+	\item \textbf{\textit{Shading}}:
+	
+	\item \textbf{\textit{Compositing}}:
+\end{enumerate}
 
 
 \section{\opengl}
