@@ -25,8 +25,9 @@
 \usepackage{amssymb}
 \usepackage{calc}
 \usepackage{array}
-\usepackage{color}
-\usepackage{colortbl}
+%\usepackage{color}
+%\usepackage{colortbl}
+\usepackage{xcolor}
 
 \usepackage{caption}
 \usepackage{subcaption}
@@ -155,8 +156,9 @@
 \newcommand{\appname}{\emph{\theapp}:~{\emph{\theappdescription}}}
 \newcommand{\opengl}{\textit{OpenGL}\textsuperscript{\textregistered}}
 
-\newcommand{\placeholder}[1]{\textcolor{red}{[Rev] #1}}
-\newcommand{\todo}[1]{\textcolor{red}{[TODO] #1}}
+\newcommand{\revision}[1]{{\color{red}[Rev] #1}}
+\newcommand{\todo}[1]{{\color{red}[TODO] #1}}
+\newcommand{\hint}[1]{{\color{green!50!black}[Hint] #1}}
 
 
 \begin{document}
