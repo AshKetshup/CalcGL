@@ -1,23 +1,33 @@
-#version 330 core
+#version 450 core
+
+#define SURF_DIST .01
+
+uniform vec2  iResolution;
+uniform float iTime;
 
 uniform vec3  lightPos;
 uniform vec4  lightColor;
-//uniform vec4  colorAttempt;
+
+uniform vec3  objectColor;
+
 uniform vec3  camPos;
 uniform vec3  camDirFront;
 uniform vec3  camDirUp;
 uniform vec3  camDirRight;
 uniform float camFOV;
+
 uniform float renderDistance;
 
 out vec4 color;
 
-bool even(in int n) {
+vec3 normal = vec3(0.);
+
+bool even(int n) {
     return n % 2 == 0;
 }
 
 // Defines a implicit function
-float evalImplicitFunc(in vec3 point) {
+float evalImplicitFunc(vec3 point) {
     float x = point.x;
     float y = point.y;
     float z = point.z;
@@ -28,8 +38,13 @@ float evalImplicitFunc(in vec3 point) {
     
     // <gamma conditions>
 
-    return prod * (even(count) ? -1.f : 1.f);
+    return pow(x-0., 2.) + pow(y-1., 2.) + pow(z-6., 2.) - pow(1., 2.); //prod; // * (even(count) ? -1.f : 1.f);
 }
+
+bool collatz(float x, float y) {
+    return ((x >= 0.) && (y <= 0.)) || ((x <= 0.) && (y >= 0.));
+}
+
 
 // Find a point in a Ray
 vec3 findPRay(vec3 rPos, vec3 rDir, float dist) {
@@ -41,94 +56,76 @@ vec3 findPPlain(vec3 pPos, vec3 pH, vec3 pV, vec2 coords) {
     return (pPos + coords.x * pH + coords.y * pV);
 }
 
-vec3 bisection(vec3 leftP, vec3 rightP, float threshold) {
-    while (true) {
-        vec3  midPoint       = (leftP + rightP)/2.f;
-        float signedDistance = evalImplicitFunc(midPoint);
+
+float ro_sign;
+
+float rayMarch(vec3 ro, vec3 rd) {
+    // float curr = evalImplicitFunc(ro);
+    vec2 e = vec2(.01, 0);
+    vec3 p;
+    float curr;
+    
+    float dO = 0.f;
+    while (dO < renderDistance) {
+        p = findPRay(ro, rd, dO);
+
+        curr = evalImplicitFunc(p);
+        if (collatz(ro_sign, curr)) {
+            normal = normalize(
+                curr - vec3(
+                    evalImplicitFunc(p - e.xyy),
+                    evalImplicitFunc(p - e.yxy),
+                    evalImplicitFunc(p - e.yyx)
+                )
+            );
+
+            break;
+        }
         
-        if (abs(signedDistance) < threshold)
-            return midPoint;
-            
-        if (signedDistance < 0.f)
-            leftP  = midPoint;
-        else
-            rightP = midPoint;
+        dO += SURF_DIST;
     }
+
+    return dO;
 }
 
-bool rayMarch(vec3 posStart, vec3 dir, vec3 dirR, vec3 dirU, float FOV, float aStep, float mDist, float mThreshold, vec2 coords) {
-    // Get Point from generated Plain
-    vec3 pointToDir = findPPlain(
-        findPRay(posStart, dir, FOV), 
-        dirR, 
-        dirU, 
-        coords
-    );
-    
-    float t           = 0.f;
-    vec3  marchingDir = normalize(pointToDir - posStart);
-    vec3  leftPoint   = pointToDir;
-    vec3  rightPoint  = vec3(0.f);
-    bool  intercept   = false;
-    bool  currentSign = (evalImplicitFunc(leftPoint) < 0.f);
+float getLight(vec3 p) {    
+    vec3  l = normalize(lightPos - p);
+    float d = rayMarch(findPRay(p, normal, SURF_DIST * 2.f), l);
 
-    while (t < mDist && !intercept) {
-        leftPoint = findPRay(pointToDir, marchingDir, t);
-        t += aStep;
-        rightPoint = findPRay(pointToDir, marchingDir, t);
-        
-        intercept = (evalImplicitFunc(rightPoint) < 0.f) != currentSign;
-    }
-    
-    if (t < mDist)
-        return false;
-    
-    vec3 pIntersected = bisection(leftPoint, rightPoint, mThreshold);
-    return pIntersected != vec3(0.f);
+    float dif = clamp(dot(normal, l), 0.f, 1.f);
+    if (d < length(lightPos - p))
+        dif *= .1;
+
+    return dif;
 }
-
 
 void main() {
     // Since gl_PointCoord is [0, 1] then we need  
     // to shift them in half to get a centered origin
-    vec2 coords = gl_PointCoord - vec2(.5f);
+    vec2 uv = (gl_FragCoord.xy - .5 * iResolution.xy) / iResolution.y;
 
-    // Normalize camera vectors
-    vec3 cFront = normalize(camDirFront);
-    vec3 cRight = normalize(camDirRight);
-    vec3 cUp    = normalize(camDirUp);
+    vec3 ro = camPos;
+    vec3 rd = normalize(
+        findPPlain(
+		    findPRay(camPos, normalize(camDirFront), camFOV),
+		    normalize(camDirRight),
+		    normalize(camDirUp),
+		    uv
+	    ) - ro
+    );
 
-    // Ray variables
-    // Ray Origin
-    vec3 rPos   = camPos;
-    // Ray Direction
-    vec3 rDir   = cFront;
+    ro_sign = evalImplicitFunc(ro);
+    float d = rayMarch(ro, rd);
 
-    // Plain variables
-    // Plain central point
-    vec3 pPos   = rPos + camFOV * rDir;
-    // Plain y vector
-    vec3 pV     = cUp;
-    // Plain x vector
-    vec3 pH     = cRight;
-    // Plain calculated point from screen fragment coordinates
-    vec3 start  = findPPlain(pPos, pH, pV, coords);
+    if (d < renderDistance) {
+        vec3 p = findPRay(ro, rd, d);
+        vec3 dif = vec3(getLight(p));
 
-    // Ray for the algorithm
-    // RayMarching starting point
-    vec3 mRPos  = start;
-    // RayMarching direction
-    vec3 mRDir  = normalize(start - camPos);
-    
-    // Declaration algoStep, maxDist
-    float algoStep      = 1.f;
-    float algoThreshold = 0.01f;
-    float maxDist       = renderDistance; // default 10.f
+        vec3 lColor = lightColor.xyz * pow(dif, vec3(.4545));
 
-    // Initiate RayMarch
-    bool isHit = rayMarch(camPos, cFront, cRight, cUp, camFOV, algoStep, maxDist, algoThreshold, coords);
-
-    // Output to screen
-    color = isHit ? vec4(1.f,1.f,1.f,1.0) : vec4(0.f,0.f,0.f,1.0);
-    //color = colorAttempt;
+        color = vec4(/*objectColor * */lColor, 1.f);
+    } else {
+        //color = vec4(0.5f);
+        color = vec4(0.5);
+    }
 }

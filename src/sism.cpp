@@ -123,6 +123,11 @@ action CalcGL::processInput(void) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        camera.MovementSpeed = 6.f;
+    else
+        camera.MovementSpeed = 3.f;
+
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -131,6 +136,7 @@ action CalcGL::processInput(void) {
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
+
 
     /*
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS)
@@ -142,7 +148,7 @@ action CalcGL::processInput(void) {
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS)
         molroty -= 1.f; // TODO: Change for camera rotation
     */
-
+    
     // TODO Might need
     //if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
     //    if (!w_was_pressed)
@@ -180,18 +186,22 @@ action CalcGL::processInput(void) {
     }
 
     if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
-        switchModeView(false);
-        osdialog_color color;
-        int ret = CalcGL::selectColorDialog(&color);
+        //switchModeView(false);
+        //osdialog_color color;
+        //int ret = CalcGL::selectColorDialog(&color);
 
         // debugs("Color: (%d, %d, %d, %d); ret = %d\n", (int)color.r, (int)color.g, (int)color.b, (int)color.a, ret);
-        if (ret == 0) {
-            surfColor = vec3((int) color.r / 255.f, (int) color.g / 255.f, (int) color.b / 255.f);
-            switchModeView(true);
-            return action::CHANGE_COLOR;
-        }
+        //if (ret == 0) {
+        //    surfColor = vec3((int) color.r / 255.f, (int) color.g / 255.f, (int) color.b / 255.f);
+        //    switchModeView(true);
+        //    return action::CHANGE_COLOR;
+        //}
+
+        //switchModeView(true);
+        //return action::NO_ACTION;
         switchModeView(true);
-        return action::NO_ACTION;
+
+        return action::CHANGE_COLOR;
     }
 
     if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
@@ -323,12 +333,6 @@ void CalcGL::refresh(void) {
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    // TODO: FIND BUG HERE
-    writeInstructions(getTextRenderer(), 10.f, 10.f, 0.6f);
-    writeAuthors(getTextRenderer(), 1470.f, scr_height - 2.f * getTextRenderer().getFontSize(), 0.75f);
-    writeText(getTextRenderer(), getFPS(), 10.f, scr_height - (2 * getTextRenderer().getFontSize()), 0.8f);
-    writeText(getTextRenderer(), (!fname.empty() ? filesystem::path(fname).filename().string() : "No file opened"), 10.f, scr_height - getTextRenderer().getFontSize(), 0.8f);
-
     if (logo.isAvailable() && fname.empty())
         logo.render(scr_width, scr_height);
 
@@ -336,14 +340,21 @@ void CalcGL::refresh(void) {
     // Process Input Handler
     switch (processInput()) {
         case action::OPEN_FILE:
-            // surface = Surface(fname.data());
-            sTracing = SphereTracing();
-            sTracing.generate();
-            // debugs("\n%s\n", surface.toString().c_str());
+            if (rmode == SurfaceGPU) {
+                surface = Surface(fname.data());
+                // debugs("\n%s\n", surface.toString().c_str());
+                surface.generate();
 
-            /*getRayMarchGPUShader().recompileWithFunctions(surface.getExpressions());
-            getRayMarchCPUShader().recompileWithFunctions(surface.getExpressions());*/
+                getRayMarchGPUShader().recompileWithFunctions(surface.getExpressions());
+            }
+
+            if (rmode == SurfaceCPU)
+                getRayMarchCPUShader().recompileWithFunctions(surface.getExpressions());
+
             renderIF = true;
+
+            if (rmode == STraceGPU)
+                renderIF = false;
 
             break;
 
@@ -355,6 +366,24 @@ void CalcGL::refresh(void) {
             break;
 
         case action::CHANGE_COLOR:
+            try {
+            sTracing = SphereTracing();
+            sTracing.generate();
+
+            renderIF = true;
+            
+            shaderSphereTracingGPU = Shader((shaderDir + slash + SPHERETRACING_VS).c_str(), (shaderDir + slash + SPHERETRACING_FS).c_str());
+            if (!shaderSphereTracingGPU.wasSuccessful())
+                throw CalcGLException(
+                    "SphereTrace GPU: " + shaderSphereTracingGPU.getReport() + "\n" + shaderSphereTracingGPU.getVertexShaderPath() + "\n" + shaderSphereTracingGPU.getGeometryShaderPath()
+                );
+            } catch (const CalcGLException& e) {
+                debugs("[ERROR]\n");
+                cout << "Error: " << e.what() << endl;
+                cout << "Abort launch!" << endl;
+                success = false;
+            }
+
             break;
 
         default:
@@ -372,8 +401,16 @@ void CalcGL::refresh(void) {
                 break;
             case SurfaceGPU:
             default:
-                surface.renderGPU(getRayMarchGPUShader(), getCamera(), scr_width, scr_height, surfColor);
+                surface.renderGPU(getRayMarchGPUShader(), getCamera(), scr_width, scr_height, surfColor, deltaTime, 100.);
         }
+
+
+    // TODO: FIND BUG HERE
+    writeInstructions(getTextRenderer(), 10.f, 10.f, 0.6f);
+    writeAuthors(getTextRenderer(), 1470.f, scr_height - 2.f * getTextRenderer().getFontSize(), 0.75f);
+    writeText(getTextRenderer(), getFPS(), 10.f, scr_height - (2 * getTextRenderer().getFontSize()), 0.8f);
+    writeText(getTextRenderer(), (!fname.empty() ? filesystem::path(fname).filename().string() : "No file opened"), 10.f, scr_height - getTextRenderer().getFontSize(), 0.8f);
+
 
     glfwSwapBuffers(window);
     glfwPollEvents();

@@ -13,6 +13,7 @@ using namespace glm;
 
 class Surface {
 	private:
+		unsigned int vaoHandle;
 		string source = "";
 		vector<string> functions;
 	public:
@@ -23,8 +24,10 @@ class Surface {
 		bool even(int);
 		float eval(vec3);
 		bool isIntercepted(vec3 point, bool currentSign);
-		void renderGPU(Shader, Camera, const float, const float, vec3, const float = 10.f) const;
+		void renderGPU(Shader, Camera, const float, const float, vec3, const float, const float = 10.f) const;
 		void renderCPU(Shader, Camera, const float, const float, vec3, const float = 10.f, const int threads = 1) const;
+		void generate();
+
 		string toString();
 };
 

@@ -60,36 +60,56 @@ bool Surface::isIntercepted(vec3 point, bool currentSign) {
 	return (eval(point) < 0.f) != currentSign;
 }
 
+void Surface::generate() {
+	glGenVertexArrays(1, &vaoHandle);
+	glBindVertexArray(vaoHandle);
+	glVertexAttrib1f(0, 0);
+
+	glBindVertexArray(0);
+}
+
 void Surface::renderGPU(
 	Shader s, 
 	Camera c,
 	const float width,
 	const float height,
 	vec3 objectColor,
+	const float deltaTime,
 	const float renderDistance
 ) const {
 	vec4 lightColor = vec4(1.0f);
-	vec3 lightPos = c.Position;
+	vec3 lightPos = vec3(0, 5, 6);
 
-	float camFOV  = .5f;
-	// float camFOV  = c.Zoom;
+	lightPos += vec3(sin(deltaTime) * 2., 0., cos(deltaTime) * 2.);
 
-	// TODO: PASS VARIABLES TO THE GPU AS UNIFORMS
+	float camFOV;
+	{
+		// Cálculo do FOV
+		float MIN = 1.f, MAX = ZOOM;
+		float fov_min = 0.5f, fov_max = 2.0f;
+		camFOV = (fov_min - fov_max) / (MAX - MIN) * (c.Zoom - MIN) + fov_max;
+	}
+
+	glDisable(GL_DEPTH_TEST);
+
 	s.use();
-	
-	// s.setVec3("lightPos", lightPos);
-	// s.setVec3("lightColor", lightColor);
 
-	s.setVec3("camPos", c.Position);
-	// s.setVec3("camDirF", c.Front);
-	// s.setVec3("camDirU", c.Up);
-	// s.setVec3("camDirR", c.Right);
-	
-	// s.setFloat("camFOV", camFOV);
-	// s.setFloat("renderDistance", renderDistance);
+	s.setVec3("lightPos",     lightPos);
+	s.setVec3("lightColor", lightColor);
 
-	//s.setVec4("colorAttempt", 0.f, 0.f, 0.f, 1.f);
+	s.setVec3("camPos",   c.Position);
+	s.setVec3("camDirFront", c.Front);
+	s.setVec3("camDirUp",    c.Up   );
+	s.setVec3("camDirRight", c.Right);
 	
+	s.setFloat("camFOV", camFOV);
+	s.setFloat("renderDistance", renderDistance);
+
+	s.setFloat("iTime", deltaTime);
+	s.setVec2("iResolution", vec2(width, height));
+	s.setVec3("objectColor", vec3(0., 1., 0.));
+	
+	glBindVertexArray(vaoHandle);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glUseProgram(0);
@@ -225,17 +245,9 @@ SphereTracing::SphereTracing() {
 }
 
 void SphereTracing::generate() {
-	// glGenBuffers(1, &uboHandle);
-	// glBindBuffer(GL_UNIFORM_BUFFER, uboHandle);
-	// glBufferData(GL_UNIFORM_BUFFER, sizeof(SPHERE), spheres.data(), GL_STATIC_DRAW);
-
 	glGenVertexArrays(1, &vaoHandle);
 	glBindVertexArray(vaoHandle);
 	glVertexAttrib1f(0, 0);
-
-	// glEnableVertexAttribArray(0);  // Uniform Buffer Object
-	// glBindBuffer(GL_UNIFORM_BUFFER, uboHandle);
-	// glVertexAttribPointer((GLuint)0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	glBindVertexArray(0);
 }
@@ -297,7 +309,7 @@ Ray::Ray(vec3 point, vec3 dir) {
 }
 
 vec3 Ray::findPoint(float dist) {
-	// Equação vetorial reta:
+	//  Equação vetorial reta:
 	//	(x,y,z) = (x0,y0,z0) + dist(vx,vy,vz)
 	//	(Ponto) = (Pos. Ini) + dist(vetor dir. norm.)
 
