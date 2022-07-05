@@ -333,19 +333,33 @@ void CalcGL::refresh(void) {
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    if (logo.isAvailable() && fname.empty())
-        logo.render(scr_width, scr_height);
+    // if (logo.isAvailable() && fname.empty())
+    //     logo.render(scr_width, scr_height);
 
 
     // Process Input Handler
     switch (processInput()) {
         case action::OPEN_FILE:
             if (rmode == SurfaceGPU) {
-                surface = Surface(fname.data());
-                // debugs("\n%s\n", surface.toString().c_str());
-                surface.generate();
+                try {
+                    surface = Surface(fname.data());
+                    // debugs("\n%s\n", surface.toString().c_str());
+                    surface.generate();
 
-                getRayMarchGPUShader().recompileWithFunctions(surface.getExpressions());
+                    shaderRayMarchGPU = Shader((shaderDir + slash + RAYMARCH_VS).c_str(), (shaderDir + slash + RAYMARCH_FS).c_str(), surface.getExpressions());
+                    if (!shaderRayMarchGPU.wasSuccessful())
+                        throw CalcGLException(
+                            "SphereTrace GPU: " + shaderRayMarchGPU.getReport() + "\n" + shaderRayMarchGPU.getVertexShaderPath() + "\n" + shaderRayMarchGPU.getGeometryShaderPath()
+                        );
+
+                } catch (const CalcGLException& e) {
+                    debugs("[ERROR]\n");
+                    cout << "Error: " << e.what() << endl;
+                    cout << "Abort launch!" << endl;
+                    success = false;
+                }
+
+                //getRayMarchGPUShader().recompileWithFunctions(surface.getExpressions());
             }
 
             if (rmode == SurfaceCPU)
@@ -367,16 +381,16 @@ void CalcGL::refresh(void) {
 
         case action::CHANGE_COLOR:
             try {
-            sTracing = SphereTracing();
-            sTracing.generate();
+                sTracing = SphereTracing();
+                sTracing.generate();
 
-            renderIF = true;
+                renderIF = true;
             
-            shaderSphereTracingGPU = Shader((shaderDir + slash + SPHERETRACING_VS).c_str(), (shaderDir + slash + SPHERETRACING_FS).c_str());
-            if (!shaderSphereTracingGPU.wasSuccessful())
-                throw CalcGLException(
-                    "SphereTrace GPU: " + shaderSphereTracingGPU.getReport() + "\n" + shaderSphereTracingGPU.getVertexShaderPath() + "\n" + shaderSphereTracingGPU.getGeometryShaderPath()
-                );
+                shaderSphereTracingGPU = Shader((shaderDir + slash + SPHERETRACING_VS).c_str(), (shaderDir + slash + SPHERETRACING_FS).c_str());
+                if (!shaderSphereTracingGPU.wasSuccessful())
+                    throw CalcGLException(
+                        "SphereTrace GPU: " + shaderSphereTracingGPU.getReport() + "\n" + shaderSphereTracingGPU.getVertexShaderPath() + "\n" + shaderSphereTracingGPU.getGeometryShaderPath()
+                    );
             } catch (const CalcGLException& e) {
                 debugs("[ERROR]\n");
                 cout << "Error: " << e.what() << endl;
@@ -405,11 +419,11 @@ void CalcGL::refresh(void) {
         }
 
 
-    // TODO: FIND BUG HERE
-    writeInstructions(getTextRenderer(), 10.f, 10.f, 0.6f);
-    writeAuthors(getTextRenderer(), 1470.f, scr_height - 2.f * getTextRenderer().getFontSize(), 0.75f);
-    writeText(getTextRenderer(), getFPS(), 10.f, scr_height - (2 * getTextRenderer().getFontSize()), 0.8f);
-    writeText(getTextRenderer(), (!fname.empty() ? filesystem::path(fname).filename().string() : "No file opened"), 10.f, scr_height - getTextRenderer().getFontSize(), 0.8f);
+    // TODO: FIND BUG HERE && DECOMMENT
+    // writeInstructions(getTextRenderer(), 10.f, 10.f, 0.6f);
+    // writeAuthors(getTextRenderer(), 1470.f, scr_height - 2.f * getTextRenderer().getFontSize(), 0.75f);
+    // writeText(getTextRenderer(), getFPS(), 10.f, scr_height - (2 * getTextRenderer().getFontSize()), 0.8f);
+    // writeText(getTextRenderer(), (!fname.empty() ? filesystem::path(fname).filename().string() : "No file opened"), 10.f, scr_height - getTextRenderer().getFontSize(), 0.8f);
 
 
     glfwSwapBuffers(window);
@@ -474,11 +488,11 @@ CalcGL::CalcGL(const unsigned int width, const unsigned int height) {
         debugs("(corrected %d shaders) ", autoCorrectShaders(shaderDir));
 
         debugs("[OK]\n\tLoading shaders... ");
-        shaderRayMarchCPU = Shader((shaderDir + slash + SURF_VS).c_str(), (shaderDir + slash + SURF_FS).c_str());
-        if (!shaderRayMarchCPU.wasSuccessful())
-            throw CalcGLException(
-                "RayMarch CPU: " + shaderRayMarchCPU.getReport() + "\n" + shaderRayMarchCPU.getVertexShaderPath() + "\n" + shaderRayMarchCPU.getGeometryShaderPath()
-            );
+        // shaderRayMarchCPU = Shader((shaderDir + slash + SURF_VS).c_str(), (shaderDir + slash + SURF_FS).c_str());
+        // if (!shaderRayMarchCPU.wasSuccessful())
+        //     throw CalcGLException(
+        //         "RayMarch CPU: " + shaderRayMarchCPU.getReport() + "\n" + shaderRayMarchCPU.getVertexShaderPath() + "\n" + shaderRayMarchCPU.getGeometryShaderPath()
+        //     );
 
         shaderRayMarchGPU = Shader((shaderDir + slash + RAYMARCH_VS).c_str(), (shaderDir + slash + RAYMARCH_FS).c_str());
         if (!shaderRayMarchGPU.wasSuccessful())
@@ -486,30 +500,30 @@ CalcGL::CalcGL(const unsigned int width, const unsigned int height) {
                 "RayMarch GPU: " + shaderRayMarchGPU.getReport() + "\n" + shaderRayMarchGPU.getVertexShaderPath() + "\n" + shaderRayMarchGPU.getGeometryShaderPath()
             );
 
-        shaderSphereTracingGPU = Shader((shaderDir + slash + SPHERETRACING_VS).c_str(), (shaderDir + slash + SPHERETRACING_FS).c_str());
-        if (!shaderSphereTracingGPU.wasSuccessful())
-            throw CalcGLException(
-                "SphereTrace GPU: " + shaderSphereTracingGPU.getReport() + "\n" + shaderSphereTracingGPU.getVertexShaderPath() + "\n" + shaderSphereTracingGPU.getGeometryShaderPath()
-            );
-
-        shaderFont = Shader((shaderDir + slash + FONT_VS).c_str(), (shaderDir + slash + FONT_FS).c_str());
-        if (!shaderFont.wasSuccessful())
-            throw CalcGLException("Font: " + shaderFont.getReport());
-
-        shaderLogo = Shader((shaderDir + slash + LOGO_VS).c_str(), (shaderDir + slash + LOGO_FS).c_str());
-        if (!shaderLogo.wasSuccessful())
-            throw CalcGLException("Logo: " + shaderLogo.getReport());
+        //shaderSphereTracingGPU = Shader((shaderDir + slash + SPHERETRACING_VS).c_str(), (shaderDir + slash + SPHERETRACING_FS).c_str());
+        //if (!shaderSphereTracingGPU.wasSuccessful())
+        //    throw CalcGLException(
+        //        "SphereTrace GPU: " + shaderSphereTracingGPU.getReport() + "\n" + shaderSphereTracingGPU.getVertexShaderPath() + "\n" + shaderSphereTracingGPU.getGeometryShaderPath()
+        //    );
+        //
+        // shaderFont = Shader((shaderDir + slash + FONT_VS).c_str(), (shaderDir + slash + FONT_FS).c_str());
+        // if (!shaderFont.wasSuccessful())
+        //     throw CalcGLException("Font: " + shaderFont.getReport());
+        // 
+        // shaderLogo = Shader((shaderDir + slash + LOGO_VS).c_str(), (shaderDir + slash + LOGO_FS).c_str());
+        // if (!shaderLogo.wasSuccessful())
+        //     throw CalcGLException("Logo: " + shaderLogo.getReport());
 
         camera = Camera(vec3(0.0f, 1.0f, 0.0f));
 
-        debugs("[OK]\n\tLoading text renderer... ");
-        textRender = TextRenderer(scr_width, scr_height, shaderFont);
-        textRender.Load(getFont(), 24);
-
-        debugs("[OK]\n\tLoading logo... ");
-        logo = Logo((resDir + slash + logoName).c_str(), shaderLogo);
-        if (!logo.wasSuccessful())
-            throw CalcGLException("Failed to load logo");
+        // debugs("[OK]\n\tLoading text renderer... ");
+        // textRender = TextRenderer(scr_width, scr_height, shaderFont);
+        // textRender.Load(getFont(), 24);
+        // 
+        // debugs("[OK]\n\tLoading logo... ");
+        // logo = Logo((resDir + slash + logoName).c_str(), shaderLogo);
+        // if (!logo.wasSuccessful())
+        //     throw CalcGLException("Failed to load logo");
 
         debugs("[OK]\n");
         debugs("Done.\n\n");

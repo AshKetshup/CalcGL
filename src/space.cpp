@@ -94,6 +94,25 @@ void Surface::renderGPU(
 
 	s.use();
 
+	/*
+	uniform vec2  iResolution;
+	uniform float iTime;
+
+	uniform vec3  lightPos;
+	uniform vec3  lightColor;
+
+	uniform vec3  fgColor;
+	uniform vec3  bgColor;
+
+	uniform vec3  camPos;
+	uniform vec3  camDirFront;
+	uniform vec3  camDirUp;
+	uniform vec3  camDirRight;
+	uniform float camFOV;
+
+	uniform float renderDistance;
+	*/
+
 	s.setVec3("lightPos",     lightPos);
 	s.setVec3("lightColor", lightColor);
 
@@ -107,7 +126,9 @@ void Surface::renderGPU(
 
 	s.setFloat("iTime", deltaTime);
 	s.setVec2("iResolution", vec2(width, height));
-	s.setVec3("objectColor", vec3(0., 1., 0.));
+	
+	s.setVec3("fgColor", vec3(0., 1., 0.));
+	s.setVec3("bgColor", vec3(.5, .5, .5));
 	
 	glBindVertexArray(vaoHandle);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

@@ -6,9 +6,10 @@ uniform vec2  iResolution;
 uniform float iTime;
 
 uniform vec3  lightPos;
-uniform vec4  lightColor;
+uniform vec3  lightColor;
 
-uniform vec3  objectColor;
+uniform vec3  fgColor;
+uniform vec3  bgColor;
 
 uniform vec3  camPos;
 uniform vec3  camDirFront;
@@ -20,11 +21,15 @@ uniform float renderDistance;
 
 out vec4 color;
 
-vec3 normal = vec3(0.);
 
-bool even(int n) {
-    return n % 2 == 0;
-}
+/* GLOBAL VARIABLES */
+vec3 point;
+vec3 normal  = vec3(0.);
+vec2 e       = vec2(.01, 0.);
+float result = 0.f;
+float curr;
+float ro_f;
+
 
 // Defines a implicit function
 float evalImplicitFunc(vec3 point) {
@@ -32,50 +37,28 @@ float evalImplicitFunc(vec3 point) {
     float y = point.y;
     float z = point.z;
     
-    int count = 0;
     float prod = 1.f;
-    float image = 0.f;
     
     // <gamma conditions>
 
-    return pow(x-0., 2.) + pow(y-1., 2.) + pow(z-6., 2.) - pow(1., 2.); //prod; // * (even(count) ? -1.f : 1.f);
-}
-
-bool collatz(float x, float y) {
-    return ((x >= 0.) && (y <= 0.)) || ((x <= 0.) && (y >= 0.));
+    return prod;
 }
 
 
-// Find a point in a Ray
-vec3 findPRay(vec3 rPos, vec3 rDir, float dist) {
-    return (rPos + dist * rDir);
-}
 
-// Find a point in the plain.
-vec3 findPPlain(vec3 pPos, vec3 pH, vec3 pV, vec2 coords) {
-    return (pPos + coords.x * pH + coords.y * pV);
-}
+float RayMarch(vec3 ro, vec3 rd) {
+    float dO = 0.;
 
-
-float ro_sign;
-
-float rayMarch(vec3 ro, vec3 rd) {
-    // float curr = evalImplicitFunc(ro);
-    vec2 e = vec2(.01, 0);
-    vec3 p;
-    float curr;
-    
-    float dO = 0.f;
     while (dO < renderDistance) {
-        p = findPRay(ro, rd, dO);
-
-        curr = evalImplicitFunc(p);
-        if (collatz(ro_sign, curr)) {
+        point = ro + rd * dO;
+        
+        curr = evalImplicitFunc(point);
+        if ((ro_f <= 0. && curr >= 0.) || (ro_f >= 0. && curr <= 0.)) {
             normal = normalize(
                 curr - vec3(
-                    evalImplicitFunc(p - e.xyy),
-                    evalImplicitFunc(p - e.yxy),
-                    evalImplicitFunc(p - e.yyx)
+                    evalImplicitFunc(point - e.xyy), 
+                    evalImplicitFunc(point - e.yxy), 
+                    evalImplicitFunc(point - e.yyx)
                 )
             );
 
@@ -84,19 +67,8 @@ float rayMarch(vec3 ro, vec3 rd) {
         
         dO += SURF_DIST;
     }
-
+    
     return dO;
-}
-
-float getLight(vec3 p) {    
-    vec3  l = normalize(lightPos - p);
-    float d = rayMarch(findPRay(p, normal, SURF_DIST * 2.f), l);
-
-    float dif = clamp(dot(normal, l), 0.f, 1.f);
-    if (d < length(lightPos - p))
-        dif *= .1;
-
-    return dif;
 }
 
 void main() {
@@ -104,28 +76,48 @@ void main() {
     // to shift them in half to get a centered origin
     vec2 uv = (gl_FragCoord.xy - .5 * iResolution.xy) / iResolution.y;
 
+    // Normalizes all Camera directions
+    vec3 camDirF = normalize(camDirFront);
+    vec3 camDirU = normalize(camDirUp   );
+    vec3 camDirR = normalize(camDirRight);
+
+    // Initializes color to the color of the background
+    vec3 col     = camDirF;
+
+    // Initializes algorithm starting point and direction
     vec3 ro = camPos;
-    vec3 rd = normalize(
-        findPPlain(
-		    findPRay(camPos, normalize(camDirFront), camFOV),
-		    normalize(camDirRight),
-		    normalize(camDirUp),
-		    uv
-	    ) - ro
+    vec3 rd = normalize((
+            (ro + camDirF * camFOV) +
+		    (uv.x * camDirR) +
+		    (uv.y * camDirU)
+        ) - ro
     );
 
-    ro_sign = evalImplicitFunc(ro);
-    float d = rayMarch(ro, rd);
+    // Evaluates the starting point
+    ro_f = evalImplicitFunc(ro);
+
+    // Gets the distance to an intercection
+    float d = RayMarch(ro, rd);
 
     if (d < renderDistance) {
-        vec3 p = findPRay(ro, rd, d);
-        vec3 dif = vec3(getLight(p));
+        // If the distance is smaller than the render distance 
+        // we may change the color based on the light and foreground 
+        // color
 
-        vec3 lColor = lightColor.xyz * pow(dif, vec3(.4545));
+        // finds the intercepted point
+        vec3 p = ro + rd * d;
+        
+        /* Calculates Light */
+        vec3 l = normalize(lightPos - p);
+        float d = RayMarch(p + normal * SURF_DIST * 2., l);
 
-        color = vec4(/*objectColor * */lColor, 1.f);
-    } else {
-        //color = vec4(0.5f);
-        color = vec4(0.5);
+        float dif = clamp(dot(normal, l), 0., 1.);
+        if (d < length(lightPos - p))
+            dif *= .1;
+        
+        // defines the output color
+        col = fgColor * pow(lightColor * dif, vec3(.4545));
     }
+
+    color = vec4(col, 1.);
 }
