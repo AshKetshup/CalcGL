@@ -24,7 +24,7 @@ class Surface {
 		bool even(int);
 		float eval(vec3);
 		bool isIntercepted(vec3 point, bool currentSign);
-		void renderGPU(Shader, Camera, const float, const float, vec3, const float, const float = 10.f) const;
+		void renderGPU(Shader, Camera, const float, const float, vec3, vec3, const float, const float = 10.f) const;
 		void renderCPU(Shader, Camera, const float, const float, vec3, const float = 10.f, const int threads = 1) const;
 		void generate();
 

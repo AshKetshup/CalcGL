@@ -175,5 +175,8 @@
     <None Include="bin\shaders\spheretracing_fs_ash_bk.glsl">
       <Filter>Shader Files</Filter>
     </None>
+    <None Include="bin\funcs\3.function">
+      <Filter>Function Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

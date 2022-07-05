@@ -67,6 +67,7 @@ namespace calcgl {
 	class CalcGL {
 		private:
 			static constexpr vec3 SURF_DEFAULT_COLOR = vec3(50.f/255.f, 140.f/255.f, 235.f/ 255.f);
+			static constexpr vec3 BG_DEFAULT_COLOR = vec3(46.f / 255.f, 68.f / 255.f, 64.f / 255.f);
 			bool success = false;
 			bool renderIF = false;
 
@@ -83,6 +84,7 @@ namespace calcgl {
 			Shader shaderLogo;
 
 			vec3 surfColor = SURF_DEFAULT_COLOR;
+			vec3 bgColor   = BG_DEFAULT_COLOR;
 
 			string fontDir;
 			string fontName;
