@@ -74,6 +74,7 @@ void Surface::renderGPU(
 	const float width,
 	const float height,
 	vec3 objectColor,
+	vec3 bgColor,
 	const float deltaTime,
 	const float renderDistance
 ) const {
@@ -127,8 +128,8 @@ void Surface::renderGPU(
 	s.setFloat("iTime", deltaTime);
 	s.setVec2("iResolution", vec2(width, height));
 	
-	s.setVec3("fgColor", vec3(0., 1., 0.));
-	s.setVec3("bgColor", vec3(.5, .5, .5));
+	s.setVec3("fgColor", objectColor);
+	s.setVec3("bgColor", bgColor);
 	
 	glBindVertexArray(vaoHandle);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

@@ -82,7 +82,7 @@ void main() {
     vec3 camDirR = normalize(camDirRight);
 
     // Initializes color to the color of the background
-    vec3 col     = camDirF;
+    vec3 col     = bgColor;
 
     // Initializes algorithm starting point and direction
     vec3 ro = camPos;

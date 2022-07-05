@@ -1,0 +1,1 @@
+(pow(x, 2.f) + pow(y, 2.f) + pow(z, 2.f) - 1.f) * (pow(x - 2.f, 2.f) + pow(y - 1.f, 2.f) + pow(z, 2.f) - 1.f) * (pow(x - 1.f, 2.f) + pow(y - 2.f, 2.f) + pow(z, 2.f) - 1.f) - .5
