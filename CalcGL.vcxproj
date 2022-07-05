@@ -191,6 +191,7 @@
     <None Include="bin\funcs\1.function" />
     <None Include="bin\funcs\2.function" />
     <None Include="bin\funcs\3.function" />
+    <None Include="bin\funcs\4.function" />
     <None Include="bin\shaders\font_fs.glsl" />
     <None Include="bin\shaders\font_vs.glsl" />
     <None Include="bin\shaders\lighting_fs.glsl" />

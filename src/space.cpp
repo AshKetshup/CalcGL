@@ -114,7 +114,7 @@ void Surface::renderGPU(
 	uniform float renderDistance;
 	*/
 
-	s.setVec3("lightPos",     lightPos);
+	s.setVec3("lightPos",   c.Position - c.Front * vec3(0.5));
 	s.setVec3("lightColor", lightColor);
 
 	s.setVec3("camPos",   c.Position);

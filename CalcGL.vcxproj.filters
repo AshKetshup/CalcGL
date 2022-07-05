@@ -178,5 +178,8 @@
     <None Include="bin\funcs\3.function">
       <Filter>Function Files</Filter>
     </None>
+    <None Include="bin\funcs\4.function">
+      <Filter>Function Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -109,7 +109,7 @@ void main() {
         
         /* Calculates Light */
         vec3 l = normalize(lightPos - p);
-        float d = RayMarch(p + normal * SURF_DIST * 2., l);
+        d = RayMarch(p + normal * SURF_DIST * 2., l);
 
         float dif = clamp(dot(normal, l), 0., 1.);
         if (d < length(lightPos - p))
