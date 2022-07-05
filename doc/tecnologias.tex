@@ -10,24 +10,32 @@ Bla bla inicial\ldots
 \section{Tecnologias}
 \label{sec::tecno:tecno}
 
+Para a implementação do projeto \theapp~com \opengl~foi escolhida a linguagem de programação C++. A fim de melhorar a experiência de utilização do \opengl, foram utilizadas as seguintes bibliotecas e \textit{frameworks}:
+
 \begin{itemize}
-    \item \textbf{C++}: Linguagem compilada de uso geral multi-paradigma. Desenvolvida por Bjarne Stroustrup.
-    
-    \item \textbf{\textit{FreeType}~\cite{freetype}}: biblioteca de desenvolvimento dedicada à renderização de fontes em \textit{bitmaps} utilizáveis, por exemplo, pelo \opengl.
+    %\item \textbf{C++}: Linguagem compilada de uso geral multi-paradigma. Desenvolvida por Bjarne Stroustrup.
     
     \item \textbf{GLFW~\cite{glfw}}: \ac{API} simplificada para o \opengl, igualmente multi-plataforma, permitindo a gestão de janelas, contextos, superfícies e comandos (rato, teclado e \textit{joystick});
     
-    \item \textbf{\ac{GLAD}~\cite{glad,glad-webservice}}: gerador automático de \textit{loaders} para \opengl;
+    \item \textbf{\acs{GLAD}~\cite{glad,glad-webservice}} (\acl{GLAD}): gerador automático de \textit{loaders} para \opengl;
     
-    \item \textbf{\ac{GLM}~\cite{glm}}: biblioteca matemática baseada na linguagem dos \textit{shaders} do \opengl, \ac{GLSL}.
+    \item \textbf{\acs{GLM}~\cite{glm}} (\acl{GLM}): biblioteca matemática baseada na linguagem dos \textit{shaders} do \opengl, \ac{GLSL}.
     
-    \item \textbf{\ac{GLSL}}: principal linguagem de \textit{shading} para \opengl.
+    \item \textbf{\textit{FreeType}~\cite{freetype}}: biblioteca de desenvolvimento dedicada à renderização de fontes em \textit{bitmaps} utilizáveis, por exemplo, pelo \opengl.
     
-    \item \textbf{\opengl~\cite{opengl}}: \ac{API} multi-plataforma e com suporte a múltiplas linguagens de programação para a renderização de gráficos vetoriais 2D e 3D com recurso à placa gráfica;
+    % \item \textbf{\acs{GLSL}} (\acl{GLSL}): principal linguagem de \textit{shading} para \opengl.
+    
+    % \item \textbf{\opengl~\cite{opengl}}: \ac{API} multi-plataforma e com suporte a múltiplas linguagens de programação para a renderização de gráficos vetoriais 2D e 3D com recurso à placa gráfica;
 \end{itemize}
 
-\begin{table}[!htbp]
+Há ainda a notar que a \ac{GPU} é programada através de \textit{shaders} com a linguagem \acf{GLSL}.
+
+As versões destas bibliotecas e outro \textit{software} auxiliar utilizado estão sumariados na Tabela \ref{tab::ferramentas}.
+
+\begin{table}[!p]
     \centering
+    \caption[Ferramentas utilizadas]{Ferramentas e tecnologias utilizadas, organizadas por categoria.}
+    \label{tab::ferramentas}
     \begin{tabular}{p{1cm} l l}
         \toprule
         & {\bfseries \textit{Software} / Tecnologia} & {\bfseries Versão} \\
@@ -41,15 +49,13 @@ Bla bla inicial\ldots
         \midrule
         \multicolumn{3}{l}{\bfseries Relatório} \\
         & Xe\TeX & 3.141592653-2.6-0.999993 \\
-        &\textit{TeXstudio}\textsuperscript{\textcopyright} & 4.2.2 \\
+        &\textit{TeXstudio}\ccopyright & 4.2.2 \\
         \midrule
         \multicolumn{3}{l}{\bfseries Controlo de versões} \\
         & \textit{git} & 2.36.1 \\
         & \textit{GitKraken} & 8.6.1  \\
         \bottomrule
     \end{tabular}
-    \caption[Ferramentas utilizadas]{Ferramentas e tecnologias utilizadas, organizadas por categoria.}
-    \label{tab::ferramentas}
 \end{table}
 
 
@@ -57,12 +63,51 @@ Bla bla inicial\ldots
 \section{Código \emph{Open Source}}
 \label{sec::tecno:opensource}
 
-% Shaders de exemplo, cparse\ldots
+Além das bibliotecas e \textit{frameworks} referidas na Secção \ref{sec::tecno:tecno}, código \textit{open source} adicional foi utilizado para facilitar a implementação de componentes que não fazem parte do objetivo de estudo do projeto. Estes são:
+
 \begin{itemize}
-    \item \textbf{\textit{CParser}}: biblioteca para \textit{parsing} de uma sequência de caracteres como uma expressão usando o algoritmo \textit{Dijkstra's Shunting-yard};
+    \item \textbf{\textit{CParser}} \todo{Citação}: biblioteca para \textit{parsing} de uma sequência de caracteres como uma expressão usando o algoritmo \textit{Shunting-yard} de Dijkstra;
     
-     
+    \item \todo{Código do Learn OpenGL}
+    
+    \item \hint{quickGL??}
 \end{itemize}
+
+
+\section{\textit{Hardware}}
+\label{sec::tecno:hw}
+
+O \textit{software} final foi testado em três computadores distintos, listados na Tabela \ref{tab::hardware}.
+
+\begin{table}[!p]
+	\centering
+	\caption[Lista de \textit{hardware} para testes]{Lista de \textit{hardware} onde o projeto \theapp~foi testado.}
+	\label{tab::hardware}
+	\begin{tabular}{p{1cm} l l}
+		\toprule
+		%& {\bfseries Componente} & {\bfseries } \\
+		%\midrule
+		\multicolumn{3}{l}{\bfseries Computador portátil 1} \\
+		& Processador (\acs{CPU})   & Intel\registered~i5-8300H (2.3--4.0GHz) \\
+		& Placa gráfica (\acs{GPU}) & NVidia\registered~GTX 1050 Ti (4GB) \\
+		& Memória \acs{RAM}         & 16GB (DDR4 2133MHz) \\
+		& Armazenamento             & 256GB (PCIe 3.0 x4) \\
+		\midrule
+		\multicolumn{3}{l}{\bfseries Computador portátil 2} \\
+		& Processador (\acs{CPU})   & AMD Ryzen\texttrademark~9 5900HS (3.0--4.6GHz) \\
+		& Placa gráfica (\acs{GPU}) & NVidia\registered~RTX 3050 Ti (4GB) \\
+		& Memória \acs{RAM}         & 16GB (DDR4 3200MHz) \\
+		& Armazenamento             & SSD NVMe 1TB (PCIe 3.0 x4) \\
+		\midrule
+		\multicolumn{3}{l}{\bfseries Computador \textit{desktop}} \\
+		& Processador (\acs{CPU})   & AMD Ryzen\texttrademark~7 2700X (3.7--4.3GHz) \\
+		& Placa gráfica (\acs{GPU}) & NVidia\registered~RTX 3070 (8GB) \\
+		& Memória \acs{RAM}         & 32GB (DDR4 3200MHz) \\
+		& Armazenamento             & SSD NVMe 1TB (PCIe 3.0 x4) \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
 
 \section{Conclusões}
 \label{sec::tecno:conc}

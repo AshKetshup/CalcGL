@@ -18,12 +18,12 @@ Para alcançar os objetivos propostos no presente projeto, é imperativo estudar
 \section{Funções Implícitas}
 \label{sec::arte:implicitas}
 
-\subsection{Definição e Aplicações}
-\label{ssec::arte:implicitas:def}
+%\subsection{Definição e Aplicações}
+%\label{ssec::arte:implicitas:def}
 
 % O que é? Exemplo(s). Que aplicações têm?
 
-Às funções definidas em função de uma variável dá-se o nome de \textbf{funções explícitas}. Exemplos clássicos em $\mathbb{R}^2$ incluem equações de retas ($y = mx + b$) e parábolas ($y = ax^2 + bx + c$). Ora, nem todos os subconjuntos de pontos no espaço cartesiano podem ser definidos por funções explícitas. Um exemplo comum em $\mathbb{R}^2$ é a circunferência:
+Às funções definidas em função de uma variável dá-se o nome de \textbf{funções explícitas}. Exemplos clássicos em $\mathbb{R}^2$ incluem equações de retas ($y = mx + b$) e parábolas ($y = ax^2 + bx + c$). Ora, nem todos os subconjuntos de pontos no espaço cartesiano podem ser definidos por funções explícitas. Um exemplo comum em $\mathbb{R}^2$ é a circunferência (Figura \ref{fig::circumference}):
 
 \begin{equation}
 	(x - x_0)^2 + (y - y_0)^2 = r^2
@@ -32,6 +32,13 @@ Para alcançar os objetivos propostos no presente projeto, é imperativo estudar
 
 onde $(x_0, y_0)$ é o centro e $r$ o raio.
 
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[scale=1.0]{circumference}
+	\caption[Exemplo de uma circunferência]{Exemplo de uma circunferência de centro $(1, 2)$ e raio $2$.}
+	\label{fig::circumference}
+\end{figure}
+
 Sendo uma equação de segundo grau, é possível representá-la através de duas funções explícitas:
 
 \begin{eqnarray}
@@ -39,7 +46,7 @@ Sendo uma equação de segundo grau, é possível representá-la através de dua
 		y = y_0 - \sqrt{r^2 - (x - x_0)^2}
 \end{eqnarray}
 
-Esta transformação só é possível até polinómios de grau 4, tornando-se impossível para graus superiores. Contudo, estas expressões polinomiais continuam a ser subconjuntos válidos de $\mathbb{R}^n$, necessitando então de formas alternativas de representação. Dois métodos e respetivas representações da circunferência são:
+Esta transformação não é possível para todos os polinómios, em particular para graus superiores a $4$. Contudo, estas expressões polinomiais continuam a ser subconjuntos válidos de $\mathbb{R}^n$, necessitando então de formas alternativas de representação. Dois métodos e respetivas representações da circunferência são:
 
 \begin{enumerate}
 	\item \textbf{Funções paramétricas}: cada eixo é definido em ordem a uma variável adicional $t$:
@@ -54,34 +61,58 @@ Esta transformação só é possível até polinómios de grau 4, tornando-se im
 	\item \textbf{Funções implícitas}: a equação não é definida a ordem a uma variável em particular (equação (\ref{eq::circ_implicita})).
 \end{enumerate}
 
-Uma função implícita é então definida por $f~:~\mathbb{R}^n \longrightarrow \mathbb{R}$, ou seja, para qualquer ponto em $\mathbb{R}^n$ é determinado um resultado em $\mathbb{R}$. Dependendo da função, o valor obtido pode ter significado, tal como uma grandeza física (\textit{e.g.} densidade de um líquido ou sua temperatura a cada ponto do espaço). Esta função diz-se \textbf{algébrica} caso seja polinomial em cada variável.
+Uma \textbf{função implícita} é então definida por $f~:~\mathbb{R}^n \longrightarrow \mathbb{R}$, ou seja, para qualquer ponto em $\mathbb{R}^n$ é determinado um resultado em $\mathbb{R}$. Dependendo da função, o valor obtido pode ter significado, tal como uma grandeza física (\textit{e.g.} densidade de um líquido ou sua temperatura a cada ponto do espaço). Esta função diz-se \textbf{algébrica} caso seja polinomial em cada variável.
 
-Por seu turno, em $\mathbb{R}^3$, a \textbf{iso-superfície} de uma função implícita é a superfície que satisfaz a condição $f(\mathbf{x}) = 0$ (onde, doravante, $\mathbf{x} \equiv (x,y,z)$). Esta pode ser suavizada através de um parâmetro $s \in \mathbb{R}$ tal que $f(\mathbf{x}) - s = 0$.
+Por seu turno, em $\mathbb{R}^3$, a \textbf{iso-superfície} de uma função implícita é a superfície que satisfaz a condição $f(\mathbf{x}) = 0$ (onde, doravante, $\mathbf{x} \equiv (x,y,z)$). Esta pode ser suavizada através de um parâmetro $s \in \mathbb{R}$ tal que $f(\mathbf{x}) - s = 0$. Este efeito é utilizado diretamente e com sucesso nas Superfícies $\Pi$ \cite{Raposo2019}.
 
 
 \todo{Mais aplicações.}
 
 
-\subsection{Desafios Computacionais}
-\label{ssec::arte:implicitas:desafios}
-
-\hint{Renderização em computação gráfica. Que métodos existem? Que alternativas estão em aberto?}
+%\subsection{Desafios Computacionais}
+%\label{ssec::arte:implicitas:desafios}
 
 
-\section{Técnicas de Renderização}
+\section{Técnicas de Renderização: Visão Geral}
 \label{sec::arte:render}
 
-\hint{Breve introdução às categorias de técnicas/algoritmos de renderização.}
+\hint{Renderização em computação gráfica. Que métodos existem? Que alternativas estão em aberto?}\\
+\hint{Breve introdução às categorias de técnicas/algoritmos de renderização.}\\
+\revision{Categorização das técnicas.}
 
-\subsection{Renderização por Volume}
-\label{ssec::arte:render:volume}
+As funções implícitas representam simultaneamente uma grande oportunidade na área da computação gráfica e um enorme desafio. Se por um lado é possível obter a visualização de formas geométricas complexas com recurso a funções implícitas, por outro não há um método direto de determinar quais os pontos da iso-superfície.
 
-\hint{O que é ``volume rendering''? Que exemplos de algoritmos existem?}
+Vários algoritmos têm sido propostos ao longo das últimas décadas, tais como \textit{marching cubes}\cite{Lorensen1987}, \textit{ray marching}, \textit{sphere tracing}\cite{Hart1996} e \textit{ray tracing}.
 
-\subsection{\emph{Ray Marching}}
-\label{ssec::arte:render:raymarch}
+\begin{itemize}
+	\item \textbf{Rasterização}:\\
+	\hint{Técnica ainda utilizada na pipeline do OpenGL na fase final.}
+	
+	\item \textbf{Triangulação}:\\
+	A iso-superfície é dividida em triângulos, os quais formam a \textit{mesh} a ser renderizada pela \ac{GPU}. Um exemplo é o algoritmo de \textit{Marching Cubes}\cite{Lorensen1987} no qual o espaço é dividido em cubos onde o valor da função implícita é calculado para cada vértice. A análise dos sinais permite determinar quais arestas do cubo a superfície interseta, num total de 256 possíveis combinações de triângulos.
+	
+	\item \textbf{\textit{Ray Tracing} e algoritmos volumétricos}:\\
+	
+	\item \hint{Mais técnicas/algoritmos?}
+\end{itemize}
+
+
+\section{\emph{Ray Marching}}
+\label{sec::arte:raymarch}
 
 \hint{Como funciona o algoritmo? É paralelizável? Se sim, como e porquê?}
+
+O algoritmo geral de \textit{ray marching} contempla os seguintes quatro passos:
+
+\begin{enumerate}
+	\item \textbf{\textit{Ray casting}}:
+	
+	\item \textbf{\textit{Sampling}}:
+	
+	\item \textbf{\textit{Shading}}:
+	
+	\item \textbf{\textit{Compositing}}:
+\end{enumerate}
 
 
 \section{\opengl}
