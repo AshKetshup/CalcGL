@@ -109,6 +109,7 @@ Vários algoritmos têm sido propostos ao longo das últimas décadas, tais como
 	A iso-superfície é dividida em triângulos, os quais formam a \textit{mesh} a ser renderizada pela \ac{GPU}. Um exemplo é o algoritmo de \textit{Marching Cubes}\cite{Lorensen1987} no qual o espaço é dividido em cubos onde o valor da função implícita é calculado para cada vértice. A análise dos sinais permite determinar quais arestas do cubo a superfície interseta, num total de 256 possíveis combinações de triângulos.
 	
 	\item \textbf{\textit{Ray Tracing} e algoritmos volumétricos}:\\
+    
 	
 	\item \hint{Mais técnicas/algoritmos?}
 \end{itemize}
@@ -118,6 +119,26 @@ Vários algoritmos têm sido propostos ao longo das últimas décadas, tais como
 \label{sec::arte:raymarch}
 
 \hint{Como funciona o algoritmo? É paralelizável? Se sim, como e porquê?}
+
+\textit{Ray marching} é uma simples técnica que tal como no tradicional \textit{ray tracing}, não é tão simples de resolver uma superfície (ou até impossível caso sem o uso de métodos numéricos interativos). Em \textit{ray tracing} apenas nos focamos na interseção do raio emitido com a superfície, enquanto no algoritmo de \textit{ray marching} marchamos na direção tomada até encontrarmos uma interseção (isto se a mesma existir).\\
+
+Isto é nos interessante caso:
+\begin{itemize}
+    \item precisemos de renderizar volumes que não são uniformes;
+    \item renderizemos funções implícitas ou fractais;
+    \item tenhamos interesse em renderizar outros tipos de funções paramétricas onde a interseção não é conhecida antecipadamente, como \textit{parallel mapping};
+\end{itemize}
+
+\subsection{Sphere Tracing}
+\textit{Sphere tracing} é um possível algoritmo de \textit{ray marching}. No entanto, nem todos os usos de \textit{ray marching} beneficiam deste método, porque estes não conseguem ser convertidos para este esquema.
+
+\textit{Sphere tracing} é usado para renderizar \textbf{superfícies implícitas}.
+Porque esta função pode ser resolvida a cada ponto, podemos ir em frente e estimar a maior esfera possível que possa caber no atual passo de marcha. Então sabemos que a próxima distancia a marchar é pelo menos tão grande quanto o raio da dita esfera. Desta forma adaptamos então o numero de passos a marchar e tornamos com o processo muito mais rápido.
+
+\todo{Adicionar imagem de exemplo algoritmo naive em 2D}\\
+
+
+
 
 O algoritmo geral de \textit{ray marching} contempla os seguintes quatro passos:
 
