@@ -129,13 +129,21 @@ Isto é nos interessante caso:
     \item tenhamos interesse em renderizar outros tipos de funções paramétricas onde a interseção não é conhecida antecipadamente, como \textit{parallel mapping};
 \end{itemize}
 
+\todo{Imagem de exemplo algoritmo naive em 2D}\\
+
 \subsection{Sphere Tracing}
 \textit{Sphere tracing} é um possível algoritmo de \textit{ray marching}. No entanto, nem todos os usos de \textit{ray marching} beneficiam deste método, porque estes não conseguem ser convertidos para este esquema.
 
 \textit{Sphere tracing} é usado para renderizar \textbf{superfícies implícitas}.
-Porque esta função pode ser resolvida a cada ponto, podemos ir em frente e estimar a maior esfera possível que possa caber no atual passo de marcha. Então sabemos que a próxima distancia a marchar é pelo menos tão grande quanto o raio da dita esfera. Desta forma adaptamos então o numero de passos a marchar e tornamos com o processo muito mais rápido.
+Visto que esta função pode ser resolvida para cada ponto, podemos ir em frente e estimar a maior esfera possível que possa caber no atual passo de marcha. Então sabemos que a próxima distancia a marchar é pelo menos tão grande quanto o raio da dita esfera. Desta forma adaptamos então o numero de passos a marchar e tornamos com o processo muito mais rápido.\\
 
-\todo{Adicionar imagem de exemplo algoritmo naive em 2D}\\
+\todo{Imagem de exemplo algoritmo spheretracing em 2D}\\
+
+No entanto em \textit{sphere tracing} é um requisito saber calcular com antecipação a distância minima entre um dado ponto e a superfície em questão. Dão se a estas funções o nome de \textbf{\textit{Signed Distance Functions} (SDF)}.
+O uso das mesmas torna impraticável a aplicação de \textit{sphere tracing} para funções implícitas. \\
+
+\todo{Adicionar à lista de acronimos SDF: Signed Distance Functions}\\
+\todo{Imagem de exemplo de uma SDF}\\
 
 
 
