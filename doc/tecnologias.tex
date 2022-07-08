@@ -10,9 +10,7 @@ Bla bla inicial\ldots
 \section{Tecnologias}
 \label{sec::tecno:tecno}
 
-\todo{Mencionar c++20}\\
-
-Para a implementação do projeto \theapp~com \opengl~foi escolhida a linguagem de programação C++. A fim de melhorar a experiência de utilização do \opengl, foram utilizadas as seguintes bibliotecas e \textit{frameworks}:
+Para a implementação do projeto \theapp~com \opengl~foi escolhida a linguagem de programação C++, em particular o \textit{standard} C++20 (indicado ao compilador \verb|g++| com a \textit{flag} \verb|-std=c++20|). A fim de melhorar a experiência de utilização do \opengl, foram utilizadas as seguintes bibliotecas e \textit{frameworks}:
 
 \begin{itemize}
     %\item \textbf{C++}: Linguagem compilada de uso geral multi-paradigma. Desenvolvida por Bjarne Stroustrup.
@@ -30,7 +28,7 @@ Para a implementação do projeto \theapp~com \opengl~foi escolhida a linguagem 
     % \item \textbf{\opengl~\cite{opengl}}: \ac{API} multi-plataforma e com suporte a múltiplas linguagens de programação para a renderização de gráficos vetoriais 2D e 3D com recurso à placa gráfica;
 \end{itemize}
 
-Há ainda a notar que a \ac{GPU} é programada através de \textit{shaders} com a linguagem \acf{GLSL}.
+Há ainda a notar que a \ac{GPU} é programada através de \textit{shaders} com a linguagem \acf{GLSL}. Em particular, foi usada a versão \textit{core}.
 
 As versões destas bibliotecas e outro \textit{software} auxiliar utilizado estão sumariados na Tabela \ref{tab::ferramentas}.
 
@@ -79,7 +77,7 @@ Além das bibliotecas e \textit{frameworks} referidas na Secção \ref{sec::tecn
 \section{\textit{Hardware}}
 \label{sec::tecno:hw}
 
-O \textit{software} final foi testado em três computadores distintos, listados na Tabela \ref{tab::hardware}.
+O \textit{software} final foi testado em dois computadores distintos, listados na Tabela \ref{tab::hardware}.
 
 \begin{table}[!p]
 	\centering
@@ -89,23 +87,15 @@ O \textit{software} final foi testado em três computadores distintos, listados 
 		\toprule
 		%& {\bfseries Componente} & {\bfseries } \\
 		%\midrule
-		\multicolumn{3}{l}{\bfseries Computador portátil 1} \\
+		\multicolumn{3}{l}{\bfseries Computador portátil} \\
 		& Processador (\acs{CPU})   & Intel\registered~i5-8300H (2.3--4.0GHz) \\
 		& Placa gráfica (\acs{GPU}) & NVidia\registered~GTX 1050 Ti (4GB) \\
 		& Memória \acs{RAM}         & 16GB (DDR4 2133MHz) \\
-		& Armazenamento             & 256GB (PCIe 3.0 x4) \\
-		\midrule
-		\multicolumn{3}{l}{\bfseries Computador portátil 2} \\
-		& Processador (\acs{CPU})   & AMD Ryzen\texttrademark~9 5900HS (3.0--4.6GHz) \\
-		& Placa gráfica (\acs{GPU}) & NVidia\registered~RTX 3050 Ti (4GB) \\
-		& Memória \acs{RAM}         & 16GB (DDR4 3200MHz) \\
-		& Armazenamento             & SSD NVMe 1TB (PCIe 3.0 x4) \\
 		\midrule
 		\multicolumn{3}{l}{\bfseries Computador \textit{desktop}} \\
 		& Processador (\acs{CPU})   & AMD Ryzen\texttrademark~7 2700X (3.7--4.3GHz) \\
 		& Placa gráfica (\acs{GPU}) & NVidia\registered~RTX 3070 (8GB) \\
 		& Memória \acs{RAM}         & 32GB (DDR4 3200MHz) \\
-		& Armazenamento             & SSD NVMe 1TB (PCIe 3.0 x4) \\
 		\bottomrule
 	\end{tabular}
 \end{table}

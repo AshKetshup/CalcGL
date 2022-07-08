@@ -1,4 +1,3 @@
-% !TeX spellcheck = pt_BR
 \chapter{Estado da Arte}
 \label{ch::arte}
 
@@ -66,12 +65,7 @@ Uma \textbf{função implícita} é então definida por $f~:~\mathbb{R}^n \longr
 
 Por seu turno, em $\mathbb{R}^3$, a \textbf{iso-superfície} de uma função implícita é a superfície que satisfaz a condição $f(\mathbf{x}) = 0$ (onde, doravante, $\mathbf{x} \equiv (x,y,z)$). Esta pode ser suavizada através de um parâmetro $s \in \mathbb{R}$ tal que $f(\mathbf{x}) - s = 0$. Este efeito é utilizado diretamente e com sucesso nas Superfícies $\Pi$ \cite{Raposo2019}.
 
-
 \todo{Mais aplicações.}
-
-
-%\subsection{Desafios Computacionais}
-%\label{ssec::arte:implicitas:desafios}
 
 
 \section{Renderização de Superfícies Implícitas}
@@ -120,7 +114,7 @@ Neste âmbito, as funções implícitas representam simultaneamente uma grande o
 
 \hint{Como funciona o algoritmo? É paralelizável? Se sim, como e porquê?}
 
-\textit{Ray marching} é uma simples técnica que tal como no tradicional \textit{ray tracing}, não é tem uma forma fácil de resolver uma superfície (ou até impossível caso sem o uso de métodos numéricos interativos). 
+\revision{\textit{Ray marching} é uma técnica de renderização que tal como no tradicional \textit{ray tracing}, não é tão simples de resolver uma superfície (ou até impossível caso sem o uso de métodos numéricos interativos). Em \textit{ray tracing} apenas nos focamos na interseção do raio emitido com a superfície, enquanto no algoritmo de \textit{ray marching} marchamos na direção tomada até encontrarmos uma interseção (isto se a mesma existir).}
 
 \subsection{Ray Casting}
 Como em qualquer algoritmo da família \textit{ray casting}, \textit{ray marching} começa com um viewport definido por um plano a uma determinada distância (representando o \ac{FOV}) da câmara em que para cada pixel do dado \textit{viewport} é enviado um raio na dada direção.
@@ -143,27 +137,15 @@ Como em qualquer algoritmo da família \textit{ray casting}, \textit{ray marchin
 \subsection{Algoritmo \textit{naïve}}
 Em \textit{ray tracing} apenas nos focamos na interseção do raio emitido com a superfície, enquanto no algoritmo de \textit{ray marching} marchamos na direção tomada até encontrarmos uma interseção (isto se a mesma existir).\\
 
-Isto torna-se interessante caso:
+Esta técnica é de particular interesse nos seguintes casos:
 \begin{itemize}
-    \item precisemos de renderizar volumes que não são uniformes;
-    \item renderizemos funções implícitas ou fractais;
-    \item tenhamos interesse em renderizar outros tipos de funções paramétricas onde a interseção não é conhecida antecipadamente, como \textit{parallel mapping};
+    \item Necessidade de renderizar volumes que não são uniformes;
+    \item Renderização de funções implícitas ou fractais;
+    \item Renderização de outros tipos de funções paramétricas onde a interseção não é conhecida antecipadamente, como \textit{parallel mapping}.
 \end{itemize}
 
-\todo{Imagem de exemplo algoritmo naive em 2D}\\
-
-\subsection{Sphere Tracing}
-\textit{Sphere tracing} é um possível algoritmo de \textit{ray marching}. No entanto, nem todos os usos de \textit{ray marching} beneficiam deste método, porque estes não conseguem ser convertidos para este esquema.
-
-\textit{Sphere tracing} é usado para renderizar \textbf{superfícies implícitas}.
-Visto que esta função pode ser resolvida para cada ponto, podemos ir em frente e estimar a maior esfera possível que possa caber no atual passo de marcha. Então sabemos que a próxima distancia a marchar é pelo menos tão grande quanto o raio da dita esfera. Desta forma adaptamos então o numero de passos a marchar e tornamos com o processo muito mais rápido.\\
-
-\todo{Imagem de exemplo algoritmo spheretracing em 2D}\\
-
-No entanto em \textit{sphere tracing} é um requisito saber calcular com antecipação a distância minima entre um dado ponto e a superfície em questão. Dão se a estas funções o nome de \textbf{\ac{SDF}}.
-O uso das mesmas torna impraticável a aplicação de \textit{sphere tracing} para funções implícitas. \\
-
-\todo{Imagem de exemplo de uma SDF}\\
+\subsection{Algoritmo naïve}
+\label{ssec::arte:raymarch:naive}
 
 O algoritmo geral de \textit{ray marching} contempla os seguintes quatro passos:
 
@@ -176,6 +158,41 @@ O algoritmo geral de \textit{ray marching} contempla os seguintes quatro passos:
 	
 	\item \textbf{\textit{Compositing}}:
 \end{enumerate}
+
+\todo{Imagem de exemplo algoritmo naïve em 2D}\\
+\todo{Algoritmo naïve}
+
+\begin{algorithm}[!htbp]
+	\caption{Algoritmo naïve de \textit{ray marching}.}
+	\label{alg::raymarch_naive}
+	\begin{algorithmic}
+\Require função $f$      \Comment{Função implícita}
+	\end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Sphere Tracing}
+\label{ssec::arte:raymarch:spheretracing}
+
+\revision{Reformular o português. A ideia está cá, mas para quem não está dentro do projeto pode sentir-se um pouco perdido. Nada de grave, don't worry :)}
+
+\textit{Sphere tracing} é um possível algoritmo de \textit{ray marching}. No entanto, nem todos os usos de \textit{ray marching} beneficiam deste método, porque estes não conseguem ser convertidos para este esquema.
+
+\textit{Sphere tracing} é usado para renderizar \textbf{superfícies implícitas}. Visto que esta função pode ser resolvida para cada ponto, podemos ir em frente e estimar a maior esfera possível que possa caber no atual passo de marcha. Então sabemos que a próxima distância a marchar é pelo menos tão grande quanto o raio da dita esfera. Desta forma adaptamos então o número de passos a marchar e tornamos com o processo muito mais rápido.
+
+\todo{Imagem de exemplo algoritmo spheretracing em 2D}
+
+No entanto em \textit{sphere tracing} é um requisito saber calcular com antecipação a distância minima entre um dado ponto e a superfície em questão. Dão-se a estas funções o nome de \textbf{\ac{SDF}}. O uso das mesmas torna impraticável a aplicação de \textit{sphere tracing} para funções implícitas de geometria desconhecida.
+
+\todo{Imagem de exemplo de uma SDF}
+
+\begin{algorithm}[!htbp]
+	\caption{Algoritmo de \textit{sphere tracing}.}
+	\label{alg::raymarch_spheretrace}
+	\begin{algorithmic}
+\Require função $f$      \Comment{Função implícita}
+	\end{algorithmic}
+\end{algorithm}
 
 
 \section{\opengl}
