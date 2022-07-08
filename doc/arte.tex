@@ -108,8 +108,9 @@ Vários algoritmos têm sido propostos ao longo das últimas décadas, tais como
 	\item \textbf{Triangulação}:\\
 	A iso-superfície é dividida em triângulos, os quais formam a \textit{mesh} a ser renderizada pela \ac{GPU}. Um exemplo é o algoritmo de \textit{Marching Cubes}\cite{Lorensen1987} no qual o espaço é dividido em cubos onde o valor da função implícita é calculado para cada vértice. A análise dos sinais permite determinar quais arestas do cubo a superfície interseta, num total de 256 possíveis combinações de triângulos.
 	
-	\item \textbf{\textit{Ray Tracing} e algoritmos volumétricos}:\\
-    
+	\item \textbf{\textit{Ray Tracing}}:\\
+    \revision{} \todo{Citar um artigo de Ray Tracing}\\
+     Um \textit{viewport} é definido a uma distância da câmara. É a partir da mesma que são enviados raios na direção de cada pixel. É calculado o ponto de interseção com a superfície em cena e o mesmo é refletido. Este processo é repetido uma quantia pre-definida até por fim obter a cor a usar.
 	
 	\item \hint{Mais técnicas/algoritmos?}
 \end{itemize}
@@ -120,9 +121,30 @@ Vários algoritmos têm sido propostos ao longo das últimas décadas, tais como
 
 \hint{Como funciona o algoritmo? É paralelizável? Se sim, como e porquê?}
 
-\textit{Ray marching} é uma simples técnica que tal como no tradicional \textit{ray tracing}, não é tão simples de resolver uma superfície (ou até impossível caso sem o uso de métodos numéricos interativos). Em \textit{ray tracing} apenas nos focamos na interseção do raio emitido com a superfície, enquanto no algoritmo de \textit{ray marching} marchamos na direção tomada até encontrarmos uma interseção (isto se a mesma existir).\\
+\textit{Ray marching} é uma simples técnica que tal como no tradicional \textit{ray tracing}, não é tem uma forma fácil de resolver uma superfície (ou até impossível caso sem o uso de métodos numéricos interativos). 
 
-Isto é nos interessante caso:
+\subsection{Ray Casting}
+Como em qualquer algoritmo da família \textit{ray casting}, \textit{ray marching} começa com um viewport definido por um plano a uma determinada distância (representando o \ac{FOV}) da câmara em que para cada pixel do dado \textit{viewport} é enviado um raio na dada direção.
+
+\begin{equation}
+    (x, y, z) = P + s \times \overrightarrow{v}
+\end{equation}
+
+\begin{equation}
+    (x, y, z) = P + s \times \overrightarrow{v} + t \times \overrightarrow{u}
+\end{equation}
+
+\begin{equation}
+    \overrightarrow{d} = P - C
+\end{equation}
+
+
+
+
+\subsection{Algoritmo \textit{naïve}}
+Em \textit{ray tracing} apenas nos focamos na interseção do raio emitido com a superfície, enquanto no algoritmo de \textit{ray marching} marchamos na direção tomada até encontrarmos uma interseção (isto se a mesma existir).\\
+
+Isto torna-se interessante caso:
 \begin{itemize}
     \item precisemos de renderizar volumes que não são uniformes;
     \item renderizemos funções implícitas ou fractais;
@@ -139,14 +161,10 @@ Visto que esta função pode ser resolvida para cada ponto, podemos ir em frente
 
 \todo{Imagem de exemplo algoritmo spheretracing em 2D}\\
 
-No entanto em \textit{sphere tracing} é um requisito saber calcular com antecipação a distância minima entre um dado ponto e a superfície em questão. Dão se a estas funções o nome de \textbf{\textit{Signed Distance Functions} (SDF)}.
+No entanto em \textit{sphere tracing} é um requisito saber calcular com antecipação a distância minima entre um dado ponto e a superfície em questão. Dão se a estas funções o nome de \textbf{\ac{SDF}}.
 O uso das mesmas torna impraticável a aplicação de \textit{sphere tracing} para funções implícitas. \\
 
-\todo{Adicionar à lista de acronimos SDF: Signed Distance Functions}\\
 \todo{Imagem de exemplo de uma SDF}\\
-
-
-
 
 O algoritmo geral de \textit{ray marching} contempla os seguintes quatro passos:
 
