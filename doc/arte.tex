@@ -1,3 +1,4 @@
+% !TeX spellcheck = pt_BR
 \chapter{Estado da Arte}
 \label{ch::arte}
 
@@ -76,22 +77,39 @@ Por seu turno, em $\mathbb{R}^3$, a \textbf{iso-superfície} de uma função imp
 \section{Técnicas de Renderização: Visão Geral}
 \label{sec::arte:render}
 
-\hint{Renderização em computação gráfica. Que métodos existem? Que alternativas estão em aberto?}\\
+Muitos algoritmos de renderização têm vindo a ser investigados e usado em \textit{software} que implemente diversas técnicas para obter uma imagem final.\\
+
+
+A nossa visão capta a luz refletida por objetos num determinado cenário. Durante o processo, a maioria dos comprimentos de onda das fontes de luz são absorvidos sendo o restante refletido. Como resultado final, os comprimentos de onda refletidos e captados pelos olhos constituem o que é interpretado como cor.
+
+No entanto, o cálculo do percurso para cada partícula de luz num determinado cenário é na grande maioria dos casos algo impraticável devido à grande demora da obtenção dos resultados.
+
+Por dito motivo, foram desenvolvidos métodos mais eficientes de cálculo da luz:
+\begin{itemize}
+    \item \textbf{Rasterização}, técnica ainda usada na pipeline do \opengl. Consiste na conversão numa imagem descrita geometricamente numa série de pixeis que quando juntos criam a imagem.
+    
+    \item \textbf{Ray Casting}, considera um cenário a ser observado por um determinado ponto de vista, o mesmo calcula a imagem observada baseado apenas na geometria e em leis óticas básicas.
+    
+    \item \textbf{Ray Tracing}, bastante próximo a como Ray Casting funciona, no entanto implementa também simulações ótica mais avançadas.
+\end{itemize}
+
 \hint{Breve introdução às categorias de técnicas/algoritmos de renderização.}\\
 \revision{Categorização das técnicas.}
+
 
 As funções implícitas representam simultaneamente uma grande oportunidade na área da computação gráfica e um enorme desafio. Se por um lado é possível obter a visualização de formas geométricas complexas com recurso a funções implícitas, por outro não há um método direto de determinar quais os pontos da iso-superfície.
 
 Vários algoritmos têm sido propostos ao longo das últimas décadas, tais como \textit{marching cubes}\cite{Lorensen1987}, \textit{ray marching}, \textit{sphere tracing}\cite{Hart1996} e \textit{ray tracing}.
 
 \begin{itemize}
-	\item \textbf{Rasterização}:\\
-	\hint{Técnica ainda utilizada na pipeline do OpenGL na fase final.}
+	%\item \textbf{Rasterização}:\\
+	%\hint{Técnica ainda utilizada na pipeline do OpenGL na fase final.}
 	
 	\item \textbf{Triangulação}:\\
 	A iso-superfície é dividida em triângulos, os quais formam a \textit{mesh} a ser renderizada pela \ac{GPU}. Um exemplo é o algoritmo de \textit{Marching Cubes}\cite{Lorensen1987} no qual o espaço é dividido em cubos onde o valor da função implícita é calculado para cada vértice. A análise dos sinais permite determinar quais arestas do cubo a superfície interseta, num total de 256 possíveis combinações de triângulos.
 	
 	\item \textbf{\textit{Ray Tracing} e algoritmos volumétricos}:\\
+    
 	
 	\item \hint{Mais técnicas/algoritmos?}
 \end{itemize}
@@ -101,6 +119,34 @@ Vários algoritmos têm sido propostos ao longo das últimas décadas, tais como
 \label{sec::arte:raymarch}
 
 \hint{Como funciona o algoritmo? É paralelizável? Se sim, como e porquê?}
+
+\textit{Ray marching} é uma simples técnica que tal como no tradicional \textit{ray tracing}, não é tão simples de resolver uma superfície (ou até impossível caso sem o uso de métodos numéricos interativos). Em \textit{ray tracing} apenas nos focamos na interseção do raio emitido com a superfície, enquanto no algoritmo de \textit{ray marching} marchamos na direção tomada até encontrarmos uma interseção (isto se a mesma existir).\\
+
+Isto é nos interessante caso:
+\begin{itemize}
+    \item precisemos de renderizar volumes que não são uniformes;
+    \item renderizemos funções implícitas ou fractais;
+    \item tenhamos interesse em renderizar outros tipos de funções paramétricas onde a interseção não é conhecida antecipadamente, como \textit{parallel mapping};
+\end{itemize}
+
+\todo{Imagem de exemplo algoritmo naive em 2D}\\
+
+\subsection{Sphere Tracing}
+\textit{Sphere tracing} é um possível algoritmo de \textit{ray marching}. No entanto, nem todos os usos de \textit{ray marching} beneficiam deste método, porque estes não conseguem ser convertidos para este esquema.
+
+\textit{Sphere tracing} é usado para renderizar \textbf{superfícies implícitas}.
+Visto que esta função pode ser resolvida para cada ponto, podemos ir em frente e estimar a maior esfera possível que possa caber no atual passo de marcha. Então sabemos que a próxima distancia a marchar é pelo menos tão grande quanto o raio da dita esfera. Desta forma adaptamos então o numero de passos a marchar e tornamos com o processo muito mais rápido.\\
+
+\todo{Imagem de exemplo algoritmo spheretracing em 2D}\\
+
+No entanto em \textit{sphere tracing} é um requisito saber calcular com antecipação a distância minima entre um dado ponto e a superfície em questão. Dão se a estas funções o nome de \textbf{\textit{Signed Distance Functions} (SDF)}.
+O uso das mesmas torna impraticável a aplicação de \textit{sphere tracing} para funções implícitas. \\
+
+\todo{Adicionar à lista de acronimos SDF: Signed Distance Functions}\\
+\todo{Imagem de exemplo de uma SDF}\\
+
+
+
 
 O algoritmo geral de \textit{ray marching} contempla os seguintes quatro passos:
 
