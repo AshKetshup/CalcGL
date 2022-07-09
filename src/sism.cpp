@@ -228,7 +228,8 @@ bool CalcGL::getModeView(void) {
 
 void CalcGL::switchModeView(bool mode) {
     modeView = mode;
-    glfwSetInputMode(window, GLFW_CURSOR, mode ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_HIDDEN);
+    // glfwSetInputMode(window, GLFW_CURSOR, mode ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_HIDDEN);
+    // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 char* CalcGL::openFunctionFileDialog(void) {
@@ -466,13 +467,16 @@ CalcGL::CalcGL(const unsigned int width, const unsigned int height, const char* 
         if (strcmp(rMode, "CPU") == 0) {
             rmode = SurfaceCPU;
             threadAmnt = threads;
+            debugs("{ Surface::CPU with %u threads }", threadAmnt);
         } else if (strcmp(rMode, "GPU") == 0) {
             rmode = SurfaceGPU;
+            debugs("{ Surface::GPU }");
         } else if (strcmp(rMode, "SPHERE") == 0) {
             rmode = STraceGPU;
+            debugs("{ SphereTracing::GPU }");
         }
 
-        debugs("\tSetting relevant directories... ");
+        debugs("[OK]\n\tSetting relevant directories... ");
         path appPath(filesys::getAppPath());
 
         appDir = appPath.parent_path().string();

@@ -17,11 +17,12 @@
 
 #include <iostream>
 #include "sism.hpp"
+#include <thread>
 
 const unsigned int SCR_WIDTH   = 600;
 const unsigned int SCR_HEIGHT  = 600;
-const unsigned int THREAD_AMNT = thread::hardware_concurrency() - 2;
-const char*        RMODE       = "GPU";
+const unsigned int THREAD_AMNT = thread::hardware_concurrency() / 2;
+const char*        RMODE       = "CPU";
 
 const char* HELP =
 "CalcGL - An implicit function render with Ray Marching\n"
