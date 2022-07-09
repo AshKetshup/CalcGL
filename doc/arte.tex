@@ -104,6 +104,9 @@ Neste âmbito, as funções implícitas representam simultaneamente uma grande o
 		\item \textit{Ray tracing} (previamente descrito).
 	\end{itemize}
 \end{enumerate}
+%	\item \textbf{\textit{Ray Tracing}}:\\
+%    \revision{} \todo{Citar um artigo de Ray Tracing}\\
+%     Um \textit{viewport} é definido a uma distância da câmara. É a partir da mesma que são enviados raios na direção de cada pixel. É calculado o ponto de interseção com a superfície em cena e o mesmo é refletido. Este processo é repetido uma quantia pre-definida até por fim obter a cor a usar.
 
 
 \section{\emph{Ray Marching}}
@@ -113,6 +116,27 @@ Neste âmbito, as funções implícitas representam simultaneamente uma grande o
 
 \revision{\textit{Ray marching} é uma técnica de renderização que tal como no tradicional \textit{ray tracing}, não é tão simples de resolver uma superfície (ou até impossível caso sem o uso de métodos numéricos interativos). Em \textit{ray tracing} apenas nos focamos na interseção do raio emitido com a superfície, enquanto no algoritmo de \textit{ray marching} marchamos na direção tomada até encontrarmos uma interseção (isto se a mesma existir).}
 
+\subsection{Ray Casting}
+Como em qualquer algoritmo da família \textit{ray casting}, \textit{ray marching} começa com um viewport definido por um plano a uma determinada distância (representando o \ac{FOV}) da câmara em que para cada pixel do dado \textit{viewport} é enviado um raio na dada direção.
+
+\begin{equation}
+    (x, y, z) = P + s \times \overrightarrow{v}
+\end{equation}
+
+\begin{equation}
+    (x, y, z) = P + s \times \overrightarrow{v} + t \times \overrightarrow{u}
+\end{equation}
+
+\begin{equation}
+    \overrightarrow{d} = P - C
+\end{equation}
+
+
+
+
+\subsection{Algoritmo naïve}
+Em \textit{ray tracing} apenas nos focamos na interseção do raio emitido com a superfície, enquanto no algoritmo de \textit{ray marching} marchamos na direção tomada até encontrarmos uma interseção (isto se a mesma existir).\\
+
 Esta técnica é de particular interesse nos seguintes casos:
 \begin{itemize}
     \item Necessidade de renderizar volumes que não são uniformes;
@@ -120,22 +144,23 @@ Esta técnica é de particular interesse nos seguintes casos:
     \item Renderização de outros tipos de funções paramétricas onde a interseção não é conhecida antecipadamente, como \textit{parallel mapping}.
 \end{itemize}
 
-\subsection{Algoritmo naïve}
-\label{ssec::arte:raymarch:naive}
-
-O algoritmo geral de \textit{ray marching} contempla os seguintes quatro passos:
-
-\begin{enumerate}
-	\item \textbf{\textit{Ray casting}}:
-	
-	\item \textbf{\textit{Sampling}}:
-	
-	\item \textbf{\textit{Shading}}:
-	
-	\item \textbf{\textit{Compositing}}:
-\end{enumerate}
+% \subsection{Algoritmo naïve}
+% \label{ssec::arte:raymarch:naive}
+% 
+% O algoritmo geral de \textit{ray marching} contempla os seguintes quatro passos:
+% 
+% \begin{enumerate}
+% 	\item \textbf{\textit{Ray casting}}:
+% 	
+% 	\item \textbf{\textit{Sampling}}:
+% 	
+% 	\item \textbf{\textit{Shading}}:
+% 	
+% 	\item \textbf{\textit{Compositing}}:
+% \end{enumerate}
 
 \todo{Imagem de exemplo algoritmo naïve em 2D}\\
+\todo{Imagem de exemplo algoritmo naïve em modo bisection 2D}\\
 \todo{Algoritmo naïve}
 
 \begin{algorithm}[!htbp]
