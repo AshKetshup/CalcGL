@@ -16,6 +16,7 @@
 //------------------------------------------------------------------------------
 
 #include <iostream>
+#include <thread>
 #include "sism.hpp"
 
 const unsigned int SCR_WIDTH   = 600;
