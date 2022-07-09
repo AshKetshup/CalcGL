@@ -179,7 +179,7 @@ void Surface::renderCPU(
 	vector<vec4> tex(texSize);
 
 	// Multi thread code
-	unsigned concurrency = thread::hardware_concurrency() - 2;
+	unsigned concurrency = threadAmmount;
 	printf("Using %ui threads\n" + concurrency);
 
 	auto f = [this](Camera& c, Plain& plain, vector<vec4>& tex, vec2 dim, size_t yMin, size_t yMax, int myself) {
