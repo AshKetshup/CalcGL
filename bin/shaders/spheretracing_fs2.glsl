@@ -23,7 +23,8 @@ uniform float renderDistance;
 
 uniform int nspheres;
 
-vec4 objectColor;
+uniform vec3 objectColor;
+uniform vec3 bgColor;
 
 // Sphere(center, color);
 struct Sphere {
@@ -205,8 +206,7 @@ float GetDist(vec3 p) {
 
     dist = min(dist, opSmoothSubtraction(sdSphere(p, vec4(vec3(0., 3.5, -7.), s.w*0.9)), sdSphere(p, vec4(vec3(0.5, 3., -7.5), s.w)), 0.3));
 
-
-    return roundEffect(dist, cos(iTime));
+    // return roundEffect(dist * 0.5, cos(3.1415/2));
     return dist;
 }
 
@@ -252,17 +252,8 @@ void main()
 {
     vec2 uv = (gl_FragCoord.xy - .5 * iResolution.xy) / iResolution.y;
 
-    vec3 col = vec3(0);
+    vec3 col = bgColor;
     
-    // Version Igor
-    // vec3 ro = findPPlain(
-	// 	findPRay(camPos, normalize(camDirFront), camFOV),
-	// 	normalize(camDirRight),
-	// 	normalize(camDirUp),
-	// 	uv
-	// );
-    // vec3 rd = normalize(ro - camPos);
-
     // Version Ash
     vec3 ro = camPos;
     vec3 rd = normalize(
@@ -275,24 +266,25 @@ void main()
     );
 
     float d = RayMarch(ro, rd);
+    if (d < MAX_DIST) {
+        // vec3 p = ro + rd * d;
+        vec3 p = findPRay(ro, rd, d);
     
-    // vec3 p = ro + rd * d;
-    vec3 p = findPRay(ro, rd, d);
-    
-    vec3 light[] = {
-        lightPos,
-        //vec3(0., 15., 0.),
-        vec3(15. + cos(iTime), 15. + cos(iTime), 3. + cos(iTime))
-    };
+        vec3 light[] = {
+            lightPos,
+            //vec3(0., 15., 0.),
+            vec3(15. + cos(iTime), 15. + cos(iTime), 3. + cos(iTime))
+        };
 
-    float dif = 0.;
-    for (int i = 0; i < 2; i++)
-        dif += GetLight(p, light[i]);
+        float dif = 0.;
+        for (int i = 0; i < 2; i++)
+            dif += GetLight(p, light[i]);
 
-    dif = clamp(dif, 0., 1.);
+        dif = clamp(dif, 0., 1.);
     
-    col = objectColor.xyz + lightColor.xyz * vec3(dif);
-    col = pow(col, vec3(.4545));    // gamma correction
+        col = lightColor.xyz * vec3(dif);
+        col = objectColor * pow(col, vec3(.4545));    // gamma correction
+    }
     
     fragColor = vec4(col, 1.0);
 }

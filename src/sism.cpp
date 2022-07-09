@@ -406,14 +406,14 @@ void CalcGL::refresh(void) {
     if (renderIF) 
         switch (rmode) {
             case STraceGPU:
-                sTracing.renderGPU(getSphereTracingGPUShader(), getCamera(), scr_width, scr_height, surfColor, glfwGetTime());
+                sTracing.renderGPU(getSphereTracingGPUShader(), getCamera(), scr_width, scr_height, surfColor, bgColor, glfwGetTime());
                 break;
             case SurfaceCPU:
                 surface.renderCPU(getRayMarchCPUShader(), getCamera(), scr_width, scr_height, surfColor);
                 break;
             case SurfaceGPU:
             default:
-                surface.renderGPU(getRayMarchGPUShader(), getCamera(), scr_width, scr_height, surfColor, bgColor, deltaTime, 50.);
+                surface.renderGPU(getRayMarchGPUShader(), getCamera(), scr_width, scr_height, surfColor, bgColor, glfwGetTime(), 50.);
         }
 
 
@@ -458,9 +458,20 @@ void CalcGL::terminate(void) {
 
 CalcGL::CalcGL(void) { }
 
-CalcGL::CalcGL(const unsigned int width, const unsigned int height) {
+CalcGL::CalcGL(const unsigned int width, const unsigned int height, const char* rMode, const unsigned int threads) {
     try {
         debugs("Lauching CalcGL...\n");
+
+        debugs("\tSetting global variables... ");
+        if (strcmp(rMode, "CPU") == 0) {
+            rmode = SurfaceCPU;
+            threadAmnt = threads;
+        } else if (strcmp(rMode, "GPU") == 0) {
+            rmode = SurfaceGPU;
+        } else if (strcmp(rMode, "SPHERE") == 0) {
+            rmode = STraceGPU;
+        }
+
         debugs("\tSetting relevant directories... ");
         path appPath(filesys::getAppPath());
 

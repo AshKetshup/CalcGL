@@ -225,8 +225,8 @@ class Shader {
             const char* vShaderCode = vertexCode.c_str();
             const char* fShaderCode = fGLSL.c_str();
 
-            cout << " __VERTEX__ \n" << vShaderCode << "\n";
-            cout << "__FRAGMENT__\n" << fShaderCode << "\n";
+            //cout << " __VERTEX__ \n" << vShaderCode << "\n";
+            //cout << "__FRAGMENT__\n" << fShaderCode << "\n";
 
             // 2. compile shaders
             unsigned int vertex, fragment;

@@ -44,7 +44,7 @@ class SphereTracing {
 	public:
 		SphereTracing();
 		void generate();
-		void renderGPU(Shader, Camera, const float, const float, vec3, float, const float = 10.f) const;
+		void renderGPU(Shader, Camera, const float, const float, vec3, vec3, float, const float = 10.f) const;
 		// void renderCPU() const;
 };
 

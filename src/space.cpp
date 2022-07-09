@@ -281,6 +281,7 @@ void SphereTracing::renderGPU(
 	const float width,
 	const float height,
 	vec3 objectColor,
+	vec3 backgroundColor,
 	float deltaTime,
 	const float renderDistance
 ) const {
@@ -312,7 +313,8 @@ void SphereTracing::renderGPU(
 	
 	s.setVec2("iResolution", vec2(width, height));
 	s.setFloat("iTime", deltaTime);
-	s.setVec4("objectColor", vec4(objectColor, 1.f));
+	s.setVec3("objectColor", objectColor);
+	s.setVec3("bgColor", backgroundColor);
 
 	// s.setInt("nspheres", spheres.size());
 	// unsigned int block_index = glGetUniformBlockIndex(s.getID(), "ubospheres");
