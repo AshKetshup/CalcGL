@@ -410,7 +410,7 @@ void CalcGL::refresh(void) {
                 sTracing.renderGPU(getSphereTracingGPUShader(), getCamera(), scr_width, scr_height, surfColor, bgColor, glfwGetTime());
                 break;
             case SurfaceCPU:
-                surface.renderCPU(getRayMarchCPUShader(), getCamera(), scr_width, scr_height, surfColor);
+                surface.renderCPU(getRayMarchCPUShader(), getCamera(), scr_width, scr_height, surfColor, threadAmnt);
                 break;
             case SurfaceGPU:
             default:
