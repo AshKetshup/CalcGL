@@ -191,7 +191,7 @@ void Surface::renderCPU(
 				vec3 sPoint      = plain.findPoint(uv.x, uv.y);
 				vec3 rayMarchDir = sPoint - c.Position;
 				Ray  ray(c.Position, rayMarchDir);
-				vec3 result   = ray.rayMarch(*this, 5.f, .01f, .1f);
+				vec3 result   = ray.rayMarch(*this, 50.f, .01f, .01f);
 				float distRes = distance(result, c.Position);
 
 				if (distRes < 10.f) {
@@ -239,6 +239,7 @@ void Surface::renderCPU(
 	glUniform1i(glGetUniformLocation(s.ID, "texture"), texture);
 	s.setVec2("iResolution", vec2(width, height));
 
+	glBindVertexArray(vaoHandle);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glBindVertexArray(0);
@@ -355,7 +356,7 @@ vec3 Ray::bisection(Surface s, vec3 lPoint, vec3 rPoint, float precision) {
 
 vec3 Ray::rayMarch(Surface s, const float maxDistance, const float precision, const float stepSize) {
 	float t = 0.f;
-	vec3 marchingDir = normalize(getDirection());
+	vec3 marchingDir = getDirection();
 	vec3 leftPoint   = getPosition();
 	vec3 rightPoint  = vec3(0.f);
 	bool intercept   = false;

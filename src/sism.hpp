@@ -94,7 +94,7 @@ namespace calcgl {
 			string logoName;
 			Logo logo;
 
-			render_mode rmode = SurfaceGPU;
+			render_mode rmode = SurfaceCPU;
 
 			GLFWwindow* window;
 			unsigned int scr_width;
