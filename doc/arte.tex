@@ -159,10 +159,21 @@ Esta técnica é de particular interesse nos seguintes casos:
 % 	\item \textbf{\textit{Compositing}}:
 % \end{enumerate}
 
-\todo{Imagem de exemplo algoritmo naïve em 2D}\\
-\todo{Imagem de exemplo algoritmo naïve em modo bisection 2D}\\
-\todo{Algoritmo naïve}
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=.8\textwidth]{raymarch2D}
+    \caption[Demonstração do algoritmo Ray Marching em 2D]{Demonstração do algoritmo Ray Marching em 2D.}
+    \label{fig::rmarching2D}
+\end{figure}
 
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=.8\textwidth]{bisection}
+    \caption[Processo de \textit{bisection} usado no algoritmo naïve]{Processo de \textit{bisection} usado no algoritmo naïve.}
+    \label{fig::rmarching2DBisection}
+\end{figure}
+
+\todo{Algoritmo naïve}
 \begin{algorithm}[!htbp]
 	\caption{Algoritmo naïve de \textit{ray marching}.}
 	\label{alg::raymarch_naive}
@@ -181,7 +192,13 @@ Esta técnica é de particular interesse nos seguintes casos:
 
 \textit{Sphere tracing} é usado para renderizar \textbf{superfícies implícitas}. Visto que esta função pode ser resolvida para cada ponto, podemos ir em frente e estimar a maior esfera possível que possa caber no atual passo de marcha. Então sabemos que a próxima distância a marchar é pelo menos tão grande quanto o raio da dita esfera. Desta forma adaptamos então o número de passos a marchar e tornamos com o processo muito mais rápido.
 
-\todo{Imagem de exemplo algoritmo spheretracing em 2D}
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=.8\textwidth]{stracing2D}
+    \caption[Demonstração do algoritmo Sphere Tracing em 2D]{Demonstração do algoritmo Sphere Tracing em 2D.}
+    \label{fig::stracing2D}
+\end{figure}
+
 
 No entanto em \textit{sphere tracing} é um requisito saber calcular com antecipação a distância minima entre um dado ponto e a superfície em questão. Dão-se a estas funções o nome de \textbf{\ac{SDF}}. O uso das mesmas torna impraticável a aplicação de \textit{sphere tracing} para funções implícitas de geometria desconhecida.
 
@@ -200,6 +217,33 @@ No entanto em \textit{sphere tracing} é um requisito saber calcular com antecip
 \label{sec::arte:opengl}
 
 \hint{Não recomendo um rip-off do meu relatório, mas ele pode servir de base para esta secção, tentando melhorá-lo e corrigir possíveis gafes.}
+
+
+\subsection{Pipeline}
+A renderização de um dado objeto atravessa diversas fases, ao conjunto das mesmas é dado o nome de \textbf{\textit{pipeline} de renderização}. A partir da versão 3.3, intitulado de "\opengl moderno", a \textit{pipeline} possui determinados pontos onde o programador tem a capacidade de implementar como a \ac{GPU} se deverá comportar, através de do que chamamos de \textit{shaders}.
+
+A \textit{pipeline} é inicializada sempre que uma operação de renderização for feita. Estas operações requerem o uso obrigatório de um \ac{VAO} propriamente definido e em conjunto associado a um \textit{Program Object} ou um \textit{Program Pipeline Object} que fornece os \textit{shaders} para as fases da \textit{pipeline}. 
+A ordem e as mencionadas fases são:
+\begin{enumerate}
+    \item \textbf{Processamento de vértices} (\textit{vertex processing}): 
+    A maioria das fases durante o processamento de vértices são programáveis, o que permite o código do utilizador customizar como os vértices são processados.
+    Cada vértice recebido pelo \ac{VAO} é usado por um \textit{Vertex Shader} tornando-o num vértice de saída. Opcionalmente é nos disponibilizado uma fase de tesselação (\textit{tessellation stage}) assim como um também opcional processamento de primitivas com o uso de um \textit{Geometry Shader}, este devolve uma sequência de primitivas.
+    
+    \item \textbf{Pós-processamento de vértices} (\textit{vertex post-processing}):
+    Os resultados da ultima fase são ajustados ou enviados para diferentes locais.
+\end{enumerate}
+
+\subsection{Shaders}
+\todo{mencionar fragment shaders}
+\todo{mencionar vertex shaders}
+
+
+\subsection{\emph{Buffers} e Atributos}
+\todo{mencionar vao}
+
+
+\subsection{Textures}
+\todo{mencionar textures}
 
 
 \section{Conclusões}
