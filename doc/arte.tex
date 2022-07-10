@@ -264,9 +264,24 @@ Os \textit{shaders} são compilados em \textit{runtime} pelo \opengl, neles usam
 
 No entanto, dados relativos a vértices, normais e cores são passados por \textit{buffers}.
 
-\subsection{\emph{Buffers} e Atributos}
-\todo{mencionar vao}
+\subsection{Vertex Attribute Object}
+Com a finalidade de passar diversos dados para a \ac{GPU} é obrigatório usar um gestor de atributos denominado por \acf{VAO}. Este é geralmente usado para organizar atributos de diversos \textit{buffers}, por exemplo \ac{VBO} e \ac{CBO}.
 
+Tendo em conta que o mesmo é mandatório na execução da \textit{pipeline} é nos possível fornecer à \ac{GPU} um \ac{VAO} vazio.
+
+Poderemos implementar um exemplo da seguinte forma:
+
+\begin{minted}{c++}
+    unsigned int vaoHandle;
+
+    glGenVertexArrays(1, &vaoHandle);
+    glBindVertexArray(vaoHandle);
+    glVertexAttrib1f(0, 0);
+
+    glBindVertexArray(0);
+\end{minted}
+
+Desta forma temos a capacidade de iniciar a execução da \textit{pipeline} de renderização sem fornecer nada em especifico ao \textit{vertex shader}.
 
 \subsection{Texturas}
 \todo{mencionar textures}
