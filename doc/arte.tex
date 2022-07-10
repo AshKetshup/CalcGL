@@ -227,22 +227,39 @@ A ordem e as mencionadas fases são:
 \begin{enumerate}
     \item \textbf{Processamento de vértices} (\textit{vertex processing}): 
     A maioria das fases durante o processamento de vértices são programáveis, o que permite o código do utilizador customizar como os vértices são processados.
-    Cada vértice recebido pelo \ac{VAO} é usado por um \textit{Vertex Shader} tornando-o num vértice de saída. Opcionalmente é nos disponibilizado uma fase de tesselação (\textit{tessellation stage}) assim como um também opcional processamento de primitivas com o uso de um \textit{Geometry Shader}, este devolve uma sequência de primitivas.
+    Cada vértice recebido pelo \ac{VAO} é usado por um \textit{vertex shader} tornando-o num vértice de saída. Opcionalmente é nos disponibilizado uma fase de tesselação (\textit{tessellation stage}) assim como um também opcional processamento de primitivas com o uso de um \textit{geometry shader}, este devolve uma sequência de primitivas.
     
     \item \textbf{Pós-processamento de vértices} (\textit{vertex post-processing}):
-    Os resultados da ultima fase são ajustados ou enviados para diferentes locais.
+    Durante este processo os vértices disponíveis são filtrados pela condição de serem compreendidos no \textit{viewport} atual. Os mesmos também poderão ser transportados para diferentes localizações no espaço.
+    
+    \item \textbf{Rasterização} (\textit{rasterization}): É neste processo que as primitivas são divididas em elementos independentes designados de \textbf{fragmentos}. Por norma, cada pixel é associado a pelo um fragmento.
+    
+    \item \textbf{Processamento de Fragmentos} através de \textit{fragment shader}: Para cada fragmento é gerado uma quantia de \textit{outputs} (por exemplo a cor), através do processamento de um \textit{fragment shader}.
+    
+    \item \textbf{Processamento por Amostra} (\textit{per-sample processing}): Com os resultados devolvidos pelo \textit{fragment shader}, os mesmos passam por diversos testes em que ao passar a todos resulta então em um pixel final.
 \end{enumerate}
 
 \subsection{Shaders}
-\todo{mencionar fragment shaders}
-\todo{mencionar vertex shaders}
+Aos programas executados pela \ac{GPU} num determinado ponto da pipeline de renderização chamamos de \textit{shaders}. Por entre os diversos \textit{shaders} disponíveis para implementação, são destacados dois de interesse a este projeto:
 
+\begin{enumerate}
+    \item \textbf{Vertex Shader}\\
+    Obtendo um vértice no espaço a partir do \ac{VAO}, este \textit{shader} é usado no processamento de vértices. Tradicionalmente realiza operações matriciais \ac{MVP}.
+    
+    \item \textbf{Fragment Shader}\\
+    Obtendo um fragmento após o processo de rasterização, o \textit{fragment shader} é capaz de o processar individualmente resultando numa determinada cor em conjunto de uma profundidade. Regularmente, é durante o mesmo que são aplicadas operações de iluminação e coloração.
+\end{enumerate}
+
+Os \textit{shaders} são compilados em \textit{runtime} pelo \opengl, neles usam uma linguagem própria, com sintaxe bastante próxima ao \verb*|C|, nomeada de \ac{GLSL}.
+É possível enviar uma cópia de dados da \ac{CPU} para a \ac{GPU} (da memória \ac{RAM} para a \ac{VRAM}) dando uso a \textbf{variáveis uniformes} (\textit{uniforms}), estas funcionam como variáveis globais em qualquer shaders disponíveis para implementação.
+
+No entanto, dados relativos a vértices, normais e cores são passados por \textit{buffers}.
 
 \subsection{\emph{Buffers} e Atributos}
 \todo{mencionar vao}
 
 
-\subsection{Textures}
+\subsection{Texturas}
 \todo{mencionar textures}
 
 
