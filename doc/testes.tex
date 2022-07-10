@@ -1,14 +1,31 @@
 \chapter{Testes e Resultados}
 \label{ch::testes}
 
-\section{Introdução}
-\label{sec::testes:intro}
-
-Bla bla inicial\ldots
+%\section{Introdução}
+%\label{sec::testes:intro}
 
 
 \section{Secções?}
 A analisar\ldots
+
+
+\begin{table}[!htbp]
+	\centering
+	\caption[Tempos de renderização em \acs{CPU}]{Tempo para a renderização de uma única \textit{frame} com recurso à \acs{CPU} para diferentes números de \textit{threads}. Os testes foram realizados no computador \textit{desktop} listado na Tabela \ref{tab::hardware}.}
+	\label{tab::render_cpu}
+	\begin{tabular}{r r r}
+		\toprule
+		\multirow{2}{*}{\textbf{Threads}} & \multicolumn{2}{c}{\textbf{Tempo}} \\
+		\cline{2-3}
+		 & Segundos & h:m's'' \\
+		\midrule
+		1 &  7087 & 01:58'07'' \\
+		2 &  5984 & 01:39'44'' \\
+		4 &  7566 & 02:06'06'' \\
+		6 & 10414 & 02:53'34'' \\
+		\bottomrule
+	\end{tabular}
+\end{table}
 
 
 \begin{figure}[!htbp]
@@ -68,7 +85,5 @@ A analisar\ldots
 \end{figure}
 
 
-\section{Conclusões}
-\label{sec::testes:conc}
-
-\ldots Whiskas Saquetas.
+%\section{Conclusões}
+%\label{sec::testes:conc}

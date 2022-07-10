@@ -1,10 +1,17 @@
 \chapter{Tecnologias e Ferramentas}
 \label{ch::tecno}
 
-\section{Introdução}
-\label{sec::tecno:intro}
+%\section{Introdução}
+%\label{sec::tecno:intro}
 
-Bla bla inicial\ldots
+A implementação do projeto \theapp~envolveu a utilização de vários recursos, documentados no presente Capítulo, em particular:
+
+\begin{itemize}[nosep]
+	\item Linguagens de programação e respetivos \textit{standards} ou versões eleitos;
+	\item Bibliotecas e \textit{frameworks} para programar em \opengl;
+	\item Código \textit{open-source} adicional;
+	\item \textit{Hardware} para a execução de testes.
+\end{itemize}
 
 
 \section{Tecnologias}
@@ -13,8 +20,6 @@ Bla bla inicial\ldots
 Para a implementação do projeto \theapp~com \opengl~foi escolhida a linguagem de programação C++, em particular o \textit{standard} C++20 (indicado ao compilador \verb|g++| com a \textit{flag} \verb|-std=c++20|). A fim de melhorar a experiência de utilização do \opengl, foram utilizadas as seguintes bibliotecas e \textit{frameworks}:
 
 \begin{itemize}
-    %\item \textbf{C++}: Linguagem compilada de uso geral multi-paradigma. Desenvolvida por Bjarne Stroustrup.
-    
     \item \textbf{GLFW~\cite{glfw}}: \ac{API} simplificada para o \opengl, igualmente multi-plataforma, permitindo a gestão de janelas, contextos, superfícies e comandos (rato, teclado e \textit{joystick});
     
     \item \textbf{\acs{GLAD}~\cite{glad,glad-webservice}} (\acl{GLAD}): gerador automático de \textit{loaders} para \opengl;
@@ -22,10 +27,6 @@ Para a implementação do projeto \theapp~com \opengl~foi escolhida a linguagem 
     \item \textbf{\acs{GLM}~\cite{glm}} (\acl{GLM}): biblioteca matemática baseada na linguagem dos \textit{shaders} do \opengl, \ac{GLSL}.
     
     \item \textbf{\textit{FreeType}~\cite{freetype}}: biblioteca de desenvolvimento dedicada à renderização de fontes em \textit{bitmaps} utilizáveis, por exemplo, pelo \opengl.
-    
-    % \item \textbf{\acs{GLSL}} (\acl{GLSL}): principal linguagem de \textit{shading} para \opengl.
-    
-    % \item \textbf{\opengl~\cite{opengl}}: \ac{API} multi-plataforma e com suporte a múltiplas linguagens de programação para a renderização de gráficos vetoriais 2D e 3D com recurso à placa gráfica;
 \end{itemize}
 
 Há ainda a notar que a \ac{GPU} é programada através de \textit{shaders} com a linguagem \acf{GLSL}. Em particular, foi usada a versão \textit{core}.
@@ -68,16 +69,16 @@ Além das bibliotecas e \textit{frameworks} referidas na Secção \ref{sec::tecn
 \begin{itemize}
     \item \textbf{\textit{CParser}} \todo{Citação}: biblioteca para \textit{parsing} de uma sequência de caracteres como uma expressão usando o algoritmo \textit{Shunting-yard} de Dijkstra;
     
-    \item \todo{Código do Learn OpenGL}
-    
-    \item \hint{quickGL??}
+    \item \textbf{\textit{Learn OpenGL}} \cite{learnopengl}: coleção de códigos de exemplo para o propósito de ensino de \opengl~moderno.
 \end{itemize}
 
 
-\section{\textit{Hardware}}
+\section{\textit{Hardware} e \textit{Software} adicional}
 \label{sec::tecno:hw}
 
-O \textit{software} final foi testado em dois computadores distintos, listados na Tabela \ref{tab::hardware}.
+O \textit{software} final foi testado em dois computadores distintos, listados na Tabela \ref{tab::hardware}. Os resultados destes testes serão abordados em detalhe no Capítulo \ref{ch::testes}.
+
+Para o desenvolvimento do projeto, foi utilizado o \ac{IDE} \textbf{\textit{Visual Studio Community 2022}}. Os testes foram realizados no sistema operativo \textit{Windows 11}. O \textit{software} auxiliar para a gestão do código e escrita do presente relatório está listado na Tabela \ref{tab::ferramentas}.
 
 \begin{table}[!p]
 	\centering
@@ -101,7 +102,7 @@ O \textit{software} final foi testado em dois computadores distintos, listados n
 \end{table}
 
 
-\section{Conclusões}
-\label{sec::tecno:conc}
-
-\ldots Whiskas Saquetas.
+%\section{Conclusões}
+%\label{sec::tecno:conc}
+%
+%Após a eleição da coleção de bibliotecas, \textit{frameworks} e código \textit{open-source} adicional a ser utilizado, seguir-se-á a implementação do projeto \theapp.
