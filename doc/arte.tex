@@ -1,14 +1,14 @@
 \chapter{Estado da Arte}
 \label{ch::arte}
 
-\section{Introdução}
-\label{sec::arte:intro}
+%\section{Introdução}
+%\label{sec::arte:intro}
 
 A visualização computacional de funções é a base de muitas aplicações práticas em computação gráfica, tais como em videojogos e visualização molecular. O estudo destas funções permite igualmente outro tipo de cálculos, tais como colisões.
 
 Para alcançar os objetivos propostos no presente projeto, é imperativo estudar os seguintes tópicos:
 
-\begin{itemize}
+\begin{itemize}[nosep]
 	\item Funções implícitas;
 	\item Técnicas de renderização em geral e algoritmos volumétricos em particular;
 	\item Uso da \ac{API} \opengl e programação em \ac{GLSL}.
@@ -64,8 +64,6 @@ Esta transformação não é possível para todos os polinómios, em particular 
 Uma \textbf{função implícita} é então definida por $f~:~\mathbb{R}^n \longrightarrow \mathbb{R}$, ou seja, para qualquer ponto em $\mathbb{R}^n$ é determinado um resultado em $\mathbb{R}$. Dependendo da função, o valor obtido pode ter significado, tal como uma grandeza física (\textit{e.g.} densidade de um líquido ou sua temperatura a cada ponto do espaço). Esta função diz-se \textbf{algébrica} caso seja polinomial em cada variável.
 
 Por seu turno, em $\mathbb{R}^3$, a \textbf{iso-superfície} de uma função implícita é a superfície que satisfaz a condição $f(\mathbf{x}) = 0$ (onde, doravante, $\mathbf{x} \equiv (x,y,z)$). Esta pode ser suavizada através de um parâmetro $s \in \mathbb{R}$ tal que $f(\mathbf{x}) - s = 0$. Este efeito é utilizado diretamente e com sucesso nas Superfícies $\Pi$ \cite{Raposo2019}.
-
-\todo{Mais aplicações.}
 
 
 \section{Renderização de Superfícies Implícitas}
@@ -192,17 +190,28 @@ Esta técnica é de particular interesse nos seguintes casos:
 
 \textit{Sphere tracing} é usado para renderizar \textbf{superfícies implícitas}. Visto que esta função pode ser resolvida para cada ponto, podemos ir em frente e estimar a maior esfera possível que possa caber no atual passo de marcha. Então sabemos que a próxima distância a marchar é pelo menos tão grande quanto o raio da dita esfera. Desta forma adaptamos então o número de passos a marchar e tornamos com o processo muito mais rápido.
 
-\begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=.8\textwidth]{stracing2D}
-    \caption[Demonstração do algoritmo Sphere Tracing em 2D]{Demonstração do algoritmo Sphere Tracing em 2D.}
-    \label{fig::stracing2D}
-\end{figure}
-
-
 No entanto em \textit{sphere tracing} é um requisito saber calcular com antecipação a distância minima entre um dado ponto e a superfície em questão. Dão-se a estas funções o nome de \textbf{\ac{SDF}}. O uso das mesmas torna impraticável a aplicação de \textit{sphere tracing} para funções implícitas de geometria desconhecida.
 
-\todo{Imagem de exemplo de uma SDF}
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=.8\textwidth]{stracing2D}
+	\caption[Demonstração do algoritmo Sphere Tracing em 2D]{Demonstração do algoritmo Sphere Tracing em 2D.}
+	\label{fig::stracing2D}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=.5\textwidth]{sdf01}
+	\caption[]{$x^2 + y^2 - 1$.}
+	\label{fig::sdf01}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=.5\textwidth]{sdf02}
+	\caption[]{\acf{SDF} $x^2 + y^2 - 1$.}
+	\label{fig::sdf02}
+\end{figure}
 
 \begin{algorithm}[!htbp]
 	\caption{Algoritmo de \textit{sphere tracing}.}
