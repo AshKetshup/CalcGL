@@ -9,31 +9,30 @@ A implementação do projeto \theapp~será detalhada no presente Capítulo, com 
 \begin{itemize}[nosep]
 	\item Requisitos funcionais do projeto;
 	\item Estrutura do código e o fluxo do mesmo;
-	\item Detalhes de implementação;
+	\item Detalhes de implementação e desafios encontrados.
 \end{itemize}
 
 
 \section{Funcionalidades e Requisitos}
 \label{sec::impl:requisitos}
 
-\hint{Uma breve lista de requisitos funcionais.}\\
-Para que o desenvolvimento do projeto seja o mais suave possível, foram descritas as \textbf{funcionalidades} a implementar tendo em conta os objetivos do projeto \todo{citar objetivos}, mais em especifico:
+O projeto \theapp~segue uma lista de \textbf{funcionalidades} a implementar baseados nos objetivos do projeto (Secção \ref{sec::intro:objetivos}), em específico:
 
 \begin{itemize}
-    \item Renderização de funções implícitas com uso de \textit{Ray Marching};
+    \item Renderização de funções implícitas com uso de \textit{ray marching};
     \item Suporte a dois motores de cálculo:
-    \begin{enumerate}
-        \item Por software (os cálculos são efetuados pela \ac{CPU});
-        \item Acelerado por \textit{hardware} (por \ac{GPU});
+    \begin{enumerate}[nosep]
+        \item Por \textit{software} (i.e. os cálculos são efetuados pela \ac{CPU});
+        \item Aceleração por \textit{hardware} (com uso da \ac{GPU});
     \end{enumerate}
-    \item Suporte a ficheiros externos contendo as funções implícitas;
+    \item Suporte a ficheiros externos contendo as funções implícitas a renderizar.
 \end{itemize}
 
-Foram ainda considerados os seguintes \textbf{requisitos}:
+Foram ainda considerados os seguintes \textbf{requisitos} adicionais:
 \begin{itemize}
     \item Abrir qualquer ficheiro \verb*|.function| dinamicamente por um meio gráfico (\ac{GUI});
-    \item Capacidade de personalizar a cor da superfície implícita resultante;
-    % \item Visualizar os \ac{FPS};
+    \item Capacidade de personalizar a cor da superfície implícita;
+    \item Apresentar as \ac{fps} alcançadas pelo programa para análise dos resultados.
 \end{itemize}
 
 
@@ -43,6 +42,8 @@ Foram ainda considerados os seguintes \textbf{requisitos}:
 \hint{Estrutura do código e respetivo fluxo.}
 
 
+
+
 \section{Detalhes de Implementação}
 \label{sec::impl:detalhes}
 
@@ -50,8 +51,12 @@ Foram ainda considerados os seguintes \textbf{requisitos}:
 
 \hint{Aceleração por \textit{hardware}.}
 
+\hint{GPU foi abaixo.}
+
+
+
+
 
 
 %\section{Conclusões}
 %\label{sec::impl:conc}
-
