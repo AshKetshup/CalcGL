@@ -3,11 +3,10 @@
 
 %\section{Introdução}
 %\label{sec::testes:intro}
-Deve ser assumido que durante toda a sequência de testes feita e registada, a aplicação foi compilada em \textbf{modo \textit{debug}} (no qual o programa retorna informação de \textit{debugging} útil no processo).
 
 Durante a implementação e após a conclusão da versão final do projeto \theapp, foram realizados diversos testes a fim de analisar a exatidão do algoritmo e a qualidade das renderizações obtidas. O presente Capítulo explora os testes e respetivos resultados obtidos no sistema de renderização com aceleração por \textit{hardware}. Em último será feita uma menção à renderização por \textit{software}.
 
-Doravante, referir-se-á ao programa final exclusivamente pelo seu nome, \theapp.
+Doravante, referir-se-á ao programa final exclusivamente pelo seu nome, \theapp. Deve ainda ser assumido que, em toda a sequência de testes feita e registada, a aplicação foi compilada em \textbf{modo \textit{debug}} (no qual o programa retorna informação detalhada útil neste processo).
 
 
 \section{Arranque e \textit{Setup} Inicial}
@@ -55,7 +54,7 @@ A primeira fase foi fundamental para limar a implementação do algoritmo e faze
 
 \begin{figure}[!htbp]
 	\centering
-	\includegraphics[width=.8\textwidth]{calcglsphere}
+	\includegraphics[width=.7\textwidth]{calcglsphere}
 	\caption[Esfera no \theapp~com algoritmo naïve]{Esfera renderizada no \theapp, em fase inicial de testes, com o algoritmo naïve.}
 	\label{fig::calcglsphere}
 \end{figure}
@@ -63,6 +62,8 @@ A primeira fase foi fundamental para limar a implementação do algoritmo e faze
 O \textit{fragment shader} que produziu este resultado foi então adaptado para mostrar nove sólidos cujas \acfp{SDF} são bem conhecidas, em conjunto com um plano e dois pontos de luz para conferir o devido funcionamento das sombras. Uma vez que as \acsp{SDF} são conhecidas, foi utilizado o algoritmo de \textbf{\itshape sphere tracing}. O resultado obtido consta da Figura \ref{fig::sphereoriginalblue}.
 
 Por fim, o \textbf{parâmetro de suavização} $s$ (equação (\ref{eq::suavizacao})) foi testado em função do tempo $t$ tal que $s = \cos(t)$; na Figura \ref{fig::spheresmooth} é apresentada uma \textit{frame} do resultado obtido.
+
+De notar que, em todos os testes com o algoritmo \textit{sphere tracing}, o programa executou à taxa de frequência do monitor (60 ou 75 \acf{fps}).
 
 \begin{figure}[!htbp]
 	\centering
@@ -108,14 +109,12 @@ Dos testes realizados, três funções implícitas em particular são apresentad
 
 	\item \textbf{Fractal} (Figura \ref{fig::calcglfractal}), dado pela expressão:
 	\begin{align*}
-		f(x,y,z) =~ & (x^3 - 3xy^2 - 3xz^2)^2 ~+ \\
-		            & (y^3 - 3x^2y - 3yz^2)^2 ~+ \\
-		            & (z^3 - 3x^2z + y^2z)^2  ~- \\
-		            & (x^2 + y^2 + z^2)^3
+		f(x,y,z) =~ & (x^3 - 3xy^2 - 3xz^2)^2 + (y^3 - 3x^2y - 3yz^2)^2 + \\
+		            & (z^3 - 3x^2z + y^2z)^2  - (x^2 + y^2 + z^2)^3
 	\end{align*}
 \end{enumerate}
 
-Pode-se constatar que o algoritmo implementado perde bastante detalhe com um fractal devido às limitações impostas a nível de cálculo. Maior precisão seria necessário, mas tal levaria a uma execução bastante pobre por parte da aplicação (conforme discutido na Secção \todo{Secção que fala sobre a GPU dar reset}).
+Pode-se constatar que o algoritmo implementado perde bastante detalhe com um fractal devido às limitações impostas a nível de cálculo. Uma maior precisão seria necessária, mas tal levaria a uma execução bastante pobre por parte da aplicação com o algoritmo naïve (conforme discutido na Secção \todo{Secção que fala sobre a GPU dar reset}).
 
 \begin{figure}[!htbp]
 	\centering
@@ -124,16 +123,16 @@ Pode-se constatar que o algoritmo implementado perde bastante detalhe com um fra
 	\label{fig::calcglpisurf}
 \end{figure}
 
-\begin{figure}[!htbp]
+\begin{figure}[!hbp]
 	\centering
 	\includegraphics[width=.8\textwidth]{calcglgenus}
 	\caption[\textit{Genus} no \theapp~com algoritmo naïve]{\textit{Genus} renderizado no \theapp~com algoritmo naïve.}
 	\label{fig::calcglgenus}
 \end{figure}
 
-\begin{figure}[!htbp]
+\begin{figure}[!hbp]
 	\centering
-	\includegraphics[width=.8\textwidth]{calcglfractal}
+	\includegraphics[width=.7\textwidth]{calcglfractal}
 	\caption[Fractal no \theapp~com algoritmo naïve]{Fractal renderizado no \theapp~com algoritmo naïve.}
 	\label{fig::calcglfractal}
 \end{figure}
@@ -147,7 +146,7 @@ A renderização por \textit{software} (i.e. com recurso exclusivo à \ac{CPU}) 
 
 Não só devido ao tempo de execução, mas também por exigir bastante da \ac{CPU}, apenas foram testados quatro cenários no computador \textit{desktop} da Tabela \ref{tab::hardware}. O tempo mínimo de execução foi alcançado com 2 \textit{threads}, num tempo aproximado de 1 hora e 40 minutos. Um maior número de \textit{threads} revelou ser prejudicial à \textit{performance}. Estes tempos estão sumariados na Tabela \ref{tab::render_cpu} e no gráfico da Figura \ref{fig::cpurenderchart}.
 
-\begin{table}[!htbp]
+\begin{table}[!hbtp]
 	\centering
 	\caption[Tempos de renderização em \acs{CPU}]{Tempo para a renderização de uma única \textit{frame} com recurso à \acs{CPU} para diferentes números de \textit{threads}. O tempo em segundos foi arredondado à unidade.}
 	\label{tab::render_cpu}
@@ -165,9 +164,9 @@ Não só devido ao tempo de execução, mas também por exigir bastante da \ac{C
 	\end{tabular}
 \end{table}
 
-\begin{figure}[!htbp]
+\begin{figure}[!hbtp]
 	\centering
-	\includegraphics[scale=1.0]{cpurenderchart}
+	\includegraphics[scale=0.9]{cpurenderchart}
 	\caption[Gráfico dos tempos de execução em \acs{CPU}]{Gráfico representativo dos tempos de execução em \acs{CPU}, correlacionando o número de \textit{threads} com o tempo em segundos para concluir uma \textit{frame}.}
 	\label{fig::cpurenderchart}
 \end{figure}
