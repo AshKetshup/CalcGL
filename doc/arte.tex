@@ -219,6 +219,33 @@ No entanto em \textit{sphere tracing} é um requisito saber calcular com antecip
 \hint{Não recomendo um rip-off do meu relatório, mas ele pode servir de base para esta secção, tentando melhorá-lo e corrigir possíveis gafes.}
 
 
+\subsection{Pipeline}
+A renderização de um dado objeto atravessa diversas fases, ao conjunto das mesmas é dado o nome de \textbf{\textit{pipeline} de renderização}. A partir da versão 3.3, intitulado de "\opengl moderno", a \textit{pipeline} possui determinados pontos onde o programador tem a capacidade de implementar como a \ac{GPU} se deverá comportar, através de do que chamamos de \textit{shaders}.
+
+A \textit{pipeline} é inicializada sempre que uma operação de renderização for feita. Estas operações requerem o uso obrigatório de um \ac{VAO} propriamente definido e em conjunto associado a um \textit{Program Object} ou um \textit{Program Pipeline Object} que fornece os \textit{shaders} para as fases da \textit{pipeline}. 
+A ordem e as mencionadas fases são:
+\begin{enumerate}
+    \item \textbf{Processamento de vértices} (\textit{vertex processing}): 
+    A maioria das fases durante o processamento de vértices são programáveis, o que permite o código do utilizador customizar como os vértices são processados.
+    Cada vértice recebido pelo \ac{VAO} é usado por um \textit{Vertex Shader} tornando-o num vértice de saída. Opcionalmente é nos disponibilizado uma fase de tesselação (\textit{tessellation stage}) assim como um também opcional processamento de primitivas com o uso de um \textit{Geometry Shader}, este devolve uma sequência de primitivas.
+    
+    \item \textbf{Pós-processamento de vértices} (\textit{vertex post-processing}):
+    Os resultados da ultima fase são ajustados ou enviados para diferentes locais.
+\end{enumerate}
+
+\subsection{Shaders}
+\todo{mencionar fragment shaders}
+\todo{mencionar vertex shaders}
+
+
+\subsection{\emph{Buffers} e Atributos}
+\todo{mencionar vao}
+
+
+\subsection{Textures}
+\todo{mencionar textures}
+
+
 \section{Conclusões}
 \label{sec::arte:conc}
 
