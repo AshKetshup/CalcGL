@@ -63,7 +63,14 @@ Esta transformação não é possível para todos os polinómios, em particular 
 
 Uma \textbf{função implícita} é então definida por $f~:~\mathbb{R}^n \longrightarrow \mathbb{R}$, ou seja, para qualquer ponto em $\mathbb{R}^n$ é determinado um resultado em $\mathbb{R}$. Dependendo da função, o valor obtido pode ter significado, tal como uma grandeza física (\textit{e.g.} densidade de um líquido ou sua temperatura a cada ponto do espaço). Esta função diz-se \textbf{algébrica} caso seja polinomial em cada variável.
 
-Por seu turno, em $\mathbb{R}^3$, a \textbf{iso-superfície} de uma função implícita é a superfície que satisfaz a condição $f(\mathbf{x}) = 0$ (onde, doravante, $\mathbf{x} \equiv (x,y,z)$). Esta pode ser suavizada através de um parâmetro $s \in \mathbb{R}$ tal que $f(\mathbf{x}) - s = 0$. Este efeito é utilizado diretamente e com sucesso nas Superfícies $\Pi$ \cite{Raposo2019}.
+Por seu turno, em $\mathbb{R}^3$, a \textbf{iso-superfície} de uma função implícita é a superfície que satisfaz a condição $f(\mathbf{x}) = 0$ (onde, doravante, $\mathbf{x} \equiv (x,y,z)$). Esta pode ser suavizada através de um parâmetro $s \in \mathbb{R}$ tal que:
+
+\begin{equation}
+	f(\mathbf{x}) - s = 0
+	\label{eq::suavizacao}
+\end{equation}
+
+Este efeito é utilizado diretamente e com sucesso nas Superfícies $\Pi$ \cite{Raposo2019}.
 
 
 \section{Renderização de Superfícies Implícitas}
