@@ -4,10 +4,29 @@
 \section{Conclusões}
 \label{sec::conc:conc}
 
-\todo{}
+Com o desenvolvimento e teste deste projeto, foi possível:
+\begin{itemize}
+    \item Estudar as funções implícitas e o método de cálculo das respetivas iso-superfícies;
+    \item Analisar o modelo de renderização por volume;
+    \item Estudar o algoritmo da área de \ac{CG} para renderização de superfícies implícitas por \textit{ray marching} assim como \textit{sphere tracing};
+    \item Aprofundar o conhecimento na linguagem \ac{GLSL};
+    \item Conhecer em maior profundidade o funcionamento do \opengl~moderno;
+\end{itemize}
+
+Com o conjunto destes, foi então possível alcançar o objetivo principal: desenvolver e implementar um sistema de visualização de funções implícitas com recurso ao algoritmo de \textit{ray marching} e \opengl~moderno.
+
+Em relação ao motor de cálculo por software, a utilização do mesmo revela não ser de nenhuma forma apropriada para qualquer uso, tendo em conta os longos tempos de espera necessários para calculo de uma única \textit{frame}.
+
+O algoritmo de \textit{sphere tracing}, ainda sendo uma alternativa com uma melhoria de performance considerável, é revelada atualmente inalcançável no contexto de funções implícitas. Isto, devido à inexistência de um método geral para cálculo dinâmico de \ac{SDF} relativa a uma função implícita.
 
 
 \section{Trabalho Futuro}
 \label{sec::conc:futuro}
 
-\todo{}
+Ainda que, no contexto do projeto proposto, tenham sido cumpridos os objetivos definidos, a conclusão deste revelou a existência de variadas oportunidades de melhoria e estudo nas áreas envolvidas.
+
+É possível o recurso a outros algoritmos, assim como o uso de \textit{compute shaders} para melhorar a performance do programa.
+
+Seria também interessante explorar a área matemática intrínseca ao cálculo de uma \ac{SDF}, com o propósito de alcançar um método geral de computação para qualquer função implícita.
+
+Por seu turno, a testagem do código para diferentes configurações de \textit{hardware}, com o intuito de correlacionar a performance obtida com a configuração do sistema.
