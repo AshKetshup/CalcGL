@@ -440,4 +440,3 @@ doc/*.synctex.gz
 # Others
 RayMarchingAlgo
 *.pdf
-CalcGL*/

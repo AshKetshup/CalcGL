@@ -18,11 +18,6 @@ Para alcançar os objetivos propostos no presente projeto, é imperativo estudar
 \section{Funções Implícitas}
 \label{sec::arte:implicitas}
 
-%\subsection{Definição e Aplicações}
-%\label{ssec::arte:implicitas:def}
-
-% O que é? Exemplo(s). Que aplicações têm?
-
 Às funções definidas em função de uma variável dá-se o nome de \textbf{funções explícitas}. Exemplos clássicos em $\mathbb{R}^2$ incluem equações de retas ($y = mx + b$) e parábolas ($y = ax^2 + bx + c$). Ora, nem todos os subconjuntos de pontos no espaço cartesiano podem ser definidos por funções explícitas. Um exemplo comum em $\mathbb{R}^2$ é a circunferência:
 
 \begin{equation}
@@ -63,7 +58,14 @@ Esta transformação não é possível para todos os polinómios, em particular 
 
 Uma \textbf{função implícita} é então definida por $f~:~\mathbb{R}^n \longrightarrow \mathbb{R}$, ou seja, para qualquer ponto em $\mathbb{R}^n$ é determinado um resultado em $\mathbb{R}$. Dependendo da função, o valor obtido pode ter significado, tal como uma grandeza física (\textit{e.g.} densidade de um líquido ou sua temperatura a cada ponto do espaço). Esta função diz-se \textbf{algébrica} caso seja polinomial em cada variável.
 
-Por seu turno, em $\mathbb{R}^3$, a \textbf{iso-superfície} de uma função implícita é a superfície que satisfaz a condição $f(\mathbf{x}) = 0$ (onde, doravante, $\mathbf{x} \equiv (x,y,z)$). Esta pode ser suavizada através de um parâmetro $s \in \mathbb{R}$ tal que $f(\mathbf{x}) - s = 0$. Este efeito é utilizado diretamente e com sucesso nas Superfícies $\Pi$ \cite{Raposo2019}.
+Por seu turno, em $\mathbb{R}^3$, a \textbf{iso-superfície} de uma função implícita é a superfície que satisfaz a condição $f(\mathbf{x}) = 0$ (onde, doravante, $\mathbf{x} \equiv (x,y,z)$). Esta pode ser suavizada através de um parâmetro $s \in \mathbb{R}$ tal que:
+
+\begin{equation}
+	f(\mathbf{x}) - s = 0
+	\label{eq::suavizacao}
+\end{equation}
+
+Este efeito é utilizado diretamente e com sucesso nas Superfícies $\Pi$ \cite{Raposo2019}.
 
 
 \section{Renderização de Superfícies Implícitas}
@@ -85,23 +87,24 @@ Neste sentido, foram desenvolvidos métodos mais eficientes de cálculo, tais co
     \item \textbf{\itshape Ray Tracing}: funcionalmente semelhante ao \textit{Ray Casting}, recorre a simulações óticas mais avançadas para a criação de cenários mais realistas.
 \end{itemize}
 
-\todo{Imagens de exemplo de cada técnica.}
+%\todo{Imagens de exemplo de cada técnica.}
 
-Neste âmbito, as funções implícitas representam simultaneamente uma grande oportunidade e um enorme desafio na área da computação gráfica. Se por um lado é possível obter a visualização de formas geométricas complexas com recurso a funções implícitas, por outro não há um método direto de determinar os pontos da iso-superfície. Vários algoritmos para este fim têm sido propostos ao longo das últimas décadas. Para fins do presente Estado da Arte, estes podem ser categorizados em dois grandes grupos:
+Neste âmbito, as funções implícitas representam simultaneamente uma grande oportunidade e um enorme desafio na área da computação gráfica. Se por um lado é possível obter a visualização de formas geométricas complexas com recurso a funções implícitas, por outro não há um método direto geral para determinar os pontos da iso-superfície. Vários algoritmos computacionais para este fim têm sido propostos ao longo das últimas décadas. Para fins do presente Estado da Arte, estes podem ser categorizados em dois grandes grupos:
 
 \begin{enumerate}
-	\item \textbf{Triangulação}: A iso-superfície é dividida em triângulos, os quais formam a \textit{mesh} a ser renderizada pela \ac{GPU}. Exemplos incluem:
+	\item \textbf{Triangulação}: A iso-superfície é dividida em triângulos, os quais formam a \textit{mesh} a ser renderizada pela \ac{GPU}. Este é considerado o algoritmo clássico e de eleição:
 	\begin{itemize}[nosep]
 		\item \textit{Marching cubes}\cite{Lorensen1987}: O espaço é dividido em cubos onde o valor da função implícita é calculado para cada vértice. A análise dos sinais permite determinar quais arestas do cubo a superfície interseta, num total de 256 possíveis combinações de triângulos.
 	\end{itemize}
 	
-	\item \textbf{Algoritmos volumétricos}: \todo{Breve descrição}. Exemplos incluem:
+	\item \textbf{Algoritmos volumétricos}: Permitem determinar a iso-superfície através do cálculo de interseções. Exemplos incluem:
 	\begin{itemize}
-		\item \textit{Ray marching}: \todo{Breve descrição}.
+		\item \textit{Ray marching}: Uma série finita de raios com origem no observador são emitidos para a cena a ser visualizada, e a interseção é estimada iterando sobre um ponto que marcha nesse raio.
 		\item \textit{Sphere tracing}\cite{Hart1996}: Um caso particular de \textit{ray marching} onde esferas são usadas para determinar a distância mínima aos objetos do cenário.
 		\item \textit{Ray tracing} (previamente descrito).
 	\end{itemize}
 \end{enumerate}
+
 %	\item \textbf{\textit{Ray Tracing}}:\\
 %    \revision{} \todo{Citar um artigo de Ray Tracing}\\
 %     Um \textit{viewport} é definido a uma distância da câmara. É a partir da mesma que são enviados raios na direção de cada pixel. É calculado o ponto de interseção com a superfície em cena e o mesmo é refletido. Este processo é repetido uma quantia pre-definida até por fim obter a cor a usar.
@@ -110,30 +113,74 @@ Neste âmbito, as funções implícitas representam simultaneamente uma grande o
 \section{\emph{Ray Marching}}
 \label{sec::arte:raymarch}
 
-\hint{Como funciona o algoritmo? É paralelizável? Se sim, como e porquê?}
+%\revision{\textit{Ray marching} é uma técnica de renderização que tal como no tradicional \textit{ray tracing}, não é tão simples de resolver uma superfície (ou até impossível caso sem o uso de métodos numéricos interativos). Em \textit{ray tracing} apenas nos focamos na interseção do raio emitido com a superfície, enquanto no algoritmo de \textit{ray marching} marchamos na direção tomada até encontrarmos uma interseção (isto se a mesma existir).}
 
-\revision{\textit{Ray marching} é uma técnica de renderização que tal como no tradicional \textit{ray tracing}, não é tão simples de resolver uma superfície (ou até impossível caso sem o uso de métodos numéricos interativos). Em \textit{ray tracing} apenas nos focamos na interseção do raio emitido com a superfície, enquanto no algoritmo de \textit{ray marching} marchamos na direção tomada até encontrarmos uma interseção (isto se a mesma existir).}
+Um método de estimar pontos da iso-superfície de uma função implícita passa pela determinação da sua interseção com retas. Pelo princípio tomado nos métodos da família de \textit{ray casting}, um raio com origem no observador e um sentido na cena a ser observada é considerado. Diferentes algoritmos podem ser utilizados para estimar o ponto de interseção (ou calcular com precisão se tal for possível). No caso de \textit{ray marching}, a interseção do raio com a superfície implícita é feita colocando um ponto em ``marcha'' ao longo do primeiro.
 
-\subsection{Ray Casting}
-Como em qualquer algoritmo da família \textit{ray casting}, \textit{ray marching} começa com um viewport definido por um plano a uma determinada distância (representando o \ac{FOV}) da câmara em que para cada pixel do dado \textit{viewport} é enviado um raio na dada direção.
+\subsection{\textit{Ray Casting}}
+\label{ssec::arte:raymarch:cast}
+
+Seguir-se-á uma explicação do processo de \textit{ray casting} tendo por base o esquema da Figura \ref{fig::raycast}.
+
+Considere-se então os seguintes parâmetros relativos ao \textbf{observador} (ou câmara):
+
+\begin{itemize}
+	\item \textbf{Origem} no ponto $C$;
+	\item \textbf{Vetores de visualização} normalizados:
+	\begin{itemize}[nosep]
+		\item Frontal (\textit{front}), $\overrightarrow{f}$, na direção do eixo $z$;
+		\item Direito (\textit{right}), $\overrightarrow{r}$, na direção do eixo $x$;
+		\item Superior (\textit{up}), $\overrightarrow{u}$, da direção do eixo $y$.
+	\end{itemize}
+	\item \textbf{\acf{FOV}}, dado por $s$.
+\end{itemize}
+
+\begin{figure}[!bp]
+	\centering
+	\includegraphics[width=\textwidth]{raycast}
+	\caption[Esquema do processo de \textit{ray casting}]{Esquema representativo do processo de \textit{ray casting}. A partir do observador $C$, com os respetivos vetores de visualização $\overrightarrow{f}$, $\overrightarrow{r}$ e $\overrightarrow{u}$, e o \acs{FOV} definido pela distância $s$, determina-se o plano de visualização $\varphi$. Os raios emitidos, $a$, interceptam $\varphi$ no ponto $A$, o qual está associado a um fragmento no \opengl.}
+	\label{fig::raycast}
+\end{figure}
+
+O ponto $P$ a partir do qual se definirá o plano de visualização é definido por:
 
 \begin{equation}
-    (x, y, z) = P + s \times \overrightarrow{v}
+	P = C + s \cdot \overrightarrow{f}
+	\label{eq::cast:pontoP}
 \end{equation}
+
+Desta forma, o \textbf{plano de visualização} $\varphi$ é definido com base no ponto $P$ e nos vetores $\overrightarrow{r}$ e $\overrightarrow{u}$:
 
 \begin{equation}
-    (x, y, z) = P + s \times \overrightarrow{v} + t \times \overrightarrow{u}
+	\varphi ~\equiv~ (x,y,z) = P + x \cdot \overrightarrow{r} + y \cdot \overrightarrow{u}
+	\label{eq::cast:plano}
 \end{equation}
+
+Desta forma, os \textbf{raios} emitidos a partir do observador, $a$, interceptam o plano de visualização $\varphi$ no ponto $A(x_A, y_A, z_P)$, e são definidos pela seguinte equação vetorial:
 
 \begin{equation}
-    \overrightarrow{d} = P - C
+	a ~\equiv~ (x,y,z) = C + w \cdot (A - C)
+	\label{eq::cast:ray}
 \end{equation}
 
-
+Através de um processo de \textit{ray marching} pode-se estimar o valor $w$ que determina o ponto de intercepção $I$. A distância a que se encontra do observador, em conjunto com o vetor normal em $I$, permitem calcular a cor do fragmento (geralmente um pixel) associado ao ponto $A$.
 
 
 \subsection{Algoritmo naïve}
-Em \textit{ray tracing} apenas nos focamos na interseção do raio emitido com a superfície, enquanto no algoritmo de \textit{ray marching} marchamos na direção tomada até encontrarmos uma interseção (isto se a mesma existir).\\
+\label{ssec::art:raymarch:naive}
+
+% Em \textit{ray tracing} apenas nos focamos na interseção do raio emitido com a superfície, enquanto no algoritmo de \textit{ray marching} marchamos na direção tomada até encontrarmos uma interseção (isto se a mesma existir).
+
+No algoritmo naïve, um ponto é iterado sobre o raio emitido num processo de ``marcha''. A cada ponto o valor da função implícita é calculado. Assumindo que esta é contínua em $\mathbb{R}^3$, o Teorema de Bolzano-Cauchy pode ser utilizado para determinar se ocorreu uma interseção entre dois pontos de marcha contíguos (Figura \ref{fig::rmarching2D}).
+
+\begin{figure}[!bp]
+	\centering
+	\includegraphics[width=.9\textwidth]{raymarch2D}
+	\caption[Algoritmo \textit{Ray Marching} em 2D]{Demonstração do algoritmo \textit{Ray Marching} em 2D. Um ponto (a vermelho) ``marcha'' ao longo de um raio emitido no sentido da cena com origem no observador até ser detetada uma interseção com a função implícita (verde). O Teorema de Bolzano-Cauchy indica que tal interseção existe entre o último ponto vermelho e o ponto azul.}
+	\label{fig::rmarching2D}
+\end{figure}
+
+A fim de aumentar a precisão do ponto de interseção estimado, pode-se proceder a uma marcha em sentido inverso com distâncias menores a cada iteração até se chegar a um ponto suficientemente perto da função implícita que se possa considerar o ponto de interseção. A este processo dá-se o nome de \textit{bisection} (Figura \ref{fig::rmarching2DBisection}).
 
 Esta técnica é de particular interesse nos seguintes casos:
 \begin{itemize}
@@ -142,152 +189,138 @@ Esta técnica é de particular interesse nos seguintes casos:
     \item Renderização de outros tipos de funções paramétricas onde a interseção não é conhecida antecipadamente, como \textit{parallel mapping}.
 \end{itemize}
 
-% \subsection{Algoritmo naïve}
-% \label{ssec::arte:raymarch:naive}
-% 
-% O algoritmo geral de \textit{ray marching} contempla os seguintes quatro passos:
-% 
-% \begin{enumerate}
-% 	\item \textbf{\textit{Ray casting}}:
-% 	
-% 	\item \textbf{\textit{Sampling}}:
-% 	
-% 	\item \textbf{\textit{Shading}}:
-% 	
-% 	\item \textbf{\textit{Compositing}}:
-% \end{enumerate}
+Contudo, este é um algoritmo geral que se pode aplicar a qualquer função tridimensional (Figura \ref{fig::ashalgosphere}).
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=.8\textwidth]{raymarch2D}
-    \caption[Demonstração do algoritmo Ray Marching em 2D]{Demonstração do algoritmo Ray Marching em 2D.}
-    \label{fig::rmarching2D}
-\end{figure}
-
-\begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=.8\textwidth]{bisection}
-    \caption[Processo de \textit{bisection} usado no algoritmo naïve]{Processo de \textit{bisection} usado no algoritmo naïve.}
+    \includegraphics[width=0.8\textwidth]{bisection}
+    \caption[Processo de \textit{bisection} usado no algoritmo naïve de \textit{ray marching}]{Processo de \textit{bisection} usado no algoritmo naïve de \textit{ray marching}.}
     \label{fig::rmarching2DBisection}
 \end{figure}
 
-\todo{Algoritmo naïve}
-\begin{algorithm}[!htbp]
-	\caption{Algoritmo naïve de \textit{ray marching}.}
-	\label{alg::raymarch_naive}
-	\begin{algorithmic}
-\Require função $f$      \Comment{Função implícita}
-	\end{algorithmic}
-\end{algorithm}
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.6\textwidth]{ashalgosphere}
+	\caption[Teste do algoritmo naïve numa esfera]{Teste do algoritmo naïve no \textit{website} \url{shadertoy.com} com uma esfera.}
+	\label{fig::ashalgosphere}
+\end{figure}
+
+%\begin{algorithm}[!htbp]
+%	\caption{Algoritmo naïve de \textit{ray marching}.}
+%	\label{alg::raymarch_naive}
+%	\begin{algorithmic}
+%\Require função $f$      \Comment{Função implícita}
+%	\end{algorithmic}
+%\end{algorithm}
 
 
-\subsection{Sphere Tracing}
+\subsection{\textit{Sphere Tracing}}
 \label{ssec::arte:raymarch:spheretracing}
 
-\revision{Reformular o português. A ideia está cá, mas para quem não está dentro do projeto pode sentir-se um pouco perdido. Nada de grave, don't worry :)}
+\textit{Sphere tracing} é uma técnica que faz uso do algoritmo de \textit{ray marching} para renderizar \textbf{superfícies implícitas} conhecidas (Figura \ref{fig::spheresphere}). É \textbf{requisito necessário} ter conhecimento antecipado da distância mínima entre um dado ponto e a superfície em questão. Esta distância é determinada com funções denominadas de \textbf{\ac{SDF}} (Figura \ref{fig::sdf}). O uso das mesmas torna impraticável a aplicação de \textit{sphere tracing} para funções implícitas de geometria desconhecida.
 
-\textit{Sphere tracing} é um possível algoritmo de \textit{ray marching}. No entanto, nem todos os usos de \textit{ray marching} beneficiam deste método, porque estes não conseguem ser convertidos para este esquema.
+Visto que uma função \acs{SDF} pode ser resolvida para cada ponto, podemos determinar a maior esfera possível que possa caber no atual passo de marcha e cujo raio seja a distância mínima entre o ponto e a superfície. Sabemos então que a próxima distância a ``marchar'' é o raio desta esfera (Figura \ref{fig::stracing2D}). Tal permite optimizar o número de passos necessário na ``marcha'', aumentando significativamente a eficiência do processo de \textit{ray marching}.
 
-\textit{Sphere tracing} é usado para renderizar \textbf{superfícies implícitas}. Visto que esta função pode ser resolvida para cada ponto, podemos ir em frente e estimar a maior esfera possível que possa caber no atual passo de marcha. Então sabemos que a próxima distância a marchar é pelo menos tão grande quanto o raio da dita esfera. Desta forma adaptamos então o número de passos a marchar e tornamos com o processo muito mais rápido.
-
-No entanto em \textit{sphere tracing} é um requisito saber calcular com antecipação a distância minima entre um dado ponto e a superfície em questão. Dão-se a estas funções o nome de \textbf{\ac{SDF}}. O uso das mesmas torna impraticável a aplicação de \textit{sphere tracing} para funções implícitas de geometria desconhecida.
+%\begin{algorithm}[!htbp]
+%	\caption{Algoritmo de \textit{sphere tracing}.}
+%	\label{alg::raymarch_spheretrace}
+%	\begin{algorithmic}
+%		\Require função $f$      \Comment{Função implícita}
+%	\end{algorithmic}
+%\end{algorithm}
 
 \begin{figure}[!htbp]
 	\centering
-	\includegraphics[width=.8\textwidth]{stracing2D}
-	\caption[Demonstração do algoritmo Sphere Tracing em 2D]{Demonstração do algoritmo Sphere Tracing em 2D.}
+	\includegraphics[width=0.6\textwidth]{spheresphere}
+	\caption[Teste do algoritmo de \textit{sphere tracing}]{Teste do algoritmo de \textit{sphere tracing} no \textit{website} \url{shadertoy.com} de uma esfera e um plano.}
+	\label{fig::spheresphere}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.4\textwidth]{sdf02}
+	\caption[\acs{SDF} para a circunferência $x^2 + y^2 - 1$]{Visualização da \acf{SDF} para a circunferência $x^2 + y^2 - 1$. A escala de cinzas é proporcional à distância à superfície, sendo preto em valores negativos.}
+	\label{fig::sdf}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{stracing2D}
+	\caption[Algoritmo de \textit{Sphere Tracing} em 2D]{Demonstração do algoritmo \textit{Sphere Tracing} em 2D. Cada novo ponto de ``marcha'' é distancia-se do anterior a uma distância igual ao raio da esfera que satisfaz a função \acs{SDF} para a superfície visualizada.}
 	\label{fig::stracing2D}
 \end{figure}
-
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=.5\textwidth]{sdf01}
-	\caption[]{$x^2 + y^2 - 1$.}
-	\label{fig::sdf01}
-\end{figure}
-
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=.5\textwidth]{sdf02}
-	\caption[]{\acf{SDF} $x^2 + y^2 - 1$.}
-	\label{fig::sdf02}
-\end{figure}
-
-\begin{algorithm}[!htbp]
-	\caption{Algoritmo de \textit{sphere tracing}.}
-	\label{alg::raymarch_spheretrace}
-	\begin{algorithmic}
-\Require função $f$      \Comment{Função implícita}
-	\end{algorithmic}
-\end{algorithm}
 
 
 \section{\opengl}
 \label{sec::arte:opengl}
 
-\hint{Não recomendo um rip-off do meu relatório, mas ele pode servir de base para esta secção, tentando melhorá-lo e corrigir possíveis gafes.}
+\subsection{\textit{Pipeline}}
+\label{ssec::arte:opengl:pipeline}
 
+A renderização de um dado objeto em \opengl~passa por diversos passos, a cujo conjunto é dado o nome de \textbf{\textit{pipeline} de renderização}. A partir da versão 3.3, intitulado de ``\opengl moderno'', a \textit{pipeline} possui determinados pontos onde o programador tem a capacidade de programar diretamente para a \ac{GPU} através de pequenos programas compostos por \textit{shaders}.
 
-\subsection{Pipeline}
-A renderização de um dado objeto atravessa diversas fases, ao conjunto das mesmas é dado o nome de \textbf{\textit{pipeline} de renderização}. A partir da versão 3.3, intitulado de "\opengl moderno", a \textit{pipeline} possui determinados pontos onde o programador tem a capacidade de implementar como a \ac{GPU} se deverá comportar, através de do que chamamos de \textit{shaders}.
+A \textit{pipeline} é executada sempre que uma operação de renderização for iniciada. Estas operações requerem o uso obrigatório de um \ac{VAO} propriamente definido, em conjunto com um \textit{Program Object} ou um \textit{Program Pipeline Object}, o qual fornece os \textit{shaders} para certos pontos da \textit{pipeline}.
 
-A \textit{pipeline} é inicializada sempre que uma operação de renderização for feita. Estas operações requerem o uso obrigatório de um \ac{VAO} propriamente definido e em conjunto associado a um \textit{Program Object} ou um \textit{Program Pipeline Object} que fornece os \textit{shaders} para as fases da \textit{pipeline}. 
-A ordem e as mencionadas fases são:
+Das fases englobadas pela \textit{pipeline}, destacam-se cinco:
+
 \begin{enumerate}
-    \item \textbf{Processamento de vértices} (\textit{vertex processing}): 
-    A maioria das fases durante o processamento de vértices são programáveis, o que permite o código do utilizador customizar como os vértices são processados.
-    Cada vértice recebido pelo \ac{VAO} é usado por um \textit{vertex shader} tornando-o num vértice de saída. Opcionalmente é nos disponibilizado uma fase de tesselação (\textit{tessellation stage}) assim como um também opcional processamento de primitivas com o uso de um \textit{geometry shader}, este devolve uma sequência de primitivas.
+    \item \textbf{Processamento de vértices} (\textit{vertex processing}):
+    Esta fase é programável em três pontos consecutivos, o que abre uma vasta margem de customização ao programador sobre como os vértices são processados.
+    Após a especificação do vértice, este é processado por um \textit{vertex shader} tornando-o num vértice de saída. Opcionalmente pode-se manipular o processo seguinte, de tesselação (\textit{tessellation stage}), assim como processamento de primitivas com o uso de um \textit{geometry shader}, igualmente opcional.
     
     \item \textbf{Pós-processamento de vértices} (\textit{vertex post-processing}):
     Durante este processo os vértices disponíveis são filtrados pela condição de serem compreendidos no \textit{viewport} atual. Os mesmos também poderão ser transportados para diferentes localizações no espaço.
     
-    \item \textbf{Rasterização} (\textit{rasterization}): É neste processo que as primitivas são divididas em elementos independentes designados de \textbf{fragmentos}. Por norma, cada pixel é associado a pelo um fragmento.
+    \item \textbf{Rasterização} (\textit{rasterization}):
+    É neste processo que as primitivas são divididas em elementos independentes designados de \textbf{fragmentos}. Por norma, a cada pixel é associado um fragmento.
     
-    \item \textbf{Processamento de Fragmentos} através de \textit{fragment shader}: Para cada fragmento é gerado uma quantia de \textit{outputs} (por exemplo a cor), através do processamento de um \textit{fragment shader}.
+    \item \textbf{Processamento de Fragmentos}:
+    Para cada fragmento é gerado uma quantia de \textit{outputs} (por exemplo a cor), processados por um \textit{fragment shader}, cuja customização pelo programador é opcional.
     
-    \item \textbf{Processamento por Amostra} (\textit{per-sample processing}): Com os resultados devolvidos pelo \textit{fragment shader}, os mesmos passam por diversos testes em que ao passar a todos resulta então em um pixel final.
+    \item \textbf{Processamento por Amostra} (\textit{per-sample operations}): Com os resultados devolvidos pelo \textit{fragment shader}, os mesmos passam por diversos testes (por exemplo, de profundidade), resultando então num pixel final.
 \end{enumerate}
 
-\subsection{Shaders}
-Aos programas executados pela \ac{GPU} num determinado ponto da pipeline de renderização chamamos de \textit{shaders}. Por entre os diversos \textit{shaders} disponíveis para implementação, são destacados dois de interesse a este projeto:
+
+\subsection{\textit{Shaders}}
+\label{ssec::arte:opengl:shaders}
+
+Aos sub-programas executados pela \ac{GPU} num determinado ponto da \textit{pipeline} de renderização chamamos de \textit{shaders}. Um conjunto de \textit{shaders} constitui um \textbf{programa}. Por entre os diversos \textit{shaders} disponíveis para implementação, são destacados dois de interesse a este projeto:
 
 \begin{enumerate}
-    \item \textbf{Vertex Shader}\\
-    Obtendo um vértice no espaço a partir do \ac{VAO}, este \textit{shader} é usado no processamento de vértices. Tradicionalmente realiza operações matriciais \ac{MVP}.
+    \item \textbf{\itshape Vertex Shader}:
+    Recebendo como \textit{input} um vértice no espaço, este \textit{shader} é usado no processamento de vértices. Tradicionalmente realiza operações matriciais \ac{MVP}. É o único \textit{shader} cuja presença é \textbf{obrigatória} num programa.
     
-    \item \textbf{Fragment Shader}\\
-    Obtendo um fragmento após o processo de rasterização, o \textit{fragment shader} é capaz de o processar individualmente resultando numa determinada cor em conjunto de uma profundidade. Regularmente, é durante o mesmo que são aplicadas operações de iluminação e coloração.
+    \item \textbf{\itshape Fragment Shader}:
+    Recebendo um fragmento após o processo de rasterização como \textit{input}, o \textit{fragment shader} é capaz de o processar a fim de devolver uma determinada cor em conjunto com uma profundidade. Tradicionalmente, é neste \textit{shader} que são aplicadas operações de iluminação e coloração.
 \end{enumerate}
 
-Os \textit{shaders} são compilados em \textit{runtime} pelo \opengl, neles usam uma linguagem própria, com sintaxe bastante próxima ao \verb*|C|, nomeada de \ac{GLSL}.
-É possível enviar uma cópia de dados da \ac{CPU} para a \ac{GPU} (da memória \ac{RAM} para a \ac{VRAM}) dando uso a \textbf{variáveis uniformes} (\textit{uniforms}), estas funcionam como variáveis globais em qualquer shaders disponíveis para implementação.
+Os \textit{shaders} são compilados em \textit{runtime} pelo \opengl. Estes são implementados numa linguagem própria, com sintaxe próxima à linguagem \verb|C|, denominada \acf{GLSL}.
 
-No entanto, dados relativos a vértices, normais e cores são passados por \textit{buffers}.
+É possível enviar uma cópia de dados da \ac{CPU} para a \ac{GPU} com recurso a \textbf{variáveis uniformes} (\textit{uniforms}). Estas funcionam como variáveis globais em qualquer \textit{shader}. No entanto, dados relativos a vértices, normais e cores são passados por \textbf{\textit{buffers}}.
 
-\subsection{Vertex Attribute Object}
-Com a finalidade de passar diversos dados para a \ac{GPU} é obrigatório usar um gestor de atributos denominado por \acf{VAO}. Este é geralmente usado para organizar atributos de diversos \textit{buffers}, por exemplo \ac{VBO} e \ac{CBO}.
 
-Tendo em conta que o mesmo é mandatório na execução da \textit{pipeline} é nos possível fornecer à \ac{GPU} um \ac{VAO} vazio.
+\subsection{\textit{Vertex Attribute Object}}
+\label{ssec::arte:opengl:vao}
 
-Poderemos implementar um exemplo da seguinte forma:
+Com a finalidade de passar diversos dados para a \ac{GPU}, é obrigatório usar um gestor de atributos denominado por \acf{VAO}. Este é geralmente usado para organizar atributos de diversos \textit{buffers} (e.g. \ac{VBO} e \ac{CBO}).
 
-\begin{minted}{c++}
+Tendo em conta que o mesmo é mandatório na execução da \textit{pipeline}, e não havendo a necessidade de alocar \textit{buffer objects}, é possível fornecer à \ac{GPU} um \ac{VAO} pré-definido:
+
+\begin{minted}[linenos]{c++}
     unsigned int vaoHandle;
-
     glGenVertexArrays(1, &vaoHandle);
     glBindVertexArray(vaoHandle);
     glVertexAttrib1f(0, 0);
-
     glBindVertexArray(0);
 \end{minted}
 
-Desta forma temos a capacidade de iniciar a execução da \textit{pipeline} de renderização sem fornecer nada em especifico ao \textit{vertex shader}.
-
-\subsection{Texturas}
-\todo{mencionar textures}
+% Desta forma é possível iniciar a execução da \textit{pipeline} de renderização sem fornecer \textit{buffer objects}.
 
 
-\section{Conclusões}
-\label{sec::arte:conc}
+%\subsection{Texturas}
+%\label{ssec::arte:opengl:texturas}
+%\todo{}
 
-\ldots Whiskas Saquetas.
+
+%\section{Conclusões}
+%\label{sec::arte:conc}
