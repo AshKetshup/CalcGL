@@ -9,11 +9,7 @@
 %Neste sentido, o estudo de funções implícitas torna-se vital para inúmeros fins, pelo que a sua renderização computacional tem sido alvo de estudo por décadas. Os resultados dos enormes avanços feitos na área são atualmente desfrutados por milhões de pessoas, tanto a título pessoal como no mundo empresarial e de investigação.
 
 
-O processo de síntese de imagem em computação gráfica é na sua essência a transformação de geometria em pixéis. 
-As duas técnicas mais usuais de o fazer são: renderização e \emph{ray casting}. Na renderização, a geometria é dada por uma malha de triângulos
-e é o próprio sistema gráfico (e.g., OpenGL ou DirectX) que transforma os triângulos em pixéis. 
-No \emph{ray casting}, o processo é diferente pois emitem-se raios (um por pixel) a partir da câmara (i.e., o olho do observador) numa cena, calculando-se então os pontos de intersecção entre os raios e a geometria de cada objeto existente na cena. 
-No caso presente, utilizou-se o \emph{ray marching}, que é uma variante do \emph{ray casting}.
+O processo de síntese de imagem em computação gráfica é na sua essência a transformação de geometria em pixeis. As duas técnicas mais usuais de o fazer são: renderização e \emph{ray casting}. Na renderização, a geometria é dada por uma malha de triângulos e é o próprio sistema gráfico (e.g., \opengl~ou \textit{DirectX}) que transforma os triângulos em pixeis. No \emph{ray casting}, o processo é diferente pois emitem-se raios (um por pixel) a partir da câmara (i.e., o olho do observador) numa cena, calculando-se então os pontos de intersecção entre os raios e a geometria de cada objeto existente na cena. No caso presente, utilizou-se o \emph{ray marching}, que é uma variante do \emph{ray casting}.
 
 Obviamente, a geometria de cada objeto tem uma dada representação matemática. As representações matemáticas da geometria destes objetos são dadas por funções analíticas. As representações são de três tipos: explícitas, paramétricas e implícitas. No trabalho descrito neste relatório, utilizaram-se funções implícitas para descrever a geometria de cada objeto.
 
@@ -21,9 +17,7 @@ Obviamente, a geometria de cada objeto tem uma dada representação matemática.
 \section{Motivação}
 \label{sec::intro:motivacao}
 
-As versões modernas do \opengl~(i.e. a partir da versão 3.3) permitem que o programador escreva os seus próprios \textit{shaders} a serem utilizados na \textit{pipeline} de renderização. Uma consequência imediata é a possibilidade de paralelizar inúmeros cálculos que normalmente seriam realizados pela \ac{CPU}.
-
-Ainda assim, uma miríade de \textit{software} de renderização não tira proveito de tais capacidades. Desta forma, é de interesse estudar um algoritmo de renderização por volume e analisar a sua potencial paralelização.
+As versões modernas do \opengl~(i.e. a partir da versão 3.3) permitem que o programador escreva os seus próprios \textit{shaders} a serem utilizados na \textit{pipeline} de renderização. Uma consequência imediata é a possibilidade de paralelizar inúmeros cálculos que normalmente seriam realizados pela \ac{CPU}. Ainda assim, uma miríade de \textit{software} de renderização não tira proveito de tais capacidades. Desta forma, é de interesse estudar um algoritmo de renderização por volume e analisar a sua potencial paralelização.
 
 
 \section{Objetivos}
@@ -32,7 +26,7 @@ Ainda assim, uma miríade de \textit{software} de renderização não tira prove
 O presente projeto tem por \textbf{objetivo principal} implementar um sistema de visualização de funções implícitas.
 
 Este tem ainda os seguintes \textbf{objetivos secundários}:
-\begin{itemize}
+\begin{itemize}[nosep]
 	\item Estudar funções implícitas e o cálculo das respetivas iso-superfícies;
 	\item Analisar o modelo de renderização por volume;
 	\item Implementar o algoritmo de \textit{ray marching} em particular;
