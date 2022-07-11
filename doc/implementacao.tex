@@ -86,7 +86,7 @@ O programa disponibiliza uma coleção de argumentos que podem ser passados pela
 \end{itemize}
 
 Está ainda disponível o comando de ajuda descrito como o argumento \verb|--help| ou \verb|-h|, nesta situação o programa emite a informação descrevendo os argumentos disponíveis e em seguida este sai do programa.
-
+%
 O processamento destes argumentos define o estado dos seguintes atributos da \ac{SISM}:
 \begin{itemize}[nosep]
     \item Motor de renderização;
@@ -97,7 +97,7 @@ O processamento destes argumentos define o estado dos seguintes atributos da \ac
 \subsection{\textit{Shader Manager}}
 \label{ssec::impl:estrutura:shaders}
 
-Este passo de arranque do programa só é feito caso a inicialização das bibliotecas/\textit{frameworks} \ac{GLFW} e \ac{GLAD} seja corretamente efetuada.
+Este passo de arranque do programa só é feito caso a inicialização das bibliotecas/\textit{frameworks} GLFW e \ac{GLAD} seja corretamente efetuada.
 
 Os \textit{shaders} são carregados pelo \textit{Shader Manager}, o qual é instanciado para cada um dos cinco programas (num total de dez \textit{shaders} a compilar, cada um com o seu respetivo \textit{vertex} e \textit{fragment shaders}):
 
@@ -109,13 +109,11 @@ Os \textit{shaders} são carregados pelo \textit{Shader Manager}, o qual é inst
 	\item Textos.
 \end{enumerate}
 
-Anteriormente à compilação dos mesmos é efetuada uma \textbf{verificação automática} dos \textit{shaders}. Caso algum esteja em falta, o programa é capaz de criar o respetivo \textit{shader} predefinido e procede à sua compilação.
-
-Assim que todos os \textit{shaders} sejam corretamente compilados, é gerada uma janela com a dimensão definida pelo atributo do \ac{SISM}. É esperado em caso de sucesso o seguinte \textit{output}:
+Anteriormente à compilação dos mesmos é efetuada uma \textbf{verificação automática} dos \textit{shaders}. Caso algum esteja em falta, o programa é capaz de criar o respetivo \textit{shader} predefinido e procede à sua compilação. Assim que todos os \textit{shaders} sejam corretamente compilados, é gerada uma janela com a dimensão definida pelo atributo do \ac{SISM} (Figura \ref{fig::home}). É esperado em caso de sucesso o seguinte \textit{output}:
 
 \begin{verbatim}
 Lauching CalcGL...
-    Setting global variables...     
+    Setting global variables... [OK]
     Setting relevant directories... [OK]
     Initializing GLFW and GLAD... [OK]
     Auto-checking shaders... (corrected 0 shaders) [OK]
@@ -124,6 +122,13 @@ Lauching CalcGL...
     Loading logo... [OK]
 Done.
 \end{verbatim}
+
+\begin{figure}[!tbp]
+	\centering
+	\includegraphics[width=.8\textwidth]{home}
+	\caption[Ecrã inicial da aplicação]{Ecrã inicial da aplicação \theapp.}
+	\label{fig::home}
+\end{figure}
 
 
 \section{Motores de renderização}
