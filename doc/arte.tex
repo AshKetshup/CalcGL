@@ -254,6 +254,12 @@ Visto que uma função \acs{SDF} pode ser resolvida para cada ponto, podemos det
 \section{\opengl}
 \label{sec::arte:opengl}
 
+Pela década de 80, o processo de desenvolvimento de \textit{software} que funciona-se em diferentes tipos de \textit{hardware} gráfico era algo desafiador pela grande falta de \textit{standards}. No inicio da década seguinte, \textit{Silicon Graphics} (SGI) era a atual líder em \textit{workstations} de gráficos 3D. E o seu \textit{IRIS GL} tornou-se o \textit{standard} na industria.
+
+Entretanto apareceu o \opengl como uma alternativa ao \textit{IRIS GL}, uma \ac{API} que nos providencia um vasto conjunto de funcionalidades que podemos usar para manipular imagens e gráficos. Por si só \opengl não é apenas uma \ac{API}, mas sim uma especificação. Desenvolvida e mantida pela \textit{Kronos Group}, é encarregue de especificar o resultado de cada função e como a mesma se deve comportar para um determinado \textit{hardware}.
+
+\opengl é no fundo uma grande \textbf{\textit{state machine}}: uma coletânea de variáveis que descreve como o \opengl se deverá comportar no momento. Durante o seu uso mudamos o seu estado definindo algumas opções, alguns \textit{buffers} e então renderizando usando o atual contexto.
+
 \subsection{\textit{Pipeline}}
 \label{ssec::arte:opengl:pipeline}
 
