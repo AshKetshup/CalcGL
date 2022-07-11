@@ -427,4 +427,15 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+# LaTeX
+doc/_minted*
+doc/*.aux
+doc/*.bbl
+doc/*.blg
+doc/*.lof
+doc/*.lot
+doc/*.toc
+doc/*.synctex.gz
+
+# Others
 RayMarchingAlgo

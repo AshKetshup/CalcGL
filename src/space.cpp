@@ -143,8 +143,8 @@ void Surface::renderCPU(
 	const float width,
 	const float height,
 	vec3 objectColor,
-	const float renderDistance,
-	const int threadAmmount
+	const unsigned int threadAmmount,
+	const float renderDistance
 ) const {
 	auto start = chrono::system_clock::now();
 
@@ -179,8 +179,8 @@ void Surface::renderCPU(
 	vector<vec4> tex(texSize);
 
 	// Multi thread code
-	unsigned concurrency = threadAmmount;
-	printf("Using %ui threads\n" + concurrency);
+	unsigned int concurrency = threadAmmount;
+	cout << "Using " << concurrency << " threads" << endl;
 
 	auto f = [this](Camera& c, Plain& plain, vector<vec4>& tex, vec2 dim, size_t yMin, size_t yMax, int myself) {
 		for (size_t y = yMin; y < yMax; y++) {

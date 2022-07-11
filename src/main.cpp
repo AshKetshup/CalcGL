@@ -21,8 +21,8 @@
 
 const unsigned int SCR_WIDTH   = 600;
 const unsigned int SCR_HEIGHT  = 600;
-const unsigned int THREAD_AMNT = thread::hardware_concurrency() - 2;
-const char*        RMODE       = "GPU";
+const unsigned int THREAD_AMNT = thread::hardware_concurrency() / 2;
+const char*        RMODE       = "CPU";
 
 const char* HELP =
 "CalcGL - An implicit function render with Ray Marching\n"
@@ -49,7 +49,7 @@ using namespace calcgl;
 int main(int argc, char const* argv[]) {
 	unsigned int width = SCR_WIDTH;
 	unsigned int height = SCR_HEIGHT;
-	unsigned int threads = THREAD_AMNT;
+	unsigned int threads = (THREAD_AMNT <= 0) ? 1 : THREAD_AMNT;
 	char const* rMode = RMODE;
 
 	if (argc == 2)
@@ -90,7 +90,8 @@ int main(int argc, char const* argv[]) {
 				try {
 					threads = stoi(arg);
 					if (threads > THREAD_AMNT)
-						return -1;
+						// return -1;
+						cout << "You're using more than " << THREAD_AMNT << " threads, which may degrade performance on your system." << endl;
 				} catch (...) {    }
 			}
 		}
