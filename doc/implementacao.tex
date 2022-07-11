@@ -40,8 +40,74 @@ Foram ainda considerados os seguintes \textbf{requisitos}:
 \section{Lógica e Estruturação}
 \label{sec::impl:estrutura}
 
+A aplicação é composta por uma coletânea de classes, que comunicam entre si de forma a gerir a representação das funções implícitas em memória. O fluxo da aplicação é representado pela imagem \todo{mencionar imagem}.
+
+A classe principal do programa é a \textbf{\ac{SISM}}, esta é encarregue pelo ciclo de renderização em simultâneo é também o \textit{handler} dos \textit{shaders} carregadores aquando do arranque do programa pelo \textit{Shader Loader}.
+
 \hint{Estrutura do código e respetivo fluxo.}
 
+\subsection{Arranque e \textit{Shader Manager}}
+
+O programa disponibiliza uma coleção de argumentos que podem ser passados pela linha de comandos (ou terminal) para alterar o seu comportamento:
+
+\begin{itemize}
+    
+    \item \verb*|--width| ou \verb*|-W|:\\
+    Determina os pixeis da largura da janela de renderização.
+    Por defeito a quantia é de 600.
+    
+    Exemplo: \verb|-W 1000| inicia o programa com uma largura de 1000 pixeis.
+    
+    \item \verb*|--height| ou \verb*|-H|:\\
+    Determina os pixeis da altura da janela de renderização.
+    Por defeito a quantia é de 600.
+   
+    Exemplo: \verb|-H 1000| inicia o programa com uma altura de 1000 pixeis.
+
+    \item \verb*|--render| ou \verb*|-r|:\\
+    Define qual o motor de renderização a que o programa recorre.
+    Existem três modos implementados:
+    \begin{itemize}[nosep]
+        \item \verb*|CPU|: motor de renderização por \textit{software} com uso do algoritmo naïve \textit{ray marching};
+        \item \verb*|GPU|: motor de renderização por aceleração de \textit{hardware} com uso do algoritmo naïve \textit{ray marching};
+        \item \verb*|SPHERES|: permite ao motor de renderização usar uma demonstração do algoritmo \textit{sphere tracing};
+    \end{itemize}
+    
+    \item \verb*|--threads| ou \verb*|-t|:\\
+    Determina quantas \textit{threads} devem ser usadas pelo motor de renderização por \textit{software}. Por defeito é dado uso ao número de núcleos lógicos disponibilizados pela \ac{CPU} menos dois.
+    A quantia especificada só é considerada caso o modo de renderização seja usando o cálculo por \ac{CPU}. Caso a quantia especificada seja superior à calculada o utilizador é avisado que poderá causar problemas de performance no seu sistema.
+    
+    Exemplo: \verb|-t 6| inicia o programa com seis \textit{threads} prontas a serem usadas.
+\end{itemize}
+
+Está ainda disponível o comando de ajuda descrito como o argumento \verb*|--help| ou \verb*|-h|, nesta situação o programa emite a informação descrevendo os argumentos disponíveis e em seguida este sai do programa.
+
+
+O processamento destes argumentos define o estado dos seguintes atributos da \ac{SISM}:
+\begin{itemize}
+    \item Modo de cálculo;
+    \item Resolução da janela;
+\end{itemize}
+
+
+Os \textit{shaders} são carregados pelo \textit{Shader Manager}, o qual é instanciado para cada um dos cinco conjuntos de \textit{shaders} (um total de dez \textit{shaders} a compilar cada um com o seu respetivo \textit{vertex} e \textit{fragment shader}) \todo{citar tabela}. 
+Anteriormente à compilação dos mesmos é efetuada uma \textbf{verificação automática} dos shaders. Caso algum esteja em falta, o programa é capaz de criar o respetivo \textit{shader} predefinido e procede com a sua compilação.
+
+
+Assim que todos os \textit{shaders} sejam corretamente compilados a aplicação continua com a inicialização das bibliotecas/\textit{frameworks} \ac{GLFW} e \ac{GLAD}. Assim que estas terminarem de iniciar é gerada uma janela com a dimensão definida pelo atributo do \ac{SISM}. 
+É esperado em caso de sucesso o seguinte \textit{output}:
+
+\begin{minted}{bash}
+    Lauching CalcGL...
+        Setting global variables...     
+        Setting relevant directories... [OK]
+        Initializing GLFW and GLAD... [OK]
+        Auto-checking shaders... (corrected 0 shaders) [OK]
+        Loading shaders... [OK]
+        Loading text renderer... [OK]
+        Loading logo... [OK]
+    Done.
+\end{minted}
 
 \section{Detalhes de Implementação}
 \label{sec::impl:detalhes}
