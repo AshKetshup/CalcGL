@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "legacyEditor": false,
   "livePreview": true,
   "promptDelete": false,
@@ -12,4 +13,13 @@
   "showFrontmatter": false,
   "foldIndent": true,
   "strictLineBreaks": false
+=======
+  "strictLineBreaks": false,
+  "showFrontmatter": false,
+  "showLineNumber": true,
+  "lineWrap": true,
+  "readableLineLength": false,
+  "legacyEditor": false,
+  "attachmentFolderPath": "Apresentação/img"
+>>>>>>> doc
 }

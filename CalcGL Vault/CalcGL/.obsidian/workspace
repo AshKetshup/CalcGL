@@ -1,33 +1,29 @@
 {
   "main": {
-    "id": "99742ee0a8bf169b",
+    "id": "0d6af02788d22076",
     "type": "split",
     "children": [
       {
-        "id": "509d60c23b7bfb8d",
+        "id": "1eabc6271d632ae1",
         "type": "leaf",
         "state": {
-          "type": "markdown",
-          "state": {
-            "file": "Todo List.md",
-            "mode": "source",
-            "source": false
-          }
+          "type": "empty",
+          "state": {}
         }
       }
     ],
     "direction": "vertical"
   },
   "left": {
-    "id": "8a06d0219a8ec0e5",
+    "id": "6664384148de02b6",
     "type": "split",
     "children": [
       {
-        "id": "1ba67cf44fd003d7",
+        "id": "3511a22523d3b94c",
         "type": "tabs",
         "children": [
           {
-            "id": "791805940711090d",
+            "id": "37513d862ae51480",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -35,7 +31,7 @@
             }
           },
           {
-            "id": "ce341ee76a1dbfd8",
+            "id": "b5a9ded50a017523",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -56,20 +52,19 @@
     "width": 300
   },
   "right": {
-    "id": "400d0c6386f1fbcb",
+    "id": "b44d45d78578d117",
     "type": "split",
     "children": [
       {
-        "id": "7fb24d51dd9aba76",
+        "id": "b1da02059cab649c",
         "type": "tabs",
         "children": [
           {
-            "id": "e6b7b5214fad343e",
+            "id": "149b809edc429dd4",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Todo List.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -87,10 +82,14 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "509d60c23b7bfb8d",
+  "active": "1eabc6271d632ae1",
   "lastOpenFiles": [
-    "Todo List.md",
-    "Thoughts.md",
-    "How does it work/Compute Shaders.md"
+    "Apresentação/Tecnologias e Ferramentas.md",
+    "Apresentação/Objetivos.md",
+    "Apresentação/Conceitos base.md",
+    "Apresentação/Implementação.md",
+    "Apresentação/Conclusões.md",
+    "Apresentação/Testes e Resultados.md",
+    "Relatorio/OpenGL.md"
   ]
 }

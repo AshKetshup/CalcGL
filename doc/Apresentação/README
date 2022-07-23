@@ -1,0 +1,36 @@
+Modelo para a escrita em LaTeX das apresentções na Universidade da Beira Interior, seguindo o despacho Reitoral nº 49/R/2010 e o Template de Apresentação da UBI
+
+Versão 1.2 - 2019/03/07 - adicionado o formato 16x9 
+Versão 1.2 - 2019/01/31 - correção das cores azul e vermelho 
+Versão 1.1 - 2019/01/30 - definição do espaço entre o título e o texto dos slide secundários
+Versão 1.0 - 2019/01/30
+ 
+
+
+O UBI_Beamer_Example.tex é compilado em LuaLaTeX. O LuaLateX é necessário para utilizar o tipo de letra Georgia.
+
+Para utilizar o LuaLaTeX a codificação dos ficheiros tem que ser em UTF-8.
+
+
+O modelo foi compilado em LuaLaTeX sem erros num sistema de Windows 10 64-bit, com 
+basic-MikTeX 2.9.5840 64-bit. Incluídos no .zip:
+
+O modelo foi compilado em LuaLaTeX sem erros num sistema de Windows 7 Profissional 64-bit, com 
+basic-MikTeX 2.9.5840 64-bit. Incluídos no .zip:
+
+O modelo foi compilado em LuaLaTeXLaTeX e sem erros num sistema LinuxMint 19.1 Cinnamon 64-bit e Debian 9.6
+64-bit (Não foram testadas outras distribuições), com texlive-full. Incluídos no .zip:
+
+- UBI_Beamer_Example.tex, o ficheiro principal do documento;
+- beamercolorthemeUBI.sty, definição das cores, não é recomendável 
+editar este ficheiro;
+- beamerfontthemeUBI.sty, definição do tamanho das fontes;
+- beamerinnerthemeUBI.sty, definição do Slide principal;
+- beamerouterthemeUBI.sty, definição dos Slide secundários;
+- beamerthemeUBI.sty, definições usadas no template.
+
+Todos os ficheiros são disponibilizados propositadamente dentro de uma só pasta.
+
+Contribuições e sugestões para: latex@e-projects.ubi.pt
+
+

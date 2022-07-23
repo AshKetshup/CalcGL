@@ -438,4 +438,9 @@ doc/*.toc
 doc/*.synctex.gz
 
 # Others
+<<<<<<< HEAD
 RayMarchingAlgo
+=======
+RayMarchingAlgo
+*.pdf
+>>>>>>> doc

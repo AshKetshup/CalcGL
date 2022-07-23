@@ -1,0 +1,85 @@
+\documentclass[12pt,a4paper]{memoir}
+
+%% Todas as personalizações e pacotes importados estão no preâmbulo
+\include{preambulo}
+
+%% Definições próprias ao documento atual
+\newcommand{\theteam}{Diogo Simões}
+\newcommand{\theapp}{\emph{CalcGL}}
+\newcommand{\theappdescription}{Visualização de funções implícitas por \emph{ray marching}}
+\newcommand{\groupname}{{\itshape\theteam}}
+\newcommand{\appname}{\emph{\theapp}:~{\emph{\theappdescription}}}
+
+%% Outros comandos
+\newcommand{\opengl}{\textit{OpenGL}\registered}
+
+\newcommand{\vspacepre}{0.5cm}		% 0.5cm
+\newcommand{\vspaceinner}{0.2cm}	% 0.2cm
+
+\begin{document}
+	\include{capa}
+	
+	\clearpage{\thispagestyle{empty}\cleardoublepage}
+	\frontmatter
+	\include{agradecimentos}
+	
+	\clearpage{\thispagestyle{empty}\cleardoublepage}
+	\tableofcontents
+	
+	\clearpage{\thispagestyle{empty}\cleardoublepage}
+	\listoffigures
+	
+	% #   ATENÇÃO
+	% Se não existirem tabelas, comentar as duas linhas seguintes
+	\clearpage{\thispagestyle{empty}\cleardoublepage}
+	\listoftables
+	
+	% #   ATENÇÃO
+	% Se não existirem algoritmos, comentar as duas linhas seguintes
+	% \clearpage{\thispagestyle{empty}\cleardoublepage}
+	% \listofalgorithms
+	
+	% #   ATENÇÃO
+	% Se existirem trechos de código, descomentar as seguintes linhas
+	% \clearpage{\thispagestyle{empty}\cleardoublepage}
+	% \lstlistoflistings
+	
+	\clearpage{\thispagestyle{empty}\cleardoublepage}
+	\include{acronimos}
+	
+	% \clearpage{\pagestyle{empty}\cleardoublepage}
+	% \include{glossario}
+	
+	\clearpage{\thispagestyle{empty}\cleardoublepage}
+	
+	\mainmatter
+	\acresetall
+	\include{introducao}
+	\clearpage{\thispagestyle{empty}\cleardoublepage}
+	\include{arte}
+	\clearpage{\thispagestyle{empty}\cleardoublepage}
+	\include{tecnologias}
+	\clearpage{\thispagestyle{empty}\cleardoublepage}
+	\include{implementacao}
+	\clearpage{\thispagestyle{empty}\cleardoublepage}
+	\include{testes}
+	\clearpage{\thispagestyle{empty}\cleardoublepage}
+	\include{conclusao}
+	\clearpage{\thispagestyle{empty}\cleardoublepage}
+	
+	% SE EXISTIREM APENDICES, DESCOMENTAR O QUE ESTÁ EM BAIXO
+	% \appendix
+	% \include{apendice1}
+	% \clearpage{\pagestyle{empty}\cleardoublepage}
+	% \include{continuacao}
+	% \clearpage{\pagestyle{empty}\cleardoublepage}
+	% \include{apendice2}
+	% \clearpage{\pagestyle{empty}\cleardoublepage}
+	% \include{apendice3}
+	% \clearpage{\pagestyle{empty}\cleardoublepage}
+	
+	\backmatter
+	
+	\bibliographystyle{IEEEtran}
+	\bibliography{bibliografia.bib}
+\end{document}

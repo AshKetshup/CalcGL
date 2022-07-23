@@ -1,0 +1,154 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Consultar o ficheiro README
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[pdflatex,compress,aspectratio=169]{beamer}
+
+
+\usetheme[dark,framenumber,totalframenumber]{UBI}
+
+
+% Fonts, the official UBI font. O tipo de letra é o Georgia da Microsoft Office. O tipo de letra é o definido no GUIA DE NORMAS DE IDENTIDADE da UBI
+\usepackage{fontspec,microtype}
+\usepackage{unicode-math}
+\defaultfontfeatures{Ligatures={TeX},Renderer=Basic}
+\setmainfont[Ligatures={TeX,Historic}]{Georgia}
+\setsansfont{Georgia} 
+\setmonofont{Georgia}
+%%%%%%%%%%%%%%%%%%
+
+
+%\usepackage{lipsum}
+
+\title{Visualização de funções implícitas por \textit{ray marching}}
+
+\author{Diogo Simões, nº. 41266}
+% \subtitle{
+%     \textit{Professor orientador:}
+%         Professor Doutor Abel João Padrão Gomes
+% }
+
+\begin{document}
+% ----------------------------------------------------------------------------
+% *** Titlepage <<<
+% ----------------------------------------------------------------------------
+\maketitle
+% ----------------------------------------------------------------------------
+% *** END of Titlepage >>>
+% ----------------------------------------------------------------------------
+
+\section{My section}
+\subsection{My subsection}
+
+% ----------------------------------------------------------------------------
+% *** Test frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+\frametitle{A first test frame}
+
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Test frame >>>
+% ----------------------------------------------------------------------------
+
+% ----------------------------------------------------------------------------
+% *** Test frame with overflow <<<
+% ----------------------------------------------------------------------------
+%\begin{frame}
+%\frametitle{Test frame with overflow}
+%\lipsum[1-7]
+%\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Test frame >>>
+% ----------------------------------------------------------------------------
+
+
+% ----------------------------------------------------------------------------
+% *** Test frame with overflow <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+
+\frametitle{The is a test frame with a pretty long frame title}
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus
+elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur
+dictum gravida mauris.
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Test frame >>>
+% ----------------------------------------------------------------------------
+
+\subsection{My subsection 2}
+% ----------------------------------------------------------------------------
+% *** Test frame with Itemize <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Test frame with itemize}
+
+\begin{itemize}
+    \item<1-> firstly
+    \item<2-> secondly
+        \begin{itemize}
+            \item sub-item
+            \item another sub-item
+        \end{itemize}
+      \item<3-> thirdly
+\end{itemize}
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Test frame with Itemize >>>
+% ----------------------------------------------------------------------------
+
+
+% ----------------------------------------------------------------------------
+% *** Test frame with Math <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+\frametitle{A math frame}
+
+\begin{theorem}[Pythagoras]
+The square of the hypotenuse of a \alert{right} triangle is equal to the sum of the squares on the other two sides:
+\[
+a^2 + b^2 = c^2.
+\]
+\end{theorem}
+
+\begin{proof}
+Straightforward.
+\end{proof}
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Test frame with Math >>>
+% ----------------------------------------------------------------------------
+
+
+% ----------------------------------------------------------------------------
+% *** Test frame with Environments <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Environments}
+
+\begin{definition}
+A \textbf{prime number} (or a prime) is a natural number which has exactly two distinct natural number divisors: 1 and itself.
+\end{definition}
+
+\begin{exampleblock}{Example}
+The first five prime numbers are $2$, $3$, $5$, $7$, and $11$.
+\end{exampleblock}
+
+\begin{alertblock}{Alert block}
+Note that $1$ is not a prime number.
+\end{alertblock}
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Test frame with Environments >>>
+% ----------------------------------------------------------------------------
+
+
+\end{document}

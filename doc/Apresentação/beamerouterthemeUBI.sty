@@ -1,0 +1,248 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright 2019 Rui R. Paulo-IT/UBI
+%
+% Based on Nico Schlömer's ua-beamer (https://github.com/nschloe/ua-beamer)
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Adaptação por Rui R. Paulo - Instituto de Telecomunicações - DEM/UBI
+%%
+%% Contacto para correções ou sugestões: latex@e-projects.ubi.pt
+%% 
+%%  A versão actual pode ser alterada sem aviso prévio.
+%%  Download da última versão em área reservada: https://minha.ubi.pt/sub/areareservada/
+%%  Uso e distribuição de acordo com a licenca GNU GPL.
+%% 
+%%    Este programa é um software livre: você pode redistribui-lo e/ou 
+%%
+%%		modificá-lo dentro dos termos da Licença Pública Geral GNU como 
+%%
+%%		publicada pela Free Software Foundation, na versão 3 da 
+%%
+%%		Licença, ou (na sua opinião) qualquer versão.
+%%
+%%
+%%
+%%		Este programa é distribuido na esperança que possa ser útil, 
+%%
+%%		mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO a qualquer
+%%
+%%		MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+%%
+%%		Licença Pública Geral GNU para maiores detalhes.
+%%
+%%
+%%
+%%		Você deve ter recebido uma cópia da Licença Pública Geral GNU
+%%
+%%		junto com este programa, se não, veja <http://www.gnu.org/licenses/>.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% ----------------------------------------------------------------------------
+% *** required packages <<<
+% ----------------------------------------------------------------------------
+\RequirePackage{calc}
+\RequirePackage{ifthen}
+\usepackage[overlay]{textpos}
+% ----------------------------------------------------------------------------
+% *** END required packages >>>
+% ----------------------------------------------------------------------------
+
+\mode<presentation>
+
+% ----------------------------------------------------------------------------
+% *** DEFINE LENGTHS <<<
+% ----------------------------------------------------------------------------
+\newlength{\margin}
+\setlength{\margin}{0.43cm}% 
+
+%\ifbeamer@dark\else%
+%
+%\fi
+% ----------------------------------------------------------------------------
+% *** END DEFINE LENGTHS >>>
+% ----------------------------------------------------------------------------
+
+
+% ----------------------------------------------------------------------------
+% *** DEFINE IMAGES <<<
+% ----------------------------------------------------------------------------
+
+
+\ifthenelse{ \boolean{beamer@dark} \OR \boolean{beamer@darktitle} }
+% then
+{\pgfdeclareimage[width=\paperwidth]{UBIBackgroundDark}{UBIBackgroundDarkBlue}}
+%else
+{}
+
+\ifbeamer@dark%
+  \pgfdeclareimage[width=\paperwidth]{UBIBackgroundLight}{UBIBackgroundLightBlue}
+\else%
+
+
+\fi
+% ----------------------------------------------------------------------------
+% *** END DEFINE IMAGES <<<
+% ----------------------------------------------------------------------------
+
+
+  %\fi%
+% ----------------------------------------------------------------------------
+% *** HEADLINE <<<
+% ----------------------------------------------------------------------------
+\ifthenelse{ \boolean{beamer@dark} \OR \(\boolean{beamer@darktitle}\AND\c@framenumber=1\) }{%
+  \defbeamertemplate*{headline}{UBI theme}%
+  {  
+%    % page number
+%    \ifbeamer@framenumber%
+%      \ifnum\c@framenumber=1\else
+%       \pgftext[right,bottom,at=\pgfpoint{\paperwidth-\margin}{-0.04\paperheight}]{%
+%          \usebeamerfont{frame number in foot}%
+%          \usebeamercolor[fg]{frame number in foot}%
+%          \insertframenumber{}%
+%          \ifbeamer@totalframenumber%
+%            /\inserttotalframenumber%
+%          \fi
+%        }%
+%      \fi
+%    \fi%
+  }%
+}{
+%  \newlength{\logotopmargin}%
+%  \setlength{\logotopmargin}{0cm}%  0.55in* 64/127 *2.54cm/in
+%  \defbeamertemplate*{headline}{ua theme}%
+%  {%
+%    % TODO Don't \vskip if the title is too long!
+%    \vskip\logotopmargin%
+%    \hskip\margin%
+%    \ifthenelse{ \boolean{beamer@dark} \OR \(\boolean{beamer@darktitle}\AND\c@framenumber=1\) }
+%    {%
+%      \vskip5cm% TODO: get rid of this quirk
+%    }
+%    {%
+%      %
+%    }
+%  }
+}
+
+% ----------------------------------------------------------------------------
+% *** END HEADLINE <<<
+% ----------------------------------------------------------------------------
+
+
+
+% ----------------------------------------------------------------------------
+% *** FRAMETITLE <<<
+% ----------------------------------------------------------------------------
+\newlength\frametitletopmargin
+\ifbeamer@compress%
+  \setlength{\frametitletopmargin}{0.384cm}% Distancia entre o topo e o titulo do slide secundário
+
+\fi
+
+%\ifbeamer@dark\else%
+%
+%
+%\fi
+
+\defbeamertemplate*{frametitle}{UBI theme}
+{%
+  \ifbeamer@dark%
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    \vskip\frametitletopmargin%
+    \begin{textblock*}{14cm}(1.3cm,0cm)
+    \centering\insertframetitle\par%
+    \end{textblock*}
+    \vspace{1.4cm}
+    % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   
+      
+    \else%
+      \medskip%
+      \begin{beamercolorbox}[right]{frame title}%
+        \insertframetitle\par%
+      \end{textblock*}
+
+    \fi%
+
+}
+% ----------------------------------------------------------------------------
+% *** END FRAMETITLE >>>
+% ----------------------------------------------------------------------------
+
+
+
+% ----------------------------------------------------------------------------
+% *** FOOTLINE <<<
+% ----------------------------------------------------------------------------
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\ifthenelse{ \boolean{beamer@dark} \OR \(\boolean{beamer@darktitle}\AND\c@framenumber=1\) }{%
+ \defbeamertemplate*{footline}{ua theme dark}
+{%
+  % page number
+    \ifbeamer@framenumber%
+      \ifnum\c@framenumber=1\else
+        \pgftext[bottom,right,at=\pgfpoint{0.98\paperwidth}{0.02\paperwidth}]{%
+          \usebeamerfont{frame number in foot}%
+          \usebeamercolor[fg]{frame number in foot}
+          \insertframenumber{}%
+          \ifbeamer@totalframenumber%
+            /\inserttotalframenumber%
+          \fi
+        }%
+      \fi
+    \fi%
+    }%
+}
+  
+  
+  
+  
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+% ----------------------------------------------------------------------------
+% *** END of FOOTLINE >>>
+% ---------------------------------------------------------------------------- 
+
+
+% ----------------------------------------------------------------------------
+% *** MARGINS <<<
+% ----------------------------------------------------------------------------
+% set left and right text margins
+\setbeamersize{text margin left=\margin,%
+               text margin right=\margin}
+% ----------------------------------------------------------------------------
+% *** END MARGINS >>>
+% ----------------------------------------------------------------------------
+
+
+
+% ----------------------------------------------------------------------------
+% *** BACKGROUND <<<
+% ----------------------------------------------------------------------------
+\defbeamertemplate*{background canvas}{UBI theme}
+{%
+  \ifthenelse{ \boolean{beamer@dark} \OR \(\boolean{beamer@darktitle}\AND\c@framenumber=1\) }
+  % *** THEN ***
+  {%
+    \ifnum\c@framenumber=1%
+      \pgfuseimage{UBIBackgroundDark}
+    \else%
+      \pgfuseimage{UBIBackgroundLight}%
+    \fi%
+  }
+  % *** ELSE ***
+  {}
+}
+% ----------------------------------------------------------------------------
+% *** END BACKGROUND <<<
+% ----------------------------------------------------------------------------
+
+\mode
+<all>

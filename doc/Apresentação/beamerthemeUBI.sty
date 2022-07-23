@@ -1,0 +1,80 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright 2019 Rui R. Paulo-IT/UBI
+%
+% Based on Nico Schlömer's ua-beamer (https://github.com/nschloe/ua-beamer)
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Adaptação por Rui R. Paulo - Instituto de Telecomunicações - DEM/UBI
+%%
+%% Contacto para correções ou sugestões: latex@e-projects.ubi.pt
+%% 
+%%  A versão actual pode ser alterada sem aviso prévio.
+%%  Download da última versão em área reservada: https://minha.ubi.pt/sub/areareservada/
+%%  Uso e distribuição de acordo com a licenca GNU GPL.
+%% 
+%%    Este programa é um software livre: você pode redistribui-lo e/ou 
+%%
+%%		modificá-lo dentro dos termos da Licença Pública Geral GNU como 
+%%
+%%		publicada pela Free Software Foundation, na versão 3 da 
+%%
+%%		Licença, ou (na sua opinião) qualquer versão.
+%%
+%%
+%%
+%%		Este programa é distribuido na esperança que possa ser útil, 
+%%
+%%		mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO a qualquer
+%%
+%%		MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+%%
+%%		Licença Pública Geral GNU para maiores detalhes.
+%%
+%%
+%%
+%%		Você deve ter recebido uma cópia da Licença Pública Geral GNU
+%%
+%%		junto com este programa, se não, veja <http://www.gnu.org/licenses/>.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% -------------------------------------------------------------------------
+% introduce options
+\DeclareOptionBeamer{compress}{\beamer@compresstrue}
+
+\newif\ifbeamer@dark
+\beamer@darkfalse
+\DeclareOptionBeamer{dark}{\beamer@darktrue}
+
+\newif\ifbeamer@darktitle
+\beamer@darktitlefalse
+\DeclareOptionBeamer{darktitle}{\beamer@darktitletrue}
+
+%\newcommand\beamer@languagevalue{portuges}
+%\DeclareOptionBeamer{language}{\renewcommand\beamer@languagevalue{#1}}
+
+\newif\ifbeamer@framenumber
+\beamer@framenumberfalse
+\DeclareOptionBeamer{framenumber}{\beamer@framenumbertrue}
+
+\newif\ifbeamer@totalframenumber
+\beamer@totalframenumberfalse
+\DeclareOptionBeamer{totalframenumber}{\beamer@totalframenumbertrue}
+
+\ProcessOptionsBeamer
+% -------------------------------------------------------------------------
+
+\mode<presentation>
+
+\useinnertheme{UBI}
+\usefonttheme {UBI}
+\usecolortheme{UBI}
+\useoutertheme{UBI}
+
+\mode
+<all>

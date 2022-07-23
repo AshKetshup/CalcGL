@@ -1,0 +1,139 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright 2019 Rui R. Paulo-IT/UBI
+%
+% Based on Nico Schlömer's ua-beamer (https://github.com/nschloe/ua-beamer)
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Adaptação por Rui R. Paulo - Instituto de Telecomunicações - DEM/UBI
+%%
+%% Contacto para correções ou sugestões: latex@e-projects.ubi.pt
+%% 
+%%  A versão actual pode ser alterada sem aviso prévio.
+%%  Download da última versão em área reservada: https://minha.ubi.pt/sub/areareservada/
+%%  Uso e distribuição de acordo com a licenca GNU GPL.
+%% 
+%%    Este programa é um software livre: você pode redistribui-lo e/ou 
+%%
+%%		modificá-lo dentro dos termos da Licença Pública Geral GNU como 
+%%
+%%		publicada pela Free Software Foundation, na versão 3 da 
+%%
+%%		Licença, ou (na sua opinião) qualquer versão.
+%%
+%%
+%%
+%%		Este programa é distribuido na esperança que possa ser útil, 
+%%
+%%		mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÃO a qualquer
+%%
+%%		MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+%%
+%%		Licença Pública Geral GNU para maiores detalhes.
+%%
+%%
+%%
+%%		Você deve ter recebido uma cópia da Licença Pública Geral GNU
+%%
+%%		junto com este programa, se não, veja <http://www.gnu.org/licenses/>.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\mode<presentation>
+
+
+% =========================================================================
+
+% Cor azul definida no GUIA DE NORMAS DE IDENTIDADE da UBI, disponivél em www.ubi.pt > Universidade > Guia de normas de identidade
+% Cor vermelha adoptou-se o vermelho da  Faculdade Ciências Sociais e Humanas definida no GUIA DE NORMAS DE IDENTIDADE da UBI, disponivél em www.ubi.pt > Universidade > Guia de normas de identidade
+% Cor cinza/cizento extraída do Template de Apresentação da UBI, disponivél em MinhaUBI -> Área Reservada -> Modelos de Relatórios, Dissertações e Teses -> Modelos de Comunicação -> Template de Apresentação
+
+\definecolor{UBIblue}{cmyk}{85,49,0,69} % Azul
+% As intesidades de cor são usadas nos blocos de texto, mas podem ser usadas noutro locais
+
+\colorlet{UBIblue100}{UBIblue}
+\colorlet{UBIblue75} {UBIblue!75!white}
+\colorlet{UBIblue50} {UBIblue!50!white}
+\colorlet{UBIblue25} {UBIblue!25!white}
+\colorlet{UBIblue10} {UBIblue!10!white}
+\colorlet{UBIblue5}  {UBIblue!5!white}
+
+\definecolor{UBIred}{RGB}{178,0,41} % Vermelho
+\colorlet{UBIred100}{UBIred}
+\colorlet{UBIred75} {UBIred!75!white}
+\colorlet{UBIred50} {UBIred!50!white}
+\colorlet{UBIred25} {UBIred!25!white}
+\colorlet{UBIred10} {UBIred!10!white}
+\colorlet{UBIred5}  {UBIred!5!white}
+
+\definecolor{UBIorange}{RGB}{245, 123, 32} % Laranja
+\colorlet{UBIorange100}{UBIorange}
+\colorlet{UBIorange75} {UBIorange!75!white}
+\colorlet{UBIorange50} {UBIorange!50!white}
+\colorlet{UBIorange25} {UBIorange!25!white}
+\colorlet{UBIorange10} {UBIorange!10!white}
+\colorlet{UBIorange5}  {UBIorange!5!white}
+
+\definecolor{UBIgrey}{RGB}{191,191,191} % Cizento
+\colorlet{UBIgrey100}{UBIgrey}
+\colorlet{UBIgrey75} {UBIgrey!75!white}
+\colorlet{UBIgrey50} {UBIgrey!50!white}
+\colorlet{UBIgrey25} {UBIgrey!25!white}
+\colorlet{UBIgrey10} {UBIgrey!10!white}
+\colorlet{UBIgrey5}  {UBIgrey!5!white}
+% =========================================================================
+
+
+\ifbeamer@dark%
+
+  \setbeamercolor{structure}{fg=UBIorange}% Cor do Título do Slide principal
+  \setbeamercolor{normal text}{fg=UBIgrey}% Cor do Texto
+  \setbeamercolor{frametitle}{fg=UBIred}% Cor do Título dos Slides secundários
+  \setbeamercolor{subtitle}{fg=UBIgrey}% Cor do Subtítulo do Slide principal
+  \setbeamercolor{author}{fg=UBIgrey}% Cor do Subtítulo do Nome do Autor
+  \setbeamercolor{frame number in foot}{fg=UBIgrey}% Cor do número das páginas no cabeçalho
+  \setbeamercolor{frame number in head}{fg=UBIgrey}% Cor do número das páginas no topo
+
+\else%
+
+  \setbeamercolor{structure}{fg=UBIblue}% 
+  \setbeamercolor{normal text}{fg=UBIgrey}% 
+  \setbeamercolor{frametitle}{fg=UBIred}% 
+  \setbeamercolor{frame number in foot}{fg=UBIgrey}%  
+
+  \ifbeamer@darktitle%
+      \setbeamercolor{title}{fg=UBIred}%
+      \setbeamercolor{subtitle}{fg=UBIgrey}%
+  \else
+      \setbeamercolor{subtitle}{fg=UBIgrey}%
+  \fi
+
+\fi
+
+
+% =======================================================================
+% alert color
+\setbeamercolor{alerted text}{fg=UBIred}% Cor do texto de alerta
+% =======================================================================
+
+% =======================================================================
+% blocks
+% caixas de texto, fg-texto, bg-backgroud
+
+% definição das cores do topo das caixas
+\setbeamercolor{block title}{use=structure,fg=white,bg=UBIblue50}
+\setbeamercolor{block title alerted}{use=alerted text,fg=white,bg=UBIred}
+\setbeamercolor{block title example}{use=example text,fg=white,bg=UBIblue50}
+
+% definição das cores do corpo das caixas
+\setbeamercolor{block body}        {fg=UBIblue,use=block title,bg=UBIblue10} 
+\setbeamercolor{block body alerted}{fg=UBIblue,use=block title alerted,bg=UBIred10}
+\setbeamercolor{block body example}{fg=UBIblue,use=block title example,bg=UBIblue10}
+% =======================================================================
+
+
+\mode
+<all>
