@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Relatorio/OpenGL.md",
+            "file": "Apresentação/Tecnologias e Ferramentas.md",
             "mode": "source",
             "source": false
           }
@@ -69,7 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Relatorio/OpenGL.md",
+                "file": "Apresentação/Tecnologias e Ferramentas.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -89,6 +89,12 @@
   },
   "active": "1eabc6271d632ae1",
   "lastOpenFiles": [
+    "Apresentação/Objetivos.md",
+    "Apresentação/Conceitos base.md",
+    "Apresentação/Implementação.md",
+    "Apresentação/Conclusões.md",
+    "Apresentação/Tecnologias e Ferramentas.md",
+    "Apresentação/Testes e Resultados.md",
     "Relatorio/OpenGL.md"
   ]
 }

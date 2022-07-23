@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{// Defines a implicit function}
+\PYG{k+kt}{float} \PYG{n}{evalImplicitFunc}\PYG{p}{(}\PYG{k+kt}{vec3} \PYG{n}{point}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{float} \PYG{n}{x} \PYG{o}{=} \PYG{n}{point}\PYG{p}{.}\PYG{n}{x}\PYG{p}{;}
+    \PYG{k+kt}{float} \PYG{n}{y} \PYG{o}{=} \PYG{n}{point}\PYG{p}{.}\PYG{n}{y}\PYG{p}{;}
+    \PYG{k+kt}{float} \PYG{n}{z} \PYG{o}{=} \PYG{n}{point}\PYG{p}{.}\PYG{n}{z}\PYG{p}{;}
+    \PYG{k+kt}{float} \PYG{n}{prod} \PYG{o}{=} \PYG{l+m+mf}{1.}\PYG{n}{f}\PYG{p}{;}
+
+    \PYG{c+c1}{// \PYGZlt{}gamma conditions\PYGZgt{}}
+
+    \PYG{k}{return} \PYG{n}{prod}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

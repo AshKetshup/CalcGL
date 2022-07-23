@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{+w}{    }\PYG{k+kt}{unsigned}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{vaoHandle}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{glGenVertexArrays}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{vaoHandle}\PYG{p}{);}
+\PYG{+w}{    }\PYG{n}{glBindVertexArray}\PYG{p}{(}\PYG{n}{vaoHandle}\PYG{p}{);}
+\PYG{+w}{    }\PYG{n}{glVertexAttrib1f}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{);}
+\PYG{+w}{    }\PYG{n}{glBindVertexArray}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{);}
+\end{Verbatim}

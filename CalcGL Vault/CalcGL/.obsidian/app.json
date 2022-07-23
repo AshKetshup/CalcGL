@@ -4,5 +4,6 @@
   "showLineNumber": true,
   "lineWrap": true,
   "readableLineLength": false,
-  "legacyEditor": false
+  "legacyEditor": false,
+  "attachmentFolderPath": "Apresentação/img"
 }
