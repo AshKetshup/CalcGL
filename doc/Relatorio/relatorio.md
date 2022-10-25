@@ -918,9 +918,7 @@ apresentadas:
 
 1.  **Superfície $\Pi$** (Figura 5.4), dada pela expressão:
     $$
-    		f(x,y,z) = ~& \left(x^2 + y^2 + z^2 - 1\right) \times \\
-    	                & \left((x-2)^2 + (y-1)^2 + z^2 - 1\right) \times \\
-    		            & \left((x-1)^2 + (y-2)^2 + (z-2)^2 - 1\right) - 5
+        f(x,y,z) = \left(x^2 + y^2 + z^2 - 1\right) \times \left((x-2)^2 + (y-1)^2 + z^2 - 1\right) \times \left((x-1)^2 + (y-2)^2 + (z-2)^2 - 1\right) - 5
     	
     $$
 
@@ -929,9 +927,7 @@ apresentadas:
 
 3.  **Fractal** (Figura 5.6), dado pela expressão:
     $$
-        f(x,y,z) =~ & (x^3 - 3xy^2 - 3xz^2)^2 + (y^3 - 3x^2y - 3yz^2)^2 + \\
-                    & (z^3 - 3x^2z + y^2z)^2  - (x^2 + y^2 + z^2)^3
-    	
+        f(x,y,z) = (x^3 - 3xy^2 - 3xz^2)^2 + (y^3 - 3x^2y - 3yz^2)^2 + (z^3 - 3x^2z + y^2z)^2  - (x^2 + y^2 + z^2)^3
     $$
 
 Pode-se constatar que o algoritmo implementado perde bastante detalhe
