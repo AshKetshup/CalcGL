@@ -2,9 +2,8 @@
 
 ### Departamento de Informática
 
-![image](ubi-fe-di.png){width="191pt"}
+![image](ubi-fe-di.png)
 
-### **N 121 --- 2022**\
 # ***Visualização de funções implícitas por *ray marching****
 
 #### Elaborado por:
@@ -97,7 +96,7 @@ Este tem ainda os seguintes **objetivos secundários**:
 
 -   Avaliar as diferenças entre CPU *single-threaded*, CPU *multi-threaded* e acelerado por GPU.
 
-## Organização do Documento {#sec::intro:orgdoc}
+## Organização do Documento
 
 O presente relatório estrutura-se em seis capítulos:
 
@@ -128,7 +127,7 @@ O presente relatório estrutura-se em seis capítulos:
     do projeto, os seus obstáculos, o que não foi possível alcançar e o
     que poderá ser explorado no futuro.
 
-# Estado da Arte {#ch::arte}
+# Estado da Arte
 
 A visualização computacional de funções é a base de muitas aplicações
 práticas em computação gráfica, tais como em videojogos e visualização
@@ -145,7 +144,7 @@ estudar os seguintes tópicos:
 
 -   Uso da API *OpenGL* e programação em GLSL.
 
-## Funções Implícitas {#sec::arte:implicitas}
+## Funções Implícitas
 
 Às funções definidas em função de uma variável dá-se o nome de **funções
 explícitas**. Exemplos clássicos em $\mathbb{R}^2$ incluem equações de
@@ -206,7 +205,7 @@ $$f(\mathbf{x}) - s = 0
 Este efeito é utilizado diretamente e com sucesso nas Superfícies $\Pi$.
 
 
-## Renderização de Superfícies Implícitas {#sec::arte:render}
+## Renderização de Superfícies Implícitas
 
 Muitos algoritmos de renderização têm vindo a ser investigados e usados
 em *software* que implemente diversas técnicas para obter uma imagem
@@ -272,7 +271,7 @@ categorizados em dois grandes grupos:
 
     -   *Ray tracing* (previamente descrito).
 
-## *Ray Marching* {#sec::arte:raymarch}
+## *Ray Marching*
 
 Um método de estimar pontos da iso-superfície de uma função implícita
 passa pela determinação da sua interseção com retas. Pelo princípio
@@ -283,7 +282,7 @@ interseção (ou calcular com precisão se tal for possível). No caso de
 *ray marching*, a interseção do raio com a superfície implícita é feita
 colocando um ponto em "marcha" ao longo do primeiro.
 
-### *Ray Casting* {#ssec::arte:raymarch:cast}
+### *Ray Casting*
 
 Seguir-se-á uma explicação do processo de *ray casting* tendo por base o
 esquema da Figura 2.2.
@@ -374,7 +373,7 @@ marching*.](bisection)
 ![Teste do algoritmo naïve no *website* [shadertoy.com](shadertoy.com) 
 com uma esfera.](ashalgosphere)
 
-### *Sphere Tracing* {#ssec::arte:raymarch:spheretracing}
+### *Sphere Tracing*
 
 *Sphere tracing* é uma técnica que faz uso do algoritmo de *ray
 marching* para renderizar **superfícies implícitas** conhecidas (Figura
@@ -474,7 +473,7 @@ Das fases englobadas pela *pipeline*, destacam-se cinco:
     diversos testes (por exemplo, de profundidade), resultando então num
     pixel final.
 
-### *Shaders* {#ssec::arte:opengl:shaders}
+### *Shaders*
 
 Aos sub-programas executados pela GPU num determinado ponto da *pipeline* de
 renderização chamamos de *shaders*. Um conjunto de *shaders* constitui
