@@ -370,8 +370,7 @@ tridimensional (Figura 2.5).
 ![Processo de *bisection* usado no algoritmo naïve de *ray
 marching*.](bisection)
 
-![Teste do algoritmo naïve no *website* [shadertoy.com](shadertoy.com) 
-com uma esfera.](ashalgosphere)
+![Teste do algoritmo naïve no *website* [shadertoy.com](shadertoy.com) com uma esfera.](ashalgosphere)
 
 ### *Sphere Tracing*
 
@@ -563,21 +562,19 @@ estão sumariados na Tabela 3.1.
 
                             ***Software* / Tecnologia**                                  **Versão**
   ------------------------- ------------------------------------------------------------ --------------------------
-  **Aplicação *OpenGL***                                                                 
-                            *OpenGL*                                                     4.6
-                            GLFW                                                         3.3.5
-                            [GLAD]{acronym-label="GLAD" acronym-form="singular+abbrv"}   0.1.34
-                            [GLM]{acronym-label="GLM" acronym-form="singular+abbrv"}     0.9.9.8
-                            *FreeType*                                                   2.10.4
-  **Relatório**                                                                          
-                            XeTeX                                                        3.141592653-2.6-0.999993
-                            *TeXstudio*                                                  4.2.2
-  **Controlo de versões**                                                                
-                            *git*                                                        2.36.1
-                            *GitKraken*                                                  8.6.1
+  **Aplicação *OpenGL***   |                                                              | 
+                           | *OpenGL*                                                     | 4.6
+                           | GLFW                                                         | 3.3.5
+                           | GLAD                                                         | 0.1.34
+                           | GLM                                                          | 0.9.9.8
+                           | *FreeType*                                                   | 2.10.4
+  **Relatório**            |                                                              | 
+                           | XeTeX                                                        | 3.141592653-2.6-0.999993
+                           | *TeXstudio*                                                  | 4.2.2
+  **Controlo de versões**  |                                                              | 
+                           | *git*                                                        | 2.36.1
+                           | *GitKraken*                                                  | 8.6.1
 
-  : Ferramentas e tecnologias utilizadas, organizadas por categoria.
-:::
 
 ## Código *Open Source*
 
@@ -605,22 +602,23 @@ em detalhe no Capítulo 5.
 Para o desenvolvimento do projeto, foi utilizado o IDE ***Visual Studio Community 2022***. Os testes foram realizados no sistema operativo *Windows 11*. O *software* auxiliar 
 para a gestão do código e escrita do presente relatório está listado na Tabela 3.1.
 
-::: {#tab::hardware}
-  -------------------------- -------------------------------------------------------------------------- ---------------------------------
-  **Computador portátil**                                                                               
-                             Processador (CPU)     Intel i5-8300H (2.3--4.0GHz)
-                             Placa gráfica (GPU)   NVidia GTX 1050 Ti (4GB)
-                             Memória RAM           16GB (DDR4 2133MHz)
-  **Computador *desktop***                                                                              
-                             Processador (CPU)     AMD Ryzen 7 2700X (3.7--4.3GHz)
-                             Placa gráfica (GPU)   NVidia RTX 3070 (8GB)
-                             Memória RAM           32GB (DDR4 3200MHz)
-  -------------------------- -------------------------------------------------------------------------- ---------------------------------
+
+  -------------------------- --------------------------------------------------------------------------
+  **Computador portátil**    |                                                                            
+                             | Processador (CPU)     Intel i5-8300H (2.3--4.0GHz)
+                             | Placa gráfica (GPU)   NVidia GTX 1050 Ti (4GB)
+                             | Memória RAM           16GB (DDR4 2133MHz)
+  -------------------------- --------------------------------------------------------------------------
+  **Computador *desktop***   |                                                                            
+                             | Processador (CPU)     AMD Ryzen 7 2700X (3.7--4.3GHz)
+                             | Placa gráfica (GPU)   NVidia RTX 3070 (8GB)
+                             | Memória RAM           32GB (DDR4 3200MHz)
+  -------------------------- -------------------------------------------------------------------------- 
 
   : Lista de *hardware* onde o projeto *CalcGL* foi testado.
 :::
 
-# Implementação {#ch::impl}
+# Implementação
 
 A implementação do projeto *CalcGL* será detalhada no presente Capítulo,
 com particular foco nos seguintes pontos:
@@ -631,7 +629,7 @@ com particular foco nos seguintes pontos:
 
 -   Detalhes de implementação e desafios encontrados.
 
-## Funcionalidades e Requisitos {#sec::impl:requisitos}
+## Funcionalidades e Requisitos
 
 O projeto *CalcGL* segue uma lista de **funcionalidades** a implementar
 baseados nos objetivos do projeto (Secção 1.3), em específico:
@@ -669,7 +667,7 @@ do programa pelo *Shader Loader*.
 
 ![Representação esquemática do fluxo da *CalcGL*.](fluxo)
 
-### Parâmetros de arranque {#ssec::impl:estrutura:start}
+### Parâmetros de arranque
 
 O programa disponibiliza uma coleção de argumentos que podem ser
 passados pela linha de comandos (ou terminal) para alterar o seu
@@ -806,11 +804,11 @@ com um fator de *blending* $r = 0$. A sua injeção é feita no local do
 comentário indicado por `<gamma conditions>`. Por exemplo, caso o
 ficheiro defina três esferas:
 
-$$\begin{aligned}
+$$
 	x^2 + y^2 + z^2 - 1 = 0 \\
 	(x-2)^2 + (y-1)^2 + z^2 - 1 = 0 \\
 	(x-1)^2 + (y-2)^2 + (z-2)^2 - 1 = 0
-\end{aligned}$$
+$$
 
 O *fragment shader* será recompilado com as seguintes linhas de código
 no lugar de `<gamma conditions>`.
@@ -919,22 +917,22 @@ Dos testes realizados, três funções implícitas em particular são
 apresentadas:
 
 1.  **Superfície $\Pi$** (Figura 5.4), dada pela expressão:
-    $$\begin{aligned}
+    $$
     		f(x,y,z) = ~& \left(x^2 + y^2 + z^2 - 1\right) \times \\
     	                & \left((x-2)^2 + (y-1)^2 + z^2 - 1\right) \times \\
     		            & \left((x-1)^2 + (y-2)^2 + (z-2)^2 - 1\right) - 5
     	
-    \end{aligned}$$
+    $$
 
 2.  ***Genus*** (Figura 5.5), dado pela expressão:
     $$f(x,y,z) = 2y(y^2 - 3x^2)(1-z^2) + (x^2 + y^2)^2 - (9z^2 - 1)(1 - z^2)$$
 
 3.  **Fractal** (Figura 5.6), dado pela expressão:
-    $$\begin{aligned}
-    		f(x,y,z) =~ & (x^3 - 3xy^2 - 3xz^2)^2 + (y^3 - 3x^2y - 3yz^2)^2 + \\
-    		            & (z^3 - 3x^2z + y^2z)^2  - (x^2 + y^2 + z^2)^3
+    $$
+        f(x,y,z) =~ & (x^3 - 3xy^2 - 3xz^2)^2 + (y^3 - 3x^2y - 3yz^2)^2 + \\
+                    & (z^3 - 3x^2z + y^2z)^2  - (x^2 + y^2 + z^2)^3
     	
-    \end{aligned}$$
+    $$
 
 Pode-se constatar que o algoritmo implementado perde bastante detalhe
 com um fractal devido às limitações impostas a nível de cálculo. Uma
@@ -946,11 +944,9 @@ na Secção 4.3.2).
 
 ![*Genus* renderizado no *CalcGL* com algoritmo naïve.](calcglgenus)
 
-![Fractal renderizado no *CalcGL* com algoritmo naïve sem *bisection*,
-revelando a sua limitação para este
-fim.](calcglfractal){#fig::calcglfractal width=".65\\textwidth"}
+![Fractal renderizado no *CalcGL* com algoritmo naïve sem *bisection*, revelando a sua limitação para este fim.](calcglfractal)
 
-## Renderização por *Software* {#sec::testes:software}
+## Renderização por *Software*
 
 A renderização por *software* (i.e. com recurso exclusivo à
 [CPU]{acronym-label="CPU" acronym-form="singular+short"}) revelou-se
@@ -988,9 +984,9 @@ reference="fig::cpurenderchart"}.
 
 ![Gráfico representativo dos tempos de execução em CPU, correlacionando o número de *threads* com o tempo em segundos para concluir uma *frame*.](cpurenderchart)
 
-# Conclusões e Trabalho Futuro {#ch::conc}
+# Conclusões e Trabalho Futuro
 
-## Conclusões {#sec::conc:conc}
+## Conclusões
 
 Com o desenvolvimento e teste deste projeto foi possível:
 
