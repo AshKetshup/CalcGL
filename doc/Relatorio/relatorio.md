@@ -917,18 +917,13 @@ Dos testes realizados, três funções implícitas em particular são
 apresentadas:
 
 1.  **Superfície $\Pi$** (Figura 5.4), dada pela expressão:
-    $$
-        f(x,y,z) = \left(x^2 + y^2 + z^2 - 1\right) \times \left((x-2)^2 + (y-1)^2 + z^2 - 1\right) \times \left((x-1)^2 + (y-2)^2 + (z-2)^2 - 1\right) - 5
-    	
-    $$
+    $$f(x,y,z) = \left(x^2 + y^2 + z^2 - 1\right) \times \left((x-2)^2 + (y-1)^2 + z^2 - 1\right) \times \left((x-1)^2 + (y-2)^2 + (z-2)^2 - 1\right) - 5$$
 
 2.  ***Genus*** (Figura 5.5), dado pela expressão:
     $$f(x,y,z) = 2y(y^2 - 3x^2)(1-z^2) + (x^2 + y^2)^2 - (9z^2 - 1)(1 - z^2)$$
 
 3.  **Fractal** (Figura 5.6), dado pela expressão:
-    $$
-        f(x,y,z) = (x^3 - 3xy^2 - 3xz^2)^2 + (y^3 - 3x^2y - 3yz^2)^2 + (z^3 - 3x^2z + y^2z)^2  - (x^2 + y^2 + z^2)^3
-    $$
+    $$f(x,y,z) = (x^3 - 3xy^2 - 3xz^2)^2 + (y^3 - 3x^2y - 3yz^2)^2 + (z^3 - 3x^2z + y^2z)^2  - (x^2 + y^2 + z^2)^3$$
 
 Pode-se constatar que o algoritmo implementado perde bastante detalhe
 com um fractal devido às limitações impostas a nível de cálculo. Uma
